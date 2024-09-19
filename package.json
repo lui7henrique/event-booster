@@ -1,0 +1,45 @@
+{
+  "name": "event-booster-server",
+  "version": "1.0.0",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "dev": "tsx watch --env-file=.env src/http/server.ts",
+    "db:seed": "tsx --env-file=.env src/db/seed.ts",
+    "db:generate": "dotenv -e .env -- drizzle-kit generate",
+    "db:migrate": "dotenv -e .env -- drizzle-kit migrate",
+    "db:migrate:test": "dotenv -e .env.test -- drizzle-kit migrate",
+    "db:studio": "dotenv -e .env -- drizzle-kit studio",
+    "pretest": "npm run db:migrate:test",
+    "test": "dotenv -e .env.test -- vitest",
+    "format": "biome check src --write",
+    "mail:dev": "email dev --dir src/mail/templates"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "@fastify/cors": "9.0.1",
+    "date-fns": "^4.1.0",
+    "drizzle-orm": "0.33.0",
+    "drizzle-zod": "0.5.1",
+    "fastify": "4.28.1",
+    "fastify-type-provider-zod": "2.0.0",
+    "postgres": "3.4.4",
+    "typeid-js": "1.0.0"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "1.8.3",
+    "@faker-js/faker": "8.4.1",
+    "@types/node": "22.5.0",
+    "dotenv-cli": "7.4.2",
+    "drizzle-kit": "0.24.1",
+    "tsup": "8.2.4",
+    "tsx": "4.17.0",
+    "typescript": "5.5.4",
+    "vite-tsconfig-paths": "5.0.1",
+    "vitest": "2.0.5",
+    "zod": "3.23.8"
+  }
+}

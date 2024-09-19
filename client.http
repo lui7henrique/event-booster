@@ -1,0 +1,11 @@
+@baseUrl = http://localhost:3333
+
+# @name register_subscription
+POST {{baseUrl}}/subscription
+Content-Type: application/json
+
+{
+  "name": "Abraham Lincoln",
+  "email": "abraham.Lincoln@email.com",
+  "event_id": "evt_01j85zs1wweept4t79mzhygzpp"
+}
