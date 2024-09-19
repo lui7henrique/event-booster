@@ -30,8 +30,6 @@ export async function registerSubscription({
       )
       .execute()
 
-    console.log({ existingSubscription })
-
     if (existingSubscription) {
       return makeLeft(new EmailAlreadySubscribedError())
     }
