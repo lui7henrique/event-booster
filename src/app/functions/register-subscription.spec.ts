@@ -7,6 +7,9 @@ import { describe, expect, it } from 'vitest'
 import { registerSubscription } from './register-subscription'
 import { isLeft, isRight, unwrapEither } from '@/core/either'
 import { EmailAlreadySubscribedError } from '../errors/email-already-subscribed-error'
+import { addDays } from 'date-fns'
+import { EventDateError } from '../errors/event-date-error'
+import { EventNotFoundError } from '../errors/event-not-found-error'
 
 describe('register subscription', () => {
   it('should be able to make subscription', async () => {
@@ -35,5 +38,29 @@ describe('register subscription', () => {
 
     expect(isLeft(sut)).toBe(true)
     expect(unwrapEither(sut)).toBeInstanceOf(EmailAlreadySubscribedError)
+  })
+
+  it('should not be able to make subscription out of the dates', async () => {
+    const event = await makeEvent({
+      start_date: addDays(new Date(), 10),
+      end_date: addDays(new Date(), 15),
+    })
+
+    const { email, name } = makeRawSubscription({
+      event_id: event.id,
+    })
+
+    const sut = await registerSubscription({ name, email, eventId: event.id })
+
+    expect(isLeft(sut)).toBe(true)
+    expect(unwrapEither(sut)).toBeInstanceOf(EventDateError)
+  })
+
+  it('should not be able to make subscription with invalid event', async () => {
+    const { email, name } = makeRawSubscription()
+    const sut = await registerSubscription({ name, email, eventId: 'invalid' })
+
+    expect(isLeft(sut)).toBe(true)
+    expect(unwrapEither(sut)).toBeInstanceOf(EventNotFoundError)
   })
 })
