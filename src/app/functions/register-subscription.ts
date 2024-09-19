@@ -1,7 +1,7 @@
 import { makeLeft, makeRight } from '@/core/either'
 import { db } from '@/db'
 import { schema } from '@/db/schema'
-import { EmailAlreadySubscribedError } from '../errors/email-already-registered-error'
+import { EmailAlreadySubscribedError } from '../errors/email-already-subscribed-error'
 import { eq, and } from 'drizzle-orm'
 
 type RegisterSubscriptionInput = {
