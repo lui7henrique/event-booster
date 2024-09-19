@@ -52,10 +52,9 @@
 ### Documentation and Deployment
 
 1. **Documentation**
-
-- [ ] Document all API endpoints using Swagger/OpenAPI.
-- [ ] Create user guides for system administrators and event managers.
-- [ ] Prepare an end-user FAQ section regarding how to participate, generate referrals, and check rankings.
+   - [ ] Document all API endpoints using Swagger/OpenAPI.
+   - [ ] Create user guides for system administrators and event managers.
+   - [ ] Prepare an end-user FAQ section regarding how to participate, generate referrals, and check rankings.
 
 2. **Deployment**
 
