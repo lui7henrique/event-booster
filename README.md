@@ -51,9 +51,7 @@
 
 ### Documentation and Deployment
 
-1.
-
-**Documentation**
+1. **Documentation**
 
 - [ ] Document all API endpoints using Swagger/OpenAPI.
 - [ ] Create user guides for system administrators and event managers.
