@@ -12,6 +12,7 @@
     "db:studio": "dotenv -e .env -- drizzle-kit studio",
     "pretest": "npm run db:migrate:test",
     "test": "dotenv -e .env.test -- vitest",
+    "test:coverage": "dotenv -e .env.test -- vitest --coverage",
     "format": "biome check src --write",
     "mail:dev": "email dev --dir src/mail/templates"
   },
@@ -33,13 +34,15 @@
     "@biomejs/biome": "1.8.3",
     "@faker-js/faker": "8.4.1",
     "@types/node": "22.5.0",
+    "@vitest/coverage-istanbul": "^2.1.1",
+    "@vitest/coverage-v8": "^2.1.1",
     "dotenv-cli": "7.4.2",
     "drizzle-kit": "0.24.1",
     "tsup": "8.2.4",
     "tsx": "4.17.0",
     "typescript": "5.5.4",
     "vite-tsconfig-paths": "5.0.1",
-    "vitest": "2.0.5",
+    "vitest": "^2.1.1",
     "zod": "3.23.8"
   }
 }
