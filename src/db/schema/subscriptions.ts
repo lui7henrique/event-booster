@@ -8,6 +8,6 @@ export const subscriptions = pgTable('subscriptions', {
     .primaryKey()
     .$defaultFn(() => generateUniqueId('user')),
   name: text('name').notNull(),
-  email: text('email').notNull().unique(),
+  email: text('email').notNull(),
   event_id: text('event_id').references(() => events.id),
 })

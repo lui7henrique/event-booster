@@ -30,6 +30,6 @@ export async function registerSubscriptionRoute(app: FastifyInstance) {
       }
     }
 
-    return reply.status(201).send({ user: result.right.subscription })
+    return reply.status(201).send({ subscription: result.right.subscription })
   })
 }

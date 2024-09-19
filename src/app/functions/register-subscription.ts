@@ -19,7 +19,7 @@ export async function registerSubscription({
   eventId,
 }: RegisterSubscriptionInput) {
   try {
-    const existingSubscription = await db
+    const [existingSubscription] = await db
       .select()
       .from(schema.subscriptions)
       .where(
@@ -30,7 +30,9 @@ export async function registerSubscription({
       )
       .execute()
 
-    if (existingSubscription.length > 0) {
+    console.log({ existingSubscription })
+
+    if (existingSubscription) {
       return makeLeft(new EmailAlreadySubscribedError())
     }
 
@@ -39,7 +41,6 @@ export async function registerSubscription({
     })
 
     if (!event) {
-      console.log('oi')
       return makeLeft(new EventNotFoundError())
     }
 
@@ -49,16 +50,16 @@ export async function registerSubscription({
     })
 
     if (isValidDate) {
-      const subscriptions = await db
+      const [subscription] = await db
         .insert(schema.subscriptions)
         .values({
           email,
           name,
           event_id: eventId,
         })
-        .execute()
+        .returning()
 
-      return makeRight({ subscription: subscriptions[0] })
+      return makeRight({ subscription })
     }
 
     return makeLeft(new EventDateError())

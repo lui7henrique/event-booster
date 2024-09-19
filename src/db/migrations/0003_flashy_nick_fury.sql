@@ -1,0 +1,1 @@
+ALTER TABLE "subscriptions" DROP CONSTRAINT "subscriptions_email_unique";
