@@ -24,9 +24,9 @@
 
 1. **Event Subscription**
 
-   - [ ] Create an endpoint for users to subscribe using their name and email.
-   - [ ] Implement checks to prevent duplicate email registration.
-   - [ ] Ensure subscriptions are only allowed within the event start and end dates.
+   - [x] Create an endpoint for users to subscribe using their name and email.
+   - [x] Implement checks to prevent duplicate email registration.
+   - [x] Ensure subscriptions are only allowed within the event start and end dates.
 
 2. **Referral Link Generation**
 

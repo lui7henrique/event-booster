@@ -3,6 +3,9 @@ import { db } from '@/db'
 import { schema } from '@/db/schema'
 import { EmailAlreadySubscribedError } from '../errors/email-already-subscribed-error'
 import { eq, and } from 'drizzle-orm'
+import { EventNotFoundError } from '../errors/event-not-found-error'
+import { isWithinInterval } from 'date-fns'
+import { EventDateError } from '../errors/event-date-error'
 
 type RegisterSubscriptionInput = {
   name: string
@@ -31,18 +34,35 @@ export async function registerSubscription({
       return makeLeft(new EmailAlreadySubscribedError())
     }
 
-    const subscriptions = await db
-      .insert(schema.subscriptions)
-      .values({
-        email,
-        name,
-        event_id: eventId,
-      })
-      .execute()
+    const event = await db.query.events.findFirst({
+      where: eq(schema.events.id, eventId),
+    })
 
-    return makeRight({ subscription: subscriptions[0] })
+    if (!event) {
+      console.log('oi')
+      return makeLeft(new EventNotFoundError())
+    }
+
+    const isValidDate = isWithinInterval(new Date(), {
+      start: new Date(event.start_date),
+      end: new Date(event.end_date),
+    })
+
+    if (isValidDate) {
+      const subscriptions = await db
+        .insert(schema.subscriptions)
+        .values({
+          email,
+          name,
+          event_id: eventId,
+        })
+        .execute()
+
+      return makeRight({ subscription: subscriptions[0] })
+    }
+
+    return makeLeft(new EventDateError())
   } catch (err) {
-    console.log({ err })
     return makeLeft(new EmailAlreadySubscribedError())
   }
 }
