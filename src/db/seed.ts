@@ -3,12 +3,7 @@ import { client, db } from '.'
 import { schema } from './schema'
 
 async function main() {
-  await db.delete(schema.users)
-
-  await db.insert(schema.users).values({
-    name: 'Luiz Henrique',
-    email: 'luizhenrique@example.com',
-  })
+  await db.delete(schema.events)
 
   await db.insert(schema.events).values({
     title: 'Vercel Con',

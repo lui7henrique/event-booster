@@ -5,6 +5,7 @@ import { registerSubscriptionRoute } from './routes/register-subscription'
 
 import { env } from '../env'
 import { ZodError } from 'zod'
+import { generateReferralLinkRoute } from './routes/generate-referral-link'
 
 const app = fastify()
 
@@ -13,6 +14,7 @@ app.register(cors, {
 })
 
 app.register(registerSubscriptionRoute)
+app.register(generateReferralLinkRoute)
 
 app.setErrorHandler((error, _, reply) => {
   if (error instanceof ZodError) {

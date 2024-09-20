@@ -5,7 +5,18 @@ POST {{baseUrl}}/subscription
 Content-Type: application/json
 
 {
-  "name": "Abraham Lincoln",
-  "email": "abraham.Lincoln6@email.com",
-  "event_id": "evt_01j85zs1wweept4t79mzhygzpp"
+  "name": "Elon Musk",
+  "email": "elon.musk@x.com",
+  "event_id": "evt_01j86bwcwrfv5v1rm5nh8w787b"
+}
+
+###
+
+# @name generate_referral_link
+POST {{baseUrl}}/generate-referral-link
+Content-Type: application/json
+
+{
+  "email": "elon.musk@x.com",
+  "event_id": "evt_01j86bwcwrfv5v1rm5nh8w787b"
 }

@@ -2,7 +2,8 @@ import { TypeID, typeid } from 'typeid-js'
 
 export const PREFIXES = {
   user: 'usr',
-  event: 'evt'
+  event: 'evt',
+  'referral-link': 'rfr',
 } as const
 
 export function generateUniqueId(prefixKey: keyof typeof PREFIXES) {

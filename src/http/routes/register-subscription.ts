@@ -25,6 +25,10 @@ export async function registerSubscriptionRoute(app: FastifyInstance) {
       switch (error.constructor.name) {
         case 'EmailAlreadySubscribedError':
           return reply.status(409).send({ message: error.message })
+        case 'EventNotFoundError':
+          return reply.status(404).send({ message: error.message })
+        case 'EventDateError':
+          return reply.status(400).send({ message: error.message })
         default:
           return reply.status(400).send()
       }
