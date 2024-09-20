@@ -32,15 +32,16 @@ export async function generateReferralLink({
 
     const uniqueToken = randomBytes(16).toString('hex')
     const baseUrl = process.env.BASE_URL || 'https://domain.com'
+    const url = `${baseUrl}/register-subscription?ref=${uniqueToken}&event_id=${event_id}`
 
     const [referralLink] = await db
       .insert(schema.referralLinks)
       .values({
         email,
         event_id,
-        referral_link: `${baseUrl}?ref=${uniqueToken}&event_id=${event_id}`,
+        referral_link: url,
       })
-      .execute()
+      .returning()
 
     return makeRight({ referralLink })
   } catch (err) {
