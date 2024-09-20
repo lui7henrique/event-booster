@@ -30,8 +30,8 @@
 
 2. **Referral Link Generation**
 
-   - [ ] Develop a system to generate unique referral links for each subscriber.
-   - [ ] Store these links in the database associated with the user’s account.
+   - [x] Develop a system to generate unique referral links for each subscriber.
+   - [x] Store these links in the database associated with the user’s account.
 
 3. **Referral Tracking and Metrics**
 
