@@ -2,8 +2,10 @@ import { makeEvent } from '@/test/factories/make-event'
 import { makeSubscription } from '@/test/factories/make-subscription'
 import { describe, expect, it } from 'vitest'
 import { registerSubscription } from './register-subscription'
-import { isRight, unwrapEither } from '@/core/either'
+import { isLeft, isRight, unwrapEither } from '@/core/either'
 import { generateReferralLink } from './generate-referral-link'
+import { makeReferralLink } from '@/test/factories/make-referral-link'
+import { ReferralLinkAlreadyExists } from '../errors/referral-link-already-exists'
 
 describe('generate referral link', () => {
   it('should be able to generate referral link', async () => {
@@ -26,18 +28,19 @@ describe('generate referral link', () => {
 
   it('should not be able to generate referral link when its already exists', async () => {
     const event = await makeEvent()
-    const { name, email } = await makeSubscription({
+
+    const { email } = await makeSubscription({
       event_id: event.id,
+    })
+
+    await makeReferralLink({
+      event_id: event.id,
+      email,
     })
 
     const sut = await generateReferralLink({ email, event_id: event.id })
 
-    expect(isRight(sut)).toBe(true)
-
-    expect(unwrapEither(sut)).toEqual({
-      referralLink: expect.objectContaining({
-        email,
-      }),
-    })
+    expect(isLeft(sut)).toBe(true)
+    expect(unwrapEither(sut)).toBeInstanceOf(ReferralLinkAlreadyExists)
   })
 })
