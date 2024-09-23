@@ -5,9 +5,9 @@ POST {{baseUrl}}/subscription
 Content-Type: application/json
 
 {
-  "name": "Kanye West",
-  "email": "kanye-west@email.com",
-  "event_id": "evt_01j8gegk5hern8j4xfrrz108s3"
+  "name": "Luiz Henrique",
+  "email": "luiz-henrique@email.com",
+  "event_id": "evt_01j8ggpztgfa79vz2am2advb7c"
 }
 
 ###
@@ -17,19 +17,19 @@ POST {{baseUrl}}/generate-referral-link
 Content-Type: application/json
 
 {
-  "email": "don-liver@email.com",
-  "event_id": "evt_01j8gegk5hern8j4xfrrz108s3"
+  "email": "luiz-garbini@email.com",
+  "event_id": "evt_01j8ggpztgfa79vz2am2advb7c"
 }
 
 ### 
 
 # @name handle_referral_link
-GET {{baseUrl}}/referral?token=62c7027e87b5adcdf39495dcfceb8850&event_id=evt_01j8gegk5hern8j4xfrrz108s3
+GET {{baseUrl}}/referral?token=4aac79f96dac0b19530d3f5e99da76b2&event_id=evt_01j8ggpztgfa79vz2am2advb7c
 
 ###
 
 # @name handle_referral_link_stats
-GET {{baseUrl}}/referral/stats?token=b608f60a1b406de665d70e7a72a3b023&event_id=evt_01j8gegk5hern8j4xfrrz108s3
+GET {{baseUrl}}/referral/stats?token=91ad92793a2257790b432e34a78820f0&event_id=evt_01j8ggpztgfa79vz2am2advb7c
 
 ### 
 
@@ -38,8 +38,8 @@ POST {{baseUrl}}/subscription
 Content-Type: application/json
 
 {
-  "name": "Don Toliver",
-  "email": "don-liver@email.com",
-  "event_id": "evt_01j8gegk5hern8j4xfrrz108s3",
-  "referral_link_token": "b608f60a1b406de665d70e7a72a3b023"
+  "name": "Diego Schell Fernandes",
+  "email": "diego-schell@email.com",
+  "event_id": "evt_01j8ggpztgfa79vz2am2advb7c",
+  "referral_link_token": "4aac79f96dac0b19530d3f5e99da76b2"
 }
