@@ -35,6 +35,16 @@ export async function generateReferralLink({
     const baseUrl = process.env.BASE_URL
     const url = `${baseUrl}/referral?token=${token}&event_id=${event_id}`
 
+    const [subscription] = await db
+      .select()
+      .from(schema.subscriptions)
+      .where(
+        and(
+          eq(schema.subscriptions.email, email),
+          eq(schema.subscriptions.event_id, event_id)
+        )
+      )
+
     const [referralLink] = await db
       .insert(schema.referralLinks)
       .values({
@@ -42,8 +52,10 @@ export async function generateReferralLink({
         event_id,
         referral_link: url,
         token: token,
+        parent_id: subscription.referral_link_id || null,
       })
       .returning()
+      .execute()
 
     return makeRight({ referralLink })
   } catch (err) {

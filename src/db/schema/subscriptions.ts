@@ -16,7 +16,7 @@ export const subscriptions = pgTable('subscriptions', {
 })
 
 export const subscriptionsRelations = relations(subscriptions, ({ one }) => ({
-  referralLink: one(referralLinks, {
+  referral_link: one(referralLinks, {
     fields: [subscriptions.referral_link_id],
     references: [referralLinks.id],
   }),

@@ -20,7 +20,7 @@ describe('generate referral link', () => {
     expect(isRight(sut)).toBe(true)
 
     expect(unwrapEither(sut)).toEqual({
-      referralLink: expect.objectContaining({
+      referral_link: expect.objectContaining({
         email,
       }),
     })

@@ -7,7 +7,7 @@ Content-Type: application/json
 {
   "name": "Kanye West",
   "email": "kanye-west@email.com",
-  "event_id": "evt_01j8g1xm24faesgvq0v9wzq741"
+  "event_id": "evt_01j8gegk5hern8j4xfrrz108s3"
 }
 
 ###
@@ -17,19 +17,19 @@ POST {{baseUrl}}/generate-referral-link
 Content-Type: application/json
 
 {
-  "email": "kanye-west@email.com",
-  "event_id": "evt_01j8g1xm24faesgvq0v9wzq741"
+  "email": "don-liver@email.com",
+  "event_id": "evt_01j8gegk5hern8j4xfrrz108s3"
 }
 
 ### 
 
 # @name handle_referral_link
-GET {{baseUrl}}/referral?token=b605e729a1e592efdd9e458f804322e4&event_id=evt_01j8g1xm24faesgvq0v9wzq741
+GET {{baseUrl}}/referral?token=62c7027e87b5adcdf39495dcfceb8850&event_id=evt_01j8gegk5hern8j4xfrrz108s3
 
 ###
 
 # @name handle_referral_link_stats
-GET {{baseUrl}}/referral/stats?token=b605e729a1e592efdd9e458f804322e4&event_id=evt_01j8g1xm24faesgvq0v9wzq741
+GET {{baseUrl}}/referral/stats?token=b608f60a1b406de665d70e7a72a3b023&event_id=evt_01j8gegk5hern8j4xfrrz108s3
 
 ### 
 
@@ -38,8 +38,8 @@ POST {{baseUrl}}/subscription
 Content-Type: application/json
 
 {
-  "name": "Garbini",
-  "email": "travis-scott@email.com",
-  "event_id": "evt_01j8g1xm24faesgvq0v9wzq741",
-  "referral_link_token": "b605e729a1e592efdd9e458f804322e4"
+  "name": "Don Toliver",
+  "email": "don-liver@email.com",
+  "event_id": "evt_01j8gegk5hern8j4xfrrz108s3",
+  "referral_link_token": "b608f60a1b406de665d70e7a72a3b023"
 }
