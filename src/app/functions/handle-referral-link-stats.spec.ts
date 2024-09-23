@@ -40,52 +40,46 @@ describe('handleReferralLinkStats', () => {
     expect(unwrapEither(sut)).toHaveProperty('directConversionRate', 20)
   })
 
-  // it('handles database errors gracefully', async () => {
-  //   db.select.mockImplementation(() => {
-  //     throw new Error('Database error')
-  //   })
+  it('calculates indirect conversion rate correctly', async () => {
+    const event = await makeEvent()
 
-  //   const result = await handleReferralLinkStats({
-  //     token: 'some_token',
-  //     event_id: 'some_event',
-  //   })
+    const parentLink = await makeReferralLink({
+      event_id: event.id,
+      click_count: 50,
+      subscription_count: 10,
+      token: 'token-1',
+    })
 
-  //   expect(result).toEqual(makeLeft(new ServerError()))
-  // })
+    const childLink = await makeReferralLink({
+      event_id: event.id,
+      parent_id: parentLink.id,
+      click_count: 150,
+      subscription_count: 30,
+      token: 'token-2',
+    })
 
-  // it('calculates indirect conversion rate correctly', async () => {
-  //   const event = await makeEvent()
-  //   const parentLink = await makeReferralLink({
-  //     event_id: event.id,
-  //     click_count: 50,
-  //     subscription_count: 10,
-  //   })
-  //   const childLink = await makeReferralLink({
-  //     event_id: event.id,
-  //     parent_id: parentLink.id,
-  //     click_count: 150,
-  //     subscription_count: 30,
-  //   })
+    const sut = await handleReferralLinkStats({
+      token: childLink.token,
+      event_id: event.id,
+    })
 
-  //   const result = await handleReferralLinkStats({
-  //     token: childLink.token,
-  //     event_id: event.id,
-  //   })
+    expect(isRight(sut)).toBe(true)
+    expect(unwrapEither(sut)).toHaveProperty('indirectConversionRate', 20)
+  })
 
-  //   expect(result.value.indirectConversionRate).toBeCloseTo(20) // 20% indirect conversion rate calculated from total
-  // })
+  it('avoids division by zero in conversion rate calculations', async () => {
+    const event = await makeEvent()
+    const { token } = await makeReferralLink({
+      event_id: event.id,
+      click_count: 0,
+      subscription_count: 0,
+      token: 'token',
+    })
 
-  // it('avoids division by zero in conversion rate calculations', async () => {
-  //   const event = await makeEvent()
-  //   const { token } = await makeReferralLink({
-  //     event_id: event.id,
-  //     click_count: 0,
-  //     subscription_count: 0,
-  //   })
+    const sut = await handleReferralLinkStats({ token, event_id: event.id })
 
-  //   const result = await handleReferralLinkStats({ token, event_id: event.id })
+    expect(unwrapEither(sut)).toHaveProperty('directConversionRate', 0)
 
-  //   expect(result.value.directConversionRate).toBe(0)
-  //   expect(result.value.indirectConversionRate).toBe(0)
-  // })
+    expect(unwrapEither(sut)).toHaveProperty('indirectConversionRate', 0)
+  })
 })
