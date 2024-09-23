@@ -6,12 +6,13 @@ import { eq, and } from 'drizzle-orm'
 import { EventNotFoundError } from '../errors/event-not-found-error'
 import { isWithinInterval } from 'date-fns'
 import { EventDateError } from '../errors/event-date-error'
+import { ServerError } from '../errors/server-error'
 
 type RegisterSubscriptionInput = {
   name: string
   email: string
   event_id: string
-  referral_link_token: string | null
+  referral_link_token?: string | null
 }
 
 export async function registerSubscription({
@@ -51,7 +52,22 @@ export async function registerSubscription({
 
     if (isValidDate) {
       if (referral_link_token) {
-        console.log({ referral_link_token })
+        const [referralLink] = await db
+          .select()
+          .from(schema.referralLinks)
+          .where(and(eq(schema.referralLinks.token, referral_link_token)))
+
+        const [subscription] = await db
+          .insert(schema.subscriptions)
+          .values({
+            email,
+            name,
+            event_id,
+            referral_link_id: referralLink.id,
+          })
+          .returning()
+
+        return makeRight({ subscription })
       }
 
       const [subscription] = await db
@@ -68,7 +84,6 @@ export async function registerSubscription({
 
     return makeLeft(new EventDateError())
   } catch (err) {
-    console.log({ err })
-    throw new Error()
+    return makeLeft(new ServerError())
   }
 }

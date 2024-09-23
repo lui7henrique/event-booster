@@ -36,6 +36,7 @@ describe('generate referral link', () => {
     await makeReferralLink({
       event_id: event.id,
       email,
+      token: '',
     })
 
     const sut = await generateReferralLink({ email, event_id: event.id })

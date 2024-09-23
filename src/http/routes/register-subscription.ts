@@ -10,7 +10,7 @@ export async function registerSubscriptionRoute(app: FastifyInstance) {
         name: z.string(),
         email: z.string().email(),
         event_id: z.string(),
-        referral_link_token: z.string().nullable(),
+        referral_link_token: z.string().optional(),
       })
       .parse(request.body)
 

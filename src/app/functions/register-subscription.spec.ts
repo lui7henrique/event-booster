@@ -16,7 +16,7 @@ describe('register subscription', () => {
     const event = await makeEvent()
     const { name, email } = makeRawSubscription()
 
-    const sut = await registerSubscription({ name, email, eventId: event.id })
+    const sut = await registerSubscription({ name, email, event_id: event.id })
 
     expect(isRight(sut)).toBe(true)
 
@@ -34,7 +34,7 @@ describe('register subscription', () => {
       event_id: event.id,
     })
 
-    const sut = await registerSubscription({ name, email, eventId: event.id })
+    const sut = await registerSubscription({ name, email, event_id: event.id })
 
     expect(isLeft(sut)).toBe(true)
     expect(unwrapEither(sut)).toBeInstanceOf(EmailAlreadySubscribedError)
@@ -50,7 +50,7 @@ describe('register subscription', () => {
       event_id: event.id,
     })
 
-    const sut = await registerSubscription({ name, email, eventId: event.id })
+    const sut = await registerSubscription({ name, email, event_id: event.id })
 
     expect(isLeft(sut)).toBe(true)
     expect(unwrapEither(sut)).toBeInstanceOf(EventDateError)
@@ -58,7 +58,7 @@ describe('register subscription', () => {
 
   it('should not be able to make subscription with invalid event', async () => {
     const { email, name } = makeRawSubscription()
-    const sut = await registerSubscription({ name, email, eventId: 'invalid' })
+    const sut = await registerSubscription({ name, email, event_id: 'invalid' })
 
     expect(isLeft(sut)).toBe(true)
     expect(unwrapEither(sut)).toBeInstanceOf(EventNotFoundError)

@@ -4,6 +4,7 @@ import { schema } from '@/db/schema'
 import { and, eq } from 'drizzle-orm'
 import { ReferralLinkAlreadyExists } from '../errors/referral-link-already-exists'
 import { randomBytes } from 'node:crypto'
+import { ServerError } from '../errors/server-error'
 
 type GenerateReferralLinkInput = {
   email: string
@@ -46,7 +47,6 @@ export async function generateReferralLink({
 
     return makeRight({ referralLink })
   } catch (err) {
-    console.log({ err })
-    throw new Error()
+    return makeLeft(new ServerError())
   }
 }

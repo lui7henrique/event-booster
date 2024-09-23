@@ -10,7 +10,7 @@ async function main() {
 
   const createEvent = () => ({
     title: faker.company.catchPhrase(),
-    start_date: new Date(),
+    start_date: faker.date.past(),
     end_date: addDays(
       faker.date.future(),
       faker.number.int({ min: 1, max: 14 })
