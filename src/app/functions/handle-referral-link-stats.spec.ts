@@ -1,20 +1,12 @@
 import { describe, expect, it } from 'vitest'
 import { handleReferralLinkStats } from './handle-referral-link-stats'
 
-import { db } from '@/db'
-import {
-  isLeft,
-  isRight,
-  makeLeft,
-  makeRight,
-  unwrapEither,
-} from '@/core/either'
+import { isLeft, isRight, unwrapEither } from '@/core/either'
 import { ReferralLinkNotFound } from '../errors/referral-link-not-found'
 import { makeEvent } from '@/test/factories/make-event'
 import { makeReferralLink } from '@/test/factories/make-referral-link'
-import { ServerError } from '../errors/server-error'
 
-describe('handleReferralLinkStats', () => {
+describe('handle referral link stats', () => {
   it('returns an error if referral link is not found', async () => {
     const event = await makeEvent()
     const token = 'nonexistent_token'
