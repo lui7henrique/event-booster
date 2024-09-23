@@ -37,7 +37,7 @@
 
    - [x] Track the number of subscriptions made through each referral link.
    - [x] Calculate and store the conversion rate for each user.
-   - [ ] Implement hierarchical tracking of direct and indirect referrals.
+   - [x] Implement hierarchical tracking of direct and indirect referrals.
 
 4. **Ranking and Insights**
 
