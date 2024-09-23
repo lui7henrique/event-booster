@@ -10,6 +10,7 @@ import { EmailAlreadySubscribedError } from '../errors/email-already-subscribed-
 import { addDays } from 'date-fns'
 import { EventDateError } from '../errors/event-date-error'
 import { EventNotFoundError } from '../errors/event-not-found-error'
+import { makeReferralLink } from '@/test/factories/make-referral-link'
 
 describe('register subscription', () => {
   it('should be able to make subscription', async () => {
@@ -62,5 +63,25 @@ describe('register subscription', () => {
 
     expect(isLeft(sut)).toBe(true)
     expect(unwrapEither(sut)).toBeInstanceOf(EventNotFoundError)
+  })
+
+  it('should be able to make subscription with a valid referral link token', async () => {
+    const event = await makeEvent()
+    const { name, email } = makeRawSubscription()
+
+    const referralLink = await makeReferralLink({
+      token: 'valid-token',
+      event_id: event.id,
+    })
+
+    const sut = await registerSubscription({
+      name,
+      email,
+      event_id: event.id,
+      referral_link_token: referralLink.token,
+    })
+
+    expect(isRight(sut)).toBe(true)
+    expect(unwrapEither(sut)).toHaveProperty('subscription.event_id', event.id)
   })
 })
