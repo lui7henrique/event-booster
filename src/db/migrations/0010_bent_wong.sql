@@ -1,0 +1,1 @@
+ALTER TABLE "referral_links" ADD COLUMN "click_count" integer DEFAULT 0;

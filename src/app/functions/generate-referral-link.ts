@@ -32,7 +32,7 @@ export async function generateReferralLink({
 
     const token = randomBytes(16).toString('hex')
     const baseUrl = process.env.BASE_URL
-    const url = `${baseUrl}/register-subscription?referral=${token}&event_id=${event_id}`
+    const url = `${baseUrl}/referral?token=${token}&event_id=${event_id}`
 
     const [referralLink] = await db
       .insert(schema.referralLinks)

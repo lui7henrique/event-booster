@@ -5,18 +5,20 @@ import { z } from 'zod'
 
 export async function registerSubscriptionRoute(app: FastifyInstance) {
   app.post('/subscription', async (request, reply) => {
-    const body = z.object({
-      name: z.string(),
-      email: z.string().email(),
-      event_id: z.string(),
-    })
-
-    const { name, email, event_id } = body.parse(request.body)
+    const { referral_link_token, event_id, name, email } = z
+      .object({
+        name: z.string(),
+        email: z.string().email(),
+        event_id: z.string(),
+        referral_link_token: z.string().nullable(),
+      })
+      .parse(request.body)
 
     const result = await registerSubscription({
       name,
       email,
-      eventId: event_id,
+      event_id,
+      referral_link_token,
     })
 
     if (isLeft(result)) {

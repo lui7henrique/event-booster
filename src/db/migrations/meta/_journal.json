@@ -71,6 +71,20 @@
       "when": 1727098685650,
       "tag": "0009_salty_psynapse",
       "breakpoints": true
+    },
+    {
+      "idx": 10,
+      "version": "7",
+      "when": 1727100313581,
+      "tag": "0010_bent_wong",
+      "breakpoints": true
+    },
+    {
+      "idx": 11,
+      "version": "7",
+      "when": 1727103555173,
+      "tag": "0011_burly_xavin",
+      "breakpoints": true
     }
   ]
 }

@@ -10,15 +10,15 @@ import { EventDateError } from '../errors/event-date-error'
 type RegisterSubscriptionInput = {
   name: string
   email: string
-  eventId: string
-  referralToken?: string
+  event_id: string
+  referral_link_token: string | null
 }
 
 export async function registerSubscription({
   name,
   email,
-  eventId,
-  referralToken,
+  event_id,
+  referral_link_token,
 }: RegisterSubscriptionInput) {
   try {
     const [existingSubscription] = await db
@@ -27,7 +27,7 @@ export async function registerSubscription({
       .where(
         and(
           eq(schema.subscriptions.email, email),
-          eq(schema.subscriptions.event_id, eventId)
+          eq(schema.subscriptions.event_id, event_id)
         )
       )
       .execute()
@@ -37,7 +37,7 @@ export async function registerSubscription({
     }
 
     const event = await db.query.events.findFirst({
-      where: eq(schema.events.id, eventId),
+      where: eq(schema.events.id, event_id),
     })
 
     if (!event) {
@@ -50,12 +50,16 @@ export async function registerSubscription({
     })
 
     if (isValidDate) {
+      if (referral_link_token) {
+        console.log({ referral_link_token })
+      }
+
       const [subscription] = await db
         .insert(schema.subscriptions)
         .values({
           email,
           name,
-          event_id: eventId,
+          event_id,
         })
         .returning()
 
@@ -64,6 +68,7 @@ export async function registerSubscription({
 
     return makeLeft(new EventDateError())
   } catch (err) {
-    console.error(err)
+    console.log({ err })
+    throw new Error()
   }
 }

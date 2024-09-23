@@ -1,5 +1,5 @@
 import { generateUniqueId } from '@/core/unique-id'
-import { text } from 'drizzle-orm/pg-core'
+import { integer, text } from 'drizzle-orm/pg-core'
 import { pgTable } from 'drizzle-orm/pg-core'
 import { events } from './events'
 
@@ -11,4 +11,5 @@ export const referralLinks = pgTable('referral_links', {
   event_id: text('event_id').references(() => events.id),
   referral_link: text('referral_link').notNull(),
   token: text('token').notNull(),
+  click_count: integer('click_count').default(0),
 })

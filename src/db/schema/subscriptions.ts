@@ -2,6 +2,7 @@ import { generateUniqueId } from '@/core/unique-id'
 import { text } from 'drizzle-orm/pg-core'
 import { pgTable } from 'drizzle-orm/pg-core'
 import { events } from './events'
+import { referralLinks } from './referral-links'
 
 export const subscriptions = pgTable('subscriptions', {
   id: text('id')
