@@ -1,0 +1,1 @@
+ALTER TABLE "referral_links" ADD COLUMN "token" text NOT NULL;

@@ -10,4 +10,5 @@ export const referralLinks = pgTable('referral_links', {
   email: text('email').notNull(),
   event_id: text('event_id').references(() => events.id),
   referral_link: text('referral_link').notNull(),
+  token: text('token').notNull(),
 })

@@ -30,9 +30,9 @@ export async function generateReferralLink({
       return makeLeft(new ReferralLinkAlreadyExists())
     }
 
-    const uniqueToken = randomBytes(16).toString('hex')
-    const baseUrl = process.env.BASE_URL || 'https://domain.com'
-    const url = `${baseUrl}/register-subscription?ref=${uniqueToken}&event_id=${event_id}`
+    const token = randomBytes(16).toString('hex')
+    const baseUrl = process.env.BASE_URL
+    const url = `${baseUrl}/register-subscription?referral=${token}&event_id=${event_id}`
 
     const [referralLink] = await db
       .insert(schema.referralLinks)
@@ -40,11 +40,13 @@ export async function generateReferralLink({
         email,
         event_id,
         referral_link: url,
+        token: token,
       })
       .returning()
 
     return makeRight({ referralLink })
   } catch (err) {
-    return makeLeft(new ReferralLinkAlreadyExists())
+    console.log({ err })
+    throw new Error()
   }
 }

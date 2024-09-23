@@ -11,12 +11,14 @@ type RegisterSubscriptionInput = {
   name: string
   email: string
   eventId: string
+  referralToken?: string
 }
 
 export async function registerSubscription({
   name,
   email,
   eventId,
+  referralToken,
 }: RegisterSubscriptionInput) {
   try {
     const [existingSubscription] = await db

@@ -7,7 +7,20 @@ Content-Type: application/json
 {
   "name": "Elon Musk",
   "email": "elon.musk@x.com",
-  "event_id": "evt_01j86bwcwrfv5v1rm5nh8w787b"
+  "event_id": "evt_01j8d1mq68e6186fmprgnak1rd"
+}
+
+###
+
+# @name register_subscription_by_referral_link
+POST {{baseUrl}}/subscription
+Content-Type: application/json
+
+{
+  "name": "Travis Scott",
+  "email": "travis-scott@email.com",
+  "event_id": "evt_01j8d1mq68e6186fmprgnak1rd",
+  "referral_token": "5f3935607ca3dfa5056496320c5edb99"
 }
 
 ###
@@ -18,5 +31,5 @@ Content-Type: application/json
 
 {
   "email": "elon.musk@x.com",
-  "event_id": "evt_01j86dr0s2fdca9xs5s3bsm9r7"
+  "event_id": "evt_01j8d1mq68e6186fmprgnak1rd"
 }

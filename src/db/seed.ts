@@ -3,6 +3,8 @@ import { client, db } from '.'
 import { schema } from './schema'
 
 async function main() {
+  await db.delete(schema.referralLinks)
+  await db.delete(schema.subscriptions)
   await db.delete(schema.events)
 
   await db.insert(schema.events).values({
