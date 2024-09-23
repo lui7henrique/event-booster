@@ -1,13 +1,13 @@
 import { makeLeft, makeRight } from '@/core/either'
 import { db } from '@/db'
 import { schema } from '@/db/schema'
-import { EmailAlreadySubscribedError } from '../errors/email-already-subscribed-error'
-import { eq, and } from 'drizzle-orm'
-import { EventNotFoundError } from '../errors/event-not-found-error'
 import { isWithinInterval } from 'date-fns'
+import { and, eq } from 'drizzle-orm'
+import { EmailAlreadySubscribedError } from '../errors/email-already-subscribed-error'
 import { EventDateError } from '../errors/event-date-error'
+import { EventNotFoundError } from '../errors/event-not-found-error'
 import { ServerError } from '../errors/server-error'
-import { updateConversionRate } from './update-conversion-rate'
+import { updateSubscriptionCount } from './update-subscription-count'
 
 type RegisterSubscriptionInput = {
   name: string
@@ -68,7 +68,7 @@ export async function registerSubscription({
           })
           .returning()
 
-        await updateConversionRate(referralLink.id)
+        await updateSubscriptionCount(referralLink.id)
 
         return makeRight({ subscription })
       }
