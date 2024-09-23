@@ -36,7 +36,7 @@
 3. **Referral Tracking and Metrics**
 
    - [x] Track the number of subscriptions made through each referral link.
-   - [ ] Calculate and store the conversion rate for each user.
+   - [x] Calculate and store the conversion rate for each user.
    - [ ] Implement hierarchical tracking of direct and indirect referrals.
 
 4. **Ranking and Insights**
