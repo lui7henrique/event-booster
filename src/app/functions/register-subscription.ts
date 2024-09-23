@@ -64,6 +64,6 @@ export async function registerSubscription({
 
     return makeLeft(new EventDateError())
   } catch (err) {
-    return makeLeft(new EmailAlreadySubscribedError())
+    console.error(err)
   }
 }

@@ -43,6 +43,34 @@
       "when": 1727014782478,
       "tag": "0005_orange_jocasta",
       "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "7",
+      "when": 1727098361524,
+      "tag": "0006_stormy_the_order",
+      "breakpoints": true
+    },
+    {
+      "idx": 7,
+      "version": "7",
+      "when": 1727098604176,
+      "tag": "0007_serious_dagger",
+      "breakpoints": true
+    },
+    {
+      "idx": 8,
+      "version": "7",
+      "when": 1727098623603,
+      "tag": "0008_careless_dorian_gray",
+      "breakpoints": true
+    },
+    {
+      "idx": 9,
+      "version": "7",
+      "when": 1727098685650,
+      "tag": "0009_salty_psynapse",
+      "breakpoints": true
     }
   ]
 }

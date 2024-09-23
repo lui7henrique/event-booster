@@ -11,7 +11,7 @@ describe('generate referral link', () => {
   it('should be able to generate referral link', async () => {
     const event = await makeEvent()
 
-    const { name, email } = await makeSubscription({
+    const { email } = await makeSubscription({
       event_id: event.id,
     })
 

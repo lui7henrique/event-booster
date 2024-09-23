@@ -5,23 +5,23 @@ POST {{baseUrl}}/subscription
 Content-Type: application/json
 
 {
-  "name": "Elon Musk",
-  "email": "elon.musk@x.com",
-  "event_id": "evt_01j8d1mq68e6186fmprgnak1rd"
+  "name": "Travis SCott",
+  "email": "travis.scott@x.com",
+  "event_id": "evt_01j8fje6caf27v8d0s367k40em"
 }
 
 ###
 
-# @name register_subscription_by_referral_link
-POST {{baseUrl}}/subscription
-Content-Type: application/json
+# # @name register_subscription_by_referral_link
+# POST {{baseUrl}}/subscription
+# Content-Type: application/json
 
-{
-  "name": "Travis Scott",
-  "email": "travis-scott@email.com",
-  "event_id": "evt_01j8d1mq68e6186fmprgnak1rd",
-  "referral_token": "5f3935607ca3dfa5056496320c5edb99"
-}
+# {
+#   "name": "Travis Scott",
+#   "email": "travis-scott@email.com",
+#   "event_id": "evt_01j8d1mq68e6186fmprgnak1rd",
+#   "referral_token": "5f3935607ca3dfa5056496320c5edb99"
+# }
 
 ###
 
@@ -30,6 +30,6 @@ POST {{baseUrl}}/generate-referral-link
 Content-Type: application/json
 
 {
-  "email": "elon.musk@x.com",
-  "event_id": "evt_01j8d1mq68e6186fmprgnak1rd"
+  "email": "travis.scott@x.com",
+  "event_id": "evt_01j8fje6caf27v8d0s367k40em"
 }
