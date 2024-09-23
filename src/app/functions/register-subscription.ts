@@ -7,6 +7,7 @@ import { EventNotFoundError } from '../errors/event-not-found-error'
 import { isWithinInterval } from 'date-fns'
 import { EventDateError } from '../errors/event-date-error'
 import { ServerError } from '../errors/server-error'
+import { updateConversionRate } from './update-conversion-rate'
 
 type RegisterSubscriptionInput = {
   name: string
@@ -67,6 +68,8 @@ export async function registerSubscription({
           })
           .returning()
 
+        await updateConversionRate(referralLink.id)
+
         return makeRight({ subscription })
       }
 
@@ -84,6 +87,7 @@ export async function registerSubscription({
 
     return makeLeft(new EventDateError())
   } catch (err) {
+    console.log({ err })
     return makeLeft(new ServerError())
   }
 }

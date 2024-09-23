@@ -5,9 +5,9 @@ POST {{baseUrl}}/subscription
 Content-Type: application/json
 
 {
-  "name": "Travis SCott",
-  "email": "travis.scott@x.com",
-  "event_id": "evt_01j8fqpxbpftqbf357xpejmg98"
+  "name": "Kanye West",
+  "email": "kanye-west@email.com",
+  "event_id": "evt_01j8fs57a9e7wb761ttynfqv4r"
 }
 
 ###
@@ -17,14 +17,14 @@ POST {{baseUrl}}/generate-referral-link
 Content-Type: application/json
 
 {
-  "email": "travis.scott@x.com",
-  "event_id": "evt_01j8fqpxbpftqbf357xpejmg98"
+  "email": "kanye-west@email.com",
+  "event_id": "evt_01j8fs57a9e7wb761ttynfqv4r"
 }
 
 ### 
 
 # @name handle_referral_link
-GET {{baseUrl}}/referral?token=66f9fc5d10d1ce1ae7c56cf46cfec11d&event_id=evt_01j8fqpxbpftqbf357xpejmg98
+GET {{baseUrl}}/referral?token=1c9d7af746dc51d5dd279f639376c230&event_id=evt_01j8fs57a9e7wb761ttynfqv4r
 
 ### 
 
@@ -34,7 +34,7 @@ Content-Type: application/json
 
 {
   "name": "Garbini",
-  "email": "travis-scotttt@email.com",
-  "event_id": "evt_01j8fqpxbpftqbf357xpejmg98",
-  "referral_link_token": "66f9fc5d10d1ce1ae7c56cf46cfec11d"
+  "email": "travis-scott@email.com",
+  "event_id": "evt_01j8fs57a9e7wb761ttynfqv4r",
+  "referral_link_token": "1c9d7af746dc51d5dd279f639376c230"
 }

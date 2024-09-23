@@ -35,7 +35,7 @@
 
 3. **Referral Tracking and Metrics**
 
-   - [ ] Track the number of subscriptions made through each referral link.
+   - [x] Track the number of subscriptions made through each referral link.
    - [ ] Calculate and store the conversion rate for each user.
    - [ ] Implement hierarchical tracking of direct and indirect referrals.
 
@@ -52,6 +52,7 @@
 ### Documentation and Deployment
 
 1. **Documentation**
+
    - [ ] Document all API endpoints using Swagger/OpenAPI.
    - [ ] Create user guides for system administrators and event managers.
    - [ ] Prepare an end-user FAQ section regarding how to participate, generate referrals, and check rankings.
@@ -66,5 +67,3 @@
    - [ ] Configure real-time monitoring for API performance and system health.
    - [ ] Set up alerts for any anomalies in response times or system metrics.
    - [ ] Regularly review and optimize the database and cache configurations based on usage patterns.
-
-
