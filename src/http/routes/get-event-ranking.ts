@@ -39,7 +39,9 @@ export async function getEventRankingRoute(app: FastifyInstance) {
         return reply.status(400).send({ message: error.message })
       }
 
-      return reply.status(200).send({})
+      return reply
+        .status(200)
+        .send({ referralLinks: result.right.referralLinks })
     }
   )
 }

@@ -41,7 +41,7 @@
 
 4. **Ranking and Insights**
 
-   - [ ] Develop an endpoint to display referral rankings, utilizing Redis for fast retrieval.
+   - [x] Develop an endpoint to display referral rankings, utilizing Redis for fast retrieval.
    - [ ] Allow filtering of rankings on a daily basis during the event.
    - [ ] Implement a cache system to optimize the retrieval of these rankings.
 
