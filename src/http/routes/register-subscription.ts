@@ -9,7 +9,7 @@ export async function registerSubscriptionRoute(app: FastifyInstance) {
     '/subscription',
     {
       schema: {
-        description: 'Register a subscription for an event.',
+        description: 'Register a subscription for an event',
         tags: ['Subscription'],
         body: {
           type: 'object',
@@ -18,12 +18,12 @@ export async function registerSubscriptionRoute(app: FastifyInstance) {
             name: {
               type: 'string',
               description: 'Name of the user',
-              default: faker.person.fullName(),
+              default: 'John Doe',
             },
             email: {
               type: 'string',
               description: 'Email of the user',
-              default: faker.internet.email(),
+              default: 'john-doe@gmail.com',
             },
             event_id: {
               type: 'string',

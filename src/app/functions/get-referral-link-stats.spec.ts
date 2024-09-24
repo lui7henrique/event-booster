@@ -1,17 +1,17 @@
 import { describe, expect, it } from 'vitest'
-import { handleReferralLinkStats } from './handle-referral-link-stats'
 
 import { isLeft, isRight, unwrapEither } from '@/core/either'
-import { ReferralLinkNotFound } from '../errors/referral-link-not-found'
 import { makeEvent } from '@/test/factories/make-event'
 import { makeReferralLink } from '@/test/factories/make-referral-link'
+import { ReferralLinkNotFound } from '../errors/referral-link-not-found'
+import { getReferralLinkStats } from './get-referral-link-stats'
 
-describe('handle referral link stats', () => {
+describe('get referral link stats', () => {
   it('returns an error if referral link is not found', async () => {
     const event = await makeEvent()
     const token = 'nonexistent_token'
 
-    const sut = await handleReferralLinkStats({ token, event_id: event.id })
+    const sut = await getReferralLinkStats({ token, event_id: event.id })
 
     expect(isLeft(sut)).toBe(true)
     expect(unwrapEither(sut)).toBeInstanceOf(ReferralLinkNotFound)
@@ -26,7 +26,7 @@ describe('handle referral link stats', () => {
       token: 'token',
     })
 
-    const sut = await handleReferralLinkStats({ token, event_id: event.id })
+    const sut = await getReferralLinkStats({ token, event_id: event.id })
 
     expect(isRight(sut)).toBe(true)
     expect(unwrapEither(sut)).toHaveProperty('directConversionRate', 20)
@@ -50,7 +50,7 @@ describe('handle referral link stats', () => {
       token: 'token-2',
     })
 
-    const sut = await handleReferralLinkStats({
+    const sut = await getReferralLinkStats({
       token: childLink.token,
       event_id: event.id,
     })
@@ -68,7 +68,7 @@ describe('handle referral link stats', () => {
       token: 'token',
     })
 
-    const sut = await handleReferralLinkStats({ token, event_id: event.id })
+    const sut = await getReferralLinkStats({ token, event_id: event.id })
 
     expect(unwrapEither(sut)).toHaveProperty('directConversionRate', 0)
 

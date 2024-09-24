@@ -7,6 +7,29 @@ export async function generateReferralLinkRoute(app: FastifyInstance) {
   app.post(
     '/generate-referral-link',
 
+    {
+      schema: {
+        description: 'Generate event referral link',
+        tags: ['Referral link'],
+        body: {
+          type: 'object',
+          required: ['email', 'event_id'],
+          properties: {
+            email: {
+              type: 'string',
+              description: 'Email of the user',
+              default: 'john-doe@gmail.com',
+            },
+            event_id: {
+              type: 'string',
+              description: 'Id of the event',
+              default: '',
+            },
+          },
+        },
+      },
+    },
+
     async (request, reply) => {
       const headers = z.object({
         email: z.string().email(),
