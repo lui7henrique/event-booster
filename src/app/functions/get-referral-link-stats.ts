@@ -71,7 +71,6 @@ export async function getReferralLinkStats({
       indirectConversionRate,
     })
   } catch (e) {
-    console.log({ e })
     return makeLeft(new ServerError())
   }
 }

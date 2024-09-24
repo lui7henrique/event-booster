@@ -15,6 +15,7 @@ import { loginRoute } from './routes/login'
 import { getEventsRoutes } from './routes/get-events'
 import { incrementReferralLinkCountRoute } from './routes/increment-referral-link-count'
 import { getReferralLinkStatsRoute } from './routes/get-referral-link-stats'
+import { getEventRankingRoute } from './routes/get-event-ranking'
 
 const app = fastify()
 
@@ -57,6 +58,7 @@ app.register(fastifySwaggerUi, {
 
 app.register(registerSubscriptionRoute)
 app.register(registerEventRoute)
+app.register(getEventRankingRoute)
 app.register(getEventsRoutes)
 app.register(registerCompanyRoute)
 app.register(generateReferralLinkRoute)
