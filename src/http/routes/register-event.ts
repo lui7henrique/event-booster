@@ -1,6 +1,6 @@
 import { registerEvent } from '@/app/functions/register-event'
 import { isLeft } from '@/core/either'
-import { addDays } from 'date-fns'
+import { addDays, subDays } from 'date-fns'
 import type { FastifyInstance } from 'fastify'
 import { z } from 'zod'
 import { verifyJwt } from '../hooks/verify-jwt'
@@ -26,7 +26,7 @@ export async function registerEventRoute(app: FastifyInstance) {
               type: 'string',
               format: 'date-time',
               description: 'Start date and time of the event (ISO 8601 format)',
-              default: addDays(new Date(), 1).toISOString(),
+              default: subDays(new Date(), 1).toISOString(),
             },
             end_date: {
               type: 'string',

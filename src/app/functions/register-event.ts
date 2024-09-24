@@ -26,11 +26,13 @@ export async function registerEvent({
       return makeLeft(new EventInvalidDateError())
     }
 
-    const isEventInPast = new Date(start_date).getTime() < new Date().getTime()
+    // TODO: RETURN THIS
 
-    if (isEventInPast) {
-      return makeLeft(new EventPastDateError())
-    }
+    // const isEventInPast = new Date(start_date).getTime() < new Date().getTime()
+
+    // if (isEventInPast) {
+    //   return makeLeft(new EventPastDateError())
+    // }
 
     const [event] = await db
       .insert(schema.events)

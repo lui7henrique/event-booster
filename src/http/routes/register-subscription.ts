@@ -1,5 +1,6 @@
 import { registerSubscription } from '@/app/functions/register-subscription'
 import { isLeft } from '@/core/either'
+import { faker } from '@faker-js/faker'
 import type { FastifyInstance } from 'fastify'
 import { z } from 'zod'
 
@@ -10,6 +11,27 @@ export async function registerSubscriptionRoute(app: FastifyInstance) {
       schema: {
         description: 'Register a subscription for an event.',
         tags: ['Subscription'],
+        body: {
+          type: 'object',
+          required: ['name', 'email', 'event_id'],
+          properties: {
+            name: {
+              type: 'string',
+              description: 'Name of the user',
+              default: faker.person.fullName(),
+            },
+            email: {
+              type: 'string',
+              description: 'Email of the user',
+              default: faker.internet.email(),
+            },
+            event_id: {
+              type: 'string',
+              description: 'Id of the event',
+              default: '',
+            },
+          },
+        },
       },
     },
     async (request, reply) => {
