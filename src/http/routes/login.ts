@@ -18,10 +18,12 @@ export async function loginRoute(app: FastifyInstance) {
               type: 'string',
               format: 'email',
               description: 'Email address of the company',
+              default: 'vercel@vercel.com',
             },
             password: {
               type: 'string',
               description: 'Password of the company',
+              default: 'vercel-password',
             },
           },
         },

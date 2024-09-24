@@ -2,6 +2,7 @@ import { addDays } from 'date-fns'
 import { client, db } from '.'
 import { schema } from './schema'
 import { faker } from '@faker-js/faker'
+import { hashPassword } from '@/http/utils/password'
 
 async function main() {
   await db.delete(schema.referralLinks)
@@ -9,12 +10,14 @@ async function main() {
   await db.delete(schema.events)
   await db.delete(schema.companies)
 
+  const hashedPassword = await hashPassword('vercel-password')
+
   const [company] = await db
     .insert(schema.companies)
     .values({
       email: 'vercel@vercel.com',
       name: 'Vercel',
-      password: 'vercel-password',
+      password: hashedPassword,
     })
     .returning()
 
