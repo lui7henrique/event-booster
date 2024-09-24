@@ -9,6 +9,7 @@ import { ZodError } from 'zod'
 import { registerSubscriptionRoute } from './routes/register-subscription'
 import { generateReferralLinkRoute } from './routes/generate-referral-link'
 import { handleReferralLinkRoute } from './routes/handle-referral-link'
+import { registerEventRoute } from './routes/register-event'
 
 const app = fastify()
 
@@ -46,6 +47,7 @@ app.register(fastifySwaggerUi, {
 })
 
 app.register(registerSubscriptionRoute)
+app.register(registerEventRoute)
 app.register(generateReferralLinkRoute)
 app.register(handleReferralLinkRoute)
 
