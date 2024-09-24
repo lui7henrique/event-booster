@@ -4,27 +4,50 @@ import type { FastifyInstance } from 'fastify'
 import { z } from 'zod'
 
 export async function getReferralLinkStatsRoute(app: FastifyInstance) {
-  app.get('/referral/stats', async (request, reply) => {
-    const { token, event_id } = z
-      .object({
-        token: z.string(),
-        event_id: z.string(),
-      })
-      .parse(request.query)
+  app.get(
+    '/referral/stats',
+    {
+      schema: {
+        description: 'Retrieve referral link statistics',
+        tags: ['Referral link'],
+        querystring: {
+          type: 'object',
+          required: ['token', 'event_id'],
+          properties: {
+            token: {
+              type: 'string',
+              description: 'Referral link token',
+            },
+            event_id: {
+              type: 'string',
+              description: 'ID of the event associated with the referral link',
+            },
+          },
+        },
+      },
+    },
+    async (request, reply) => {
+      const { token, event_id } = z
+        .object({
+          token: z.string(),
+          event_id: z.string(),
+        })
+        .parse(request.query)
 
-    const result = await getReferralLinkStats({ token, event_id })
+      const result = await getReferralLinkStats({ token, event_id })
 
-    if (isLeft(result)) {
-      const error = result.left
+      if (isLeft(result)) {
+        const error = result.left
 
-      switch (error.constructor.name) {
-        case 'ReferralLinkNotFound':
-          return reply.status(401).send({ message: error.message })
-        default:
-          return reply.status(400).send()
+        switch (error.constructor.name) {
+          case 'ReferralLinkNotFound':
+            return reply.status(401).send({ message: error.message })
+          default:
+            return reply.status(400).send()
+        }
       }
-    }
 
-    return reply.status(200).send({ ...result.right })
-  })
+      return reply.status(200).send({ ...result.right })
+    }
+  )
 }
