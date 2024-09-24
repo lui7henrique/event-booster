@@ -1,19 +1,13 @@
-import { describe, expect, it, beforeAll, vi } from 'vitest'
-import {
-  isLeft,
-  isRight,
-  makeLeft,
-  makeRight,
-  unwrapEither,
-} from '@/core/either'
+import { describe, expect, it } from 'vitest'
+import { isLeft, isRight, unwrapEither } from '@/core/either'
 import { ReferralLinkNotFound } from '../errors/referral-link-not-found'
-import { handleReferralLink } from './handle-referral-link'
+import { incrementReferralLinkCount } from './increment-referral-link-click-count'
 import { makeReferralLink } from '@/test/factories/make-referral-link'
 import { makeEvent } from '@/test/factories/make-event'
 
-describe('handleReferralLink', () => {
+describe('increment referral link click count', () => {
   it('should be able to return an error if the referral link is not found', async () => {
-    const sut = await handleReferralLink({
+    const sut = await incrementReferralLinkCount({
       token: 'nonexistent_token',
       event_id: 'event123',
     })
@@ -30,7 +24,7 @@ describe('handleReferralLink', () => {
       token: '',
     })
 
-    const sut = await handleReferralLink({
+    const sut = await incrementReferralLinkCount({
       token: token,
       event_id: event.id,
     })

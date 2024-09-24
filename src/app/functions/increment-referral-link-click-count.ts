@@ -4,15 +4,15 @@ import { schema } from '@/db/schema'
 import { and, eq } from 'drizzle-orm'
 import { ReferralLinkNotFound } from '../errors/referral-link-not-found'
 
-type HandleReferralLinkInput = {
+type IncrementReferralLinkCountInput = {
   token: string
   event_id: string
 }
 
-export async function handleReferralLink({
+export async function incrementReferralLinkCount({
   event_id,
   token,
-}: HandleReferralLinkInput) {
+}: IncrementReferralLinkCountInput) {
   try {
     const [referralLink] = await db
       .select()

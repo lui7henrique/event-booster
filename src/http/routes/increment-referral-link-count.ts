@@ -1,10 +1,10 @@
-import { getReferralLinkStats } from '@/app/functions/get-referral-link-stats'
+import { incrementReferralLinkCount } from '@/app/functions/increment-referral-link-click-count'
 import { isLeft } from '@/core/either'
 import type { FastifyInstance } from 'fastify'
 import { z } from 'zod'
 
-export async function getReferralLinkStatsRoute(app: FastifyInstance) {
-  app.get('/referral/stats', async (request, reply) => {
+export async function incrementReferralLinkCountRoute(app: FastifyInstance) {
+  app.get('/referral', async (request, reply) => {
     const { token, event_id } = z
       .object({
         token: z.string(),
@@ -12,7 +12,7 @@ export async function getReferralLinkStatsRoute(app: FastifyInstance) {
       })
       .parse(request.query)
 
-    const result = await getReferralLinkStats({ token, event_id })
+    const result = await incrementReferralLinkCount({ token, event_id })
 
     if (isLeft(result)) {
       const error = result.left
@@ -25,6 +25,8 @@ export async function getReferralLinkStatsRoute(app: FastifyInstance) {
       }
     }
 
-    return reply.status(200).send({ ...result.right })
+    return reply
+      .status(200)
+      .send({ referral_link: result.right.updatedReferralLink })
   })
 }

@@ -9,11 +9,12 @@ import { ZodError } from 'zod'
 
 import { registerSubscriptionRoute } from './routes/register-subscription'
 import { generateReferralLinkRoute } from './routes/generate-referral-link'
-import { handleReferralLinkRoute } from './routes/handle-referral-link'
 import { registerEventRoute } from './routes/register-event'
 import { registerCompanyRoute } from './routes/register-company'
 import { loginRoute } from './routes/login'
 import { getEventsRoutes } from './routes/get-events'
+import { incrementReferralLinkCountRoute } from './routes/increment-referral-link-count'
+import { getReferralLinkStatsRoute } from './routes/get-referral-link-stats'
 
 const app = fastify()
 
@@ -59,7 +60,8 @@ app.register(registerEventRoute)
 app.register(getEventsRoutes)
 app.register(registerCompanyRoute)
 app.register(generateReferralLinkRoute)
-app.register(handleReferralLinkRoute)
+app.register(incrementReferralLinkCountRoute)
+app.register(getReferralLinkStatsRoute)
 app.register(loginRoute)
 
 app.setErrorHandler((error, _, reply) => {
