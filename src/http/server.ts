@@ -1,4 +1,6 @@
-import cors from '@fastify/cors'
+import fastifyCors from '@fastify/cors'
+import fastifySwagger from '@fastify/swagger'
+import fastifySwaggerUi from '@fastify/swagger-ui'
 import fastify from 'fastify'
 
 import { env } from '../env'
@@ -10,8 +12,37 @@ import { handleReferralLinkRoute } from './routes/handle-referral-link'
 
 const app = fastify()
 
-app.register(cors, {
+app.register(fastifyCors, {
   origin: '*',
+})
+
+app.register(fastifySwagger, {
+  openapi: {
+    openapi: '3.0.0',
+    info: {
+      title: 'Event booster',
+      version: '0.1.0',
+    },
+    servers: [
+      {
+        url: 'http://localhost:3333',
+        description: 'Development server',
+      },
+    ],
+    components: {
+      securitySchemes: {
+        apiKey: {
+          type: 'apiKey',
+          name: 'apiKey',
+          in: 'header',
+        },
+      },
+    },
+  },
+})
+
+app.register(fastifySwaggerUi, {
+  routePrefix: '/api-docs',
 })
 
 app.register(registerSubscriptionRoute)
@@ -34,6 +65,7 @@ app.setErrorHandler((error, _, reply) => {
   return reply.status(500).send({ message: 'Internal server error.' })
 })
 
+app.ready()
 app
   .listen({
     port: env.PORT,

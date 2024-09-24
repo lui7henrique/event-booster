@@ -1,5 +1,5 @@
-import { handleReferralLinkStats } from '@/app/functions/handle-referral-link-stats.'
-import { handleReferralLink } from '@/app/functions/handle-referral-link.'
+import { handleReferralLinkStats } from '@/app/functions/handle-referral-link-stats'
+import { handleReferralLink } from '@/app/functions/handle-referral-link'
 import { isLeft } from '@/core/either'
 import type { FastifyInstance } from 'fastify'
 import { z } from 'zod'
