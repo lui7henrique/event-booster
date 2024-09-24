@@ -1,6 +1,7 @@
 import fastifyCors from '@fastify/cors'
 import fastifySwagger from '@fastify/swagger'
 import fastifySwaggerUi from '@fastify/swagger-ui'
+import fastifyJwt from '@fastify/jwt'
 import fastify from 'fastify'
 
 import { env } from '../env'
@@ -10,13 +11,17 @@ import { registerSubscriptionRoute } from './routes/register-subscription'
 import { generateReferralLinkRoute } from './routes/generate-referral-link'
 import { handleReferralLinkRoute } from './routes/handle-referral-link'
 import { registerEventRoute } from './routes/register-event'
-import { registerCompany } from '@/app/functions/register-company'
 import { registerCompanyRoute } from './routes/register-company'
+import { loginRoute } from './routes/login'
 
 const app = fastify()
 
 app.register(fastifyCors, {
   origin: '*',
+})
+
+app.register(fastifyJwt, {
+  secret: env.JWT_SECRET,
 })
 
 app.register(fastifySwagger, {
@@ -53,6 +58,7 @@ app.register(registerEventRoute)
 app.register(registerCompanyRoute)
 app.register(generateReferralLinkRoute)
 app.register(handleReferralLinkRoute)
+app.register(loginRoute)
 
 app.setErrorHandler((error, _, reply) => {
   if (error instanceof ZodError) {
