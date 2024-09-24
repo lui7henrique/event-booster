@@ -10,6 +10,8 @@ import { registerSubscriptionRoute } from './routes/register-subscription'
 import { generateReferralLinkRoute } from './routes/generate-referral-link'
 import { handleReferralLinkRoute } from './routes/handle-referral-link'
 import { registerEventRoute } from './routes/register-event'
+import { registerCompany } from '@/app/functions/register-company'
+import { registerCompanyRoute } from './routes/register-company'
 
 const app = fastify()
 
@@ -48,6 +50,7 @@ app.register(fastifySwaggerUi, {
 
 app.register(registerSubscriptionRoute)
 app.register(registerEventRoute)
+app.register(registerCompanyRoute)
 app.register(generateReferralLinkRoute)
 app.register(handleReferralLinkRoute)
 
