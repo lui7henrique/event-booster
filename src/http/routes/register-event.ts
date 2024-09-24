@@ -3,11 +3,13 @@ import { isLeft } from '@/core/either'
 import { addDays } from 'date-fns'
 import type { FastifyInstance } from 'fastify'
 import { z } from 'zod'
+import { verifyJwt } from '../hooks/verify-jwt'
 
 export async function registerEventRoute(app: FastifyInstance) {
   app.post(
     '/event',
     {
+      onRequest: [verifyJwt],
       schema: {
         description: 'Register event with date-time format',
         tags: ['Event'],
@@ -34,6 +36,11 @@ export async function registerEventRoute(app: FastifyInstance) {
             },
           },
         },
+        security: [
+          {
+            bearerAuth: [],
+          },
+        ],
       },
     },
     async (request, reply) => {
