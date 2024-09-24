@@ -65,7 +65,7 @@ export async function loginRoute(app: FastifyInstance) {
         }
       }
 
-      const token = app.jwt.sign({ companyId: result.right.company.id })
+      const token = app.jwt.sign({ company_id: result.right.company.id })
 
       return reply.status(200).send({ token })
     }
