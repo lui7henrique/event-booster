@@ -4,8 +4,8 @@
 
    - [x] Initialize a Node.js project with Fastify.
    - [x] Set up PostgreSQL database and configure the connection.
-   - [ ] Set up Redis for caching and real-time ranking.
-   - [ ] Set up Swagger/OpenAPI for API documentation.
+   - [x] Set up Redis for caching and real-time ranking.
+   - [x] Set up Swagger/OpenAPI for API documentation.
    - [ ] Implement a logging and monitoring setup using a platform like Sentry or Datadog.
 
 2. **Security and Performance**
