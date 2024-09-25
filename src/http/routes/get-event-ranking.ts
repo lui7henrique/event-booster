@@ -4,6 +4,9 @@ import { getEventRanking } from '@/app/functions/get-event-ranking'
 import { isLeft } from '@/core/either'
 import { isPast, parseISO } from 'date-fns'
 
+const FIFTEEN_MINUTES = 60 * 15
+const TWO_MONTHS = 60 * 60 * 24 * 30 * 2 // Seconds;Minutes;Hours;Days;Months
+
 export async function getEventRankingRoute(app: FastifyInstance) {
   app.get(
     '/event/ranking/:id',
@@ -62,13 +65,11 @@ export async function getEventRankingRoute(app: FastifyInstance) {
 
       const isDatePast = selected_date ? isPast(parseISO(selected_date)) : false
 
-      const expiresIn = isDatePast ? -1 : 60
-
-      await redis.set(
+      const expiresIn = await redis.set(
         cacheKey,
         JSON.stringify(result.right.referralLinks),
         'EX',
-        expiresIn
+        isDatePast ? TWO_MONTHS : FIFTEEN_MINUTES
       )
 
       return reply
