@@ -11,9 +11,9 @@
 2. **Security and Performance**
 
    - [x] Implement JWT authentication for admin routes.
-   - [ ] Add middleware for rate limiting to prevent abuse.
-   - [ ] Secure all endpoints against SQL injection.
-   - [ ] Ensure API response times are under 200ms for critical endpoints.
+   - [x] Add middleware for rate limiting to prevent abuse.
+   - [?] Secure all endpoints against SQL injection.
+   - [x] Ensure API response times are under 200ms for critical endpoints.
 
 3. **Testing and Maintenance**
    - [ ] Write unit and integration tests to cover at least 90% of the codebase.
