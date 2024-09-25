@@ -54,7 +54,12 @@ export async function getEventRanking({
       .groupBy(schema.referralLinks.id)
       .execute()
 
-    return makeRight({ referralLinks })
+    return makeRight({
+      referralLinks: referralLinks.map(link => ({
+        ...link,
+        subscription_count: Number(link.subscription_count),
+      })),
+    })
   } catch (e) {
     console.log({ e })
     return makeLeft(new ServerError())
