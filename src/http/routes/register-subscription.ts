@@ -1,6 +1,5 @@
 import { registerSubscription } from '@/app/functions/register-subscription'
 import { isLeft } from '@/core/either'
-import { faker } from '@faker-js/faker'
 import type { FastifyInstance } from 'fastify'
 import { z } from 'zod'
 
@@ -8,6 +7,12 @@ export async function registerSubscriptionRoute(app: FastifyInstance) {
   app.post(
     '/subscription',
     {
+      config: {
+        rateLimit: {
+          max: 50,
+          timeWindow: '1 minute',
+        },
+      },
       schema: {
         description: 'Register a subscription for an event',
         tags: ['Subscription'],

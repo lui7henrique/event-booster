@@ -17,6 +17,7 @@ import { incrementReferralLinkCountRoute } from './routes/increment-referral-lin
 import { getReferralLinkStatsRoute } from './routes/get-referral-link-stats'
 import { getEventRankingRoute } from './routes/get-event-ranking'
 import fastifyRedis from '@fastify/redis'
+import fastifyRateLimit from '@fastify/rate-limit'
 
 const app = fastify()
 
@@ -31,6 +32,8 @@ app.register(fastifyJwt, {
 app.register(fastifyRedis, {
   host: '127.0.0.1',
 })
+
+app.register(fastifyRateLimit)
 
 app.register(fastifySwagger, {
   openapi: {
