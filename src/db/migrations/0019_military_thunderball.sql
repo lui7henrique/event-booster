@@ -1,0 +1,1 @@
+ALTER TABLE "referral_links" ADD COLUMN "created_at" timestamp DEFAULT now() NOT NULL;

@@ -1,6 +1,6 @@
 import { generateUniqueId } from '@/core/unique-id'
 import { relations } from 'drizzle-orm'
-import { type AnyPgColumn, integer, text } from 'drizzle-orm/pg-core'
+import { type AnyPgColumn, integer, text, timestamp } from 'drizzle-orm/pg-core'
 import { pgTable } from 'drizzle-orm/pg-core'
 import { events } from './events'
 import { subscriptions } from './subscriptions'
@@ -18,6 +18,8 @@ export const referralLinks = pgTable('referral_links', {
   subscription_count: integer('subscription_count').default(0).notNull(),
 
   parent_id: text('parent_id').references((): AnyPgColumn => referralLinks.id),
+
+  created_at: timestamp('created_at').notNull().defaultNow(),
 })
 
 export const referralLinksRelations = relations(

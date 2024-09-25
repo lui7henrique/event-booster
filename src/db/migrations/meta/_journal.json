@@ -134,6 +134,20 @@
       "when": 1727217116514,
       "tag": "0018_massive_karma",
       "breakpoints": true
+    },
+    {
+      "idx": 19,
+      "version": "7",
+      "when": 1727266960533,
+      "tag": "0019_military_thunderball",
+      "breakpoints": true
+    },
+    {
+      "idx": 20,
+      "version": "7",
+      "when": 1727267542577,
+      "tag": "0020_youthful_george_stacy",
+      "breakpoints": true
     }
   ]
 }

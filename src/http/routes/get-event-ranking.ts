@@ -20,6 +20,15 @@ export async function getEventRankingRoute(app: FastifyInstance) {
           },
           required: ['id'],
         },
+        querystring: {
+          type: 'object',
+          properties: {
+            selected_date: {
+              type: 'string',
+              description: 'Date to view ranking',
+            },
+          },
+        },
         security: [
           {
             bearerAuth: [],
@@ -30,17 +39,19 @@ export async function getEventRankingRoute(app: FastifyInstance) {
     },
     async (request, reply) => {
       const { id } = request.params as { id: string }
+      const { selected_date } = request.query as { selected_date?: string }
+
       const { redis } = app
-      const cacheKey = `eventRanking:${id}`
+      const cacheKey = `eventRanking:${id}-${selected_date}`
       const cachedResult = await redis.get(cacheKey)
 
-      if (cachedResult) {
-        return reply
-          .status(200)
-          .send({ referralLinks: JSON.parse(cachedResult) })
-      }
+      // if (cachedResult) {
+      //   return reply
+      //     .status(200)
+      //     .send({ referralLinks: JSON.parse(cachedResult) })
+      // }
 
-      const result = await getEventRanking({ event_id: id })
+      const result = await getEventRanking({ event_id: id, selected_date })
 
       if (isLeft(result)) {
         const error = result.left
