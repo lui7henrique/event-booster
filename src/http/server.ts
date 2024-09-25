@@ -16,6 +16,7 @@ import { getEventsRoutes } from './routes/get-events'
 import { incrementReferralLinkCountRoute } from './routes/increment-referral-link-count'
 import { getReferralLinkStatsRoute } from './routes/get-referral-link-stats'
 import { getEventRankingRoute } from './routes/get-event-ranking'
+import fastifyRedis from '@fastify/redis'
 
 const app = fastify()
 
@@ -25,6 +26,10 @@ app.register(fastifyCors, {
 
 app.register(fastifyJwt, {
   secret: env.JWT_SECRET,
+})
+
+app.register(fastifyRedis, {
+  host: '127.0.0.1',
 })
 
 app.register(fastifySwagger, {
