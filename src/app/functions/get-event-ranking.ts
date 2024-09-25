@@ -3,9 +3,10 @@ import { db } from '@/db'
 import { schema } from '@/db/schema'
 import { and, eq, sql } from 'drizzle-orm'
 import { ServerError } from '../errors/server-error'
-import { endOfDay, format, isValid, startOfDay } from 'date-fns'
+import { endOfDay, format, isFuture, isValid, startOfDay } from 'date-fns'
 import { InvalidDateError } from '../errors/invalid-date'
 import { union } from 'drizzle-orm/pg-core'
+import { InvalidFutureDateError } from '../errors/invalid-future-date'
 
 type GetEventRankingInput = {
   event_id: string
@@ -26,8 +27,16 @@ export async function getEventRanking({
   selected_date,
 }: GetEventRankingInput) {
   try {
-    if (selected_date && !isValid(new Date(selected_date))) {
+    if (!selected_date) {
       return makeLeft(new InvalidDateError())
+    }
+
+    if (!isValid(new Date(selected_date))) {
+      return makeLeft(new InvalidDateError())
+    }
+
+    if (isFuture(new Date(selected_date))) {
+      return makeLeft(new InvalidFutureDateError())
     }
 
     const referralLinks = await db

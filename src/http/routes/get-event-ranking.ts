@@ -2,6 +2,7 @@ import type { FastifyInstance } from 'fastify'
 import { verifyJwt } from '../hooks/verify-jwt'
 import { getEventRanking } from '@/app/functions/get-event-ranking'
 import { isLeft } from '@/core/either'
+import { isPast, parseISO } from 'date-fns'
 
 export async function getEventRankingRoute(app: FastifyInstance) {
   app.get(
@@ -45,11 +46,11 @@ export async function getEventRankingRoute(app: FastifyInstance) {
       const cacheKey = `eventRanking:${id}-${selected_date}`
       const cachedResult = await redis.get(cacheKey)
 
-      // if (cachedResult) {
-      //   return reply
-      //     .status(200)
-      //     .send({ referralLinks: JSON.parse(cachedResult) })
-      // }
+      if (cachedResult) {
+        return reply
+          .status(200)
+          .send({ referralLinks: JSON.parse(cachedResult) })
+      }
 
       const result = await getEventRanking({ event_id: id, selected_date })
 
@@ -59,11 +60,15 @@ export async function getEventRankingRoute(app: FastifyInstance) {
         return reply.status(400).send({ message: error.message })
       }
 
+      const isDatePast = selected_date ? isPast(parseISO(selected_date)) : false
+
+      const expiresIn = isDatePast ? -1 : 60
+
       await redis.set(
         cacheKey,
         JSON.stringify(result.right.referralLinks),
         'EX',
-        30 // TODO: verify if was good time
+        expiresIn
       )
 
       return reply
