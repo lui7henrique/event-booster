@@ -5,7 +5,6 @@ import { and, eq, sql } from 'drizzle-orm'
 import { ServerError } from '../errors/server-error'
 import { endOfDay, format, isFuture, isValid, startOfDay } from 'date-fns'
 import { InvalidDateError } from '../errors/invalid-date'
-import { union } from 'drizzle-orm/pg-core'
 import { InvalidFutureDateError } from '../errors/invalid-future-date'
 
 type GetEventRankingInput = {
@@ -70,7 +69,6 @@ export async function getEventRanking({
       })),
     })
   } catch (e) {
-    console.log({ e })
     return makeLeft(new ServerError())
   }
 }

@@ -87,7 +87,6 @@ export async function registerSubscription({
 
     return makeLeft(new EventDateError())
   } catch (err) {
-    console.log({ err })
     return makeLeft(new ServerError())
   }
 }

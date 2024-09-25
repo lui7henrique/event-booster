@@ -7,12 +7,6 @@ export async function registerSubscriptionRoute(app: FastifyInstance) {
   app.post(
     '/subscription',
     {
-      config: {
-        rateLimit: {
-          max: 50,
-          timeWindow: '1 minute',
-        },
-      },
       schema: {
         description: 'Register a subscription for an event',
         tags: ['Subscription'],

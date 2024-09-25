@@ -33,7 +33,10 @@ app.register(fastifyRedis, {
   host: '127.0.0.1',
 })
 
-app.register(fastifyRateLimit)
+app.register(fastifyRateLimit, {
+  max: 10,
+  timeWindow: '1 min',
+})
 
 app.register(fastifySwagger, {
   openapi: {
@@ -79,6 +82,12 @@ app.setErrorHandler((error, _, reply) => {
     return reply
       .status(400)
       .send({ message: 'Validation error.', issues: error.format() })
+  }
+
+  if (error.statusCode === 429) {
+    return reply
+      .code(429)
+      .send({ message: 'You hit the rate limit! Slow down please!' })
   }
 
   if (env.NODE_ENV !== 'production') {
