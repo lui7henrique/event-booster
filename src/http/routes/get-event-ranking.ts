@@ -65,7 +65,7 @@ export async function getEventRankingRoute(app: FastifyInstance) {
 
       const isDatePast = selected_date ? isPast(parseISO(selected_date)) : false
 
-      const expiresIn = await redis.set(
+      await redis.set(
         cacheKey,
         JSON.stringify(result.right.referralLinks),
         'EX',

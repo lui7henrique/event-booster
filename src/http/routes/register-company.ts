@@ -18,17 +18,14 @@ export async function registerCompanyRoute(app: FastifyInstance) {
             name: {
               type: 'string',
               description: 'Name of the company',
-              default: 'Unnamed Company',
             },
             email: {
               type: 'string',
               description: 'Email of the company',
-              default: faker.internet.email(),
             },
             password: {
               type: 'string',
               description: 'Password of the company',
-              default: faker.internet.password(),
             },
           },
         },
