@@ -16,7 +16,6 @@ describe('generate referral link', () => {
     const sut = await generateReferralLink({ email, event_id: event.id })
 
     expect(isRight(sut)).toBe(true)
-
     expect(unwrapEither(sut)).toEqual({
       referralLink: expect.objectContaining({
         email,
