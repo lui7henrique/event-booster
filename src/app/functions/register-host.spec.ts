@@ -1,7 +1,4 @@
-import { makeEvent } from '@/test/factories/make-event'
-import { makeRawSubscription } from '@/test/factories/make-subscription'
 import { describe, expect, it } from 'vitest'
-import { registerSubscription } from './register-subscription'
 import { isRight, unwrapEither } from '@/core/either'
 import { makeHost, makeRawHost } from '@/test/factories/make-host'
 import { registerHost } from './register-host'

@@ -12,6 +12,7 @@ export function makeRawHost(overrides: Overrides = {}): Host {
     email: faker.internet.email(),
     name: faker.person.fullName(),
     password: faker.internet.password(),
+    ...overrides,
   }
 }
 
