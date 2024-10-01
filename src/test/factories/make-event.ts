@@ -1,10 +1,8 @@
-import { generateUniqueId } from '@/core/unique-id'
 import { db } from '@/db'
 import { schema } from '@/db/schema'
 import { fakerPT_BR as faker } from '@faker-js/faker'
 import { addDays, subDays } from 'date-fns'
 import type { InferInsertModel } from 'drizzle-orm'
-import { makeHost } from './make-host'
 
 type Event = InferInsertModel<typeof schema.events>
 type Overrides = Partial<Event> & { host_id: string }
