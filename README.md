@@ -1,5 +1,3 @@
-### Todo List (Referral Software for Online Events)
-
 1. **Setup and Configuration**
 
    - [x] Set up Node.js with Fastify for HTTP layer.
