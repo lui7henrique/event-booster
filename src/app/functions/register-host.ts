@@ -37,10 +37,6 @@ export async function registerHost({
       err instanceof postgres.PostgresError &&
       err.code === PgIntegrityConstraintViolation.UniqueViolation
 
-    if (!isHostAlreadyRegistered) {
-      throw err
-    }
-
     return makeLeft(new HostEmailAlreadyRegisteredError())
   }
 }
