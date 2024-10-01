@@ -1,69 +1,48 @@
-### Setup and Configuration
+### Complete Todo List
 
-1. **Initial Setup**
+1. **Setup and Configuration**
 
-   - [x] Initialize a Node.js project with Fastify.
+   - [x] Initialize Node.js project with Fastify.
    - [x] Set up PostgreSQL database and configure the connection.
    - [x] Set up Redis for caching and real-time ranking.
    - [x] Set up Swagger/OpenAPI for API documentation.
-   - [ ] Implement a logging and monitoring setup using a platform like Sentry or Datadog.
+   - [ ] Implement logging and monitoring with Sentry or Datadog.
 
 2. **Security and Performance**
 
    - [x] Implement JWT authentication for admin routes.
-   - [x] Add middleware for rate limiting to prevent abuse.
-   - [?] Secure all endpoints against SQL injection.
-   - [x] Ensure API response times are under 200ms for critical endpoints.
+   - [x] Add middleware for rate limiting.
+   - [ ] Secure endpoints against SQL injection.
+   - [x] Ensure critical endpoints have response times under 200ms.
 
 3. **Testing and Maintenance**
-   - [ ] Write unit and integration tests to cover at least 90% of the codebase.
+
+   - [ ] Achieve 90% test coverage with unit and integration tests.
    - [ ] Set up continuous integration to run tests and check coverage.
-   - [ ] Document the setup and basic maintenance procedures.
+   - [ ] Document setup and maintenance procedures.
 
-### Core Features
+4. **Core Features**
 
-1. **Event Subscription**
+   - [x] Create an endpoint for user subscriptions with email and name validation.
+   - [x] Prevent duplicate email registrations.
+   - [x] Ensure subscription within event start and end dates.
+   - [x] Develop unique referral link generation.
+   - [x] Track and store referral link conversions.
+   - [x] Implement hierarchical referral tracking.
+   - [x] Build referral ranking endpoint with Redis caching and daily filtering.
+   - [ ] Develop admin endpoints for event monitoring and management.
+   - [ ] Allow admins to view detailed metrics and logs.
 
-   - [x] Create an endpoint for users to subscribe using their name and email.
-   - [x] Implement checks to prevent duplicate email registration.
-   - [x] Ensure subscriptions are only allowed within the event start and end dates.
+5. **Documentation and Deployment**
 
-2. **Referral Link Generation**
+   - [x] Document API endpoints with Swagger/OpenAPI.
+   - [ ] Create user guides for admins and event managers.
+   - [ ] Prepare end-user FAQ for participation and referrals.
+   - [ ] Set up deployment using Docker or similar tools.
+   - [ ] Configure PostgreSQL and Redis cloud hosting.
+   - [ ] Ensure production security settings are configured.
 
-   - [x] Develop a system to generate unique referral links for each subscriber.
-   - [x] Store these links in the database associated with the user’s account.
-
-3. **Referral Tracking and Metrics**
-
-   - [x] Track the number of subscriptions made through each referral link.
-   - [x] Calculate and store the conversion rate for each user.
-   - [x] Implement hierarchical tracking of direct and indirect referrals.
-
-4. **Ranking and Insights**
-
-   - [x] Develop an endpoint to display referral rankings, utilizing Redis for fast retrieval.
-   - [x] Allow filtering of rankings on a daily basis during the event.
-   - [x] Implement a cache system to optimize the retrieval of these rankings.
-
-5. **Admin Features**
-   - [ ] Develop admin-only endpoints for monitoring and managing the event.
-   - [ ] Provide admins with the ability to view detailed metrics and logs.
-
-### Documentation and Deployment
-
-1. **Documentation**
-
-   - [x] Document all API endpoints using Swagger/OpenAPI.
-   - [ ] Create user guides for system administrators and event managers.
-   - [ ] Prepare an end-user FAQ section regarding how to participate, generate referrals, and check rankings.
-
-2. **Deployment**
-
-   - [ ] Set up a deployment process using Docker or a similar container tool.
-   - [ ] Configure cloud-based services for hosting PostgreSQL and Redis.
-   - [ ] Ensure proper security settings in the production environment.
-
-3. **Monitoring and Optimization**
-   - [ ] Configure real-time monitoring for API performance and system health.
-   - [ ] Set up alerts for any anomalies in response times or system metrics.
-   - [ ] Regularly review and optimize the database and cache configurations based on usage patterns.
+6. **Monitoring and Optimization**
+   - [ ] Set up real-time monitoring for API performance and health.
+   - [ ] Configure alerts for anomalies in response times or metrics.
+   - [ ] Regularly optimize database and cache configurations.

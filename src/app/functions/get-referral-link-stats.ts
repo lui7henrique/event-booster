@@ -70,7 +70,7 @@ export async function getReferralLinkStats({
       directConversionRate,
       indirectConversionRate,
     })
-  } catch (e) {
+  } catch {
     return makeLeft(new ServerError())
   }
 }
