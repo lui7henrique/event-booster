@@ -1,48 +1,41 @@
-### Complete Todo List
+### Todo List (Referral Software for Online Events)
 
 1. **Setup and Configuration**
 
-   - [x] Initialize Node.js project with Fastify.
-   - [x] Set up PostgreSQL database and configure the connection.
-   - [x] Set up Redis for caching and real-time ranking.
-   - [x] Set up Swagger/OpenAPI for API documentation.
-   - [ ] Implement logging and monitoring with Sentry or Datadog.
+   - [x] Set up Node.js with Fastify for HTTP layer.
+   - [x] Set up PostgreSQL for relational database.
+   - [x] Set up Redis for ranking and caching.
+   - [x] Integrate Swagger/OpenAPI for API documentation.
+   - [ ] Configure Sentry/Datadog for monitoring metrics.
 
 2. **Security and Performance**
 
-   - [x] Implement JWT authentication for admin routes.
-   - [x] Add middleware for rate limiting.
+   - [x] Implement JWT authentication for admin access.
+   - [x] Add rate limiting to prevent abuse.
    - [ ] Secure endpoints against SQL injection.
-   - [x] Ensure critical endpoints have response times under 200ms.
+   - [x] Ensure response times under 200ms
 
-3. **Testing and Maintenance**
+3. **Core Features**
 
-   - [ ] Achieve 90% test coverage with unit and integration tests.
+   - [x] Subscription: allow users to register in event with name and email.
+   - [x] Ensure users can only subscribe once and only during the event's start and end dates.
+   - [x] Generate unique referral links for subscribers.
+   - [x] Track direct and indirect referrals for each referral link.
+   - [x] Display the referral ranking ordered by the number of referrals.
+   - [x] Allow hosts to filter the referral links ranking by day.
+
+4. **Testing**
+
+   - [x] Write tests with at least 90% coverage.
    - [ ] Set up continuous integration to run tests and check coverage.
-   - [ ] Document setup and maintenance procedures.
 
-4. **Core Features**
+5. **Monitoring and Optimization**
 
-   - [x] Create an endpoint for user subscriptions with email and name validation.
-   - [x] Prevent duplicate email registrations.
-   - [x] Ensure subscription within event start and end dates.
-   - [x] Develop unique referral link generation.
-   - [x] Track and store referral link conversions.
-   - [x] Implement hierarchical referral tracking.
-   - [x] Build referral ranking endpoint with Redis caching and daily filtering.
-   - [ ] Develop admin endpoints for event monitoring and management.
-   - [ ] Allow admins to view detailed metrics and logs.
+   - [ ] Track key metrics (requests per second, system load, response time).
+   - [ ] Send performance data to Sentry/Datadog.
+   - [ ] Optimize database and cache configurations regularly.
 
-5. **Documentation and Deployment**
-
-   - [x] Document API endpoints with Swagger/OpenAPI.
-   - [ ] Create user guides for admins and event managers.
-   - [ ] Prepare end-user FAQ for participation and referrals.
-   - [ ] Set up deployment using Docker or similar tools.
-   - [ ] Configure PostgreSQL and Redis cloud hosting.
-   - [ ] Ensure production security settings are configured.
-
-6. **Monitoring and Optimization**
-   - [ ] Set up real-time monitoring for API performance and health.
-   - [ ] Configure alerts for anomalies in response times or metrics.
-   - [ ] Regularly optimize database and cache configurations.
+6. **Documentation and Deployment**
+   - [x] Document API endpoints using Swagger/OpenAPI.
+   - [ ] Set up deployment using Docker.
+   - [ ] Ensure proper security and performance settings in production.
