@@ -2,7 +2,7 @@ import { generateUniqueId } from '@/core/unique-id'
 import { db } from '@/db'
 import { schema } from '@/db/schema'
 import { fakerPT_BR as faker } from '@faker-js/faker'
-import { addDays } from 'date-fns'
+import { addDays, subDays } from 'date-fns'
 import type { InferInsertModel } from 'drizzle-orm'
 import { makeHost } from './make-host'
 
@@ -22,6 +22,19 @@ export async function makeEvent(overrides: Overrides) {
   const [event] = await db
     .insert(schema.events)
     .values(makeRawEvent(overrides))
+    .returning()
+
+  return event
+}
+
+export async function makeActiveEvent(overrides: Overrides) {
+  const [event] = await db
+    .insert(schema.events)
+    .values({
+      ...makeRawEvent(overrides),
+      start_date: subDays(new Date(), 1),
+      end_date: addDays(new Date(), 1),
+    })
     .returning()
 
   return event
