@@ -10,8 +10,8 @@ export async function updateSubscriptionCount(referralLinkId: string) {
     .execute()
 
   await db
-    .update(schema.referralLinks)
+    .update(schema.referral)
     .set({ subscription_count: subscriptionCount.count })
-    .where(eq(schema.referralLinks.id, referralLinkId))
+    .where(eq(schema.referral.id, referralLinkId))
     .execute()
 }

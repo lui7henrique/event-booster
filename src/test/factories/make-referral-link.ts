@@ -4,8 +4,8 @@ import { faker } from '@faker-js/faker'
 import type { InferInsertModel } from 'drizzle-orm'
 
 export function makeRawReferralLink(
-  overrides: Partial<InferInsertModel<typeof schema.referralLinks>> = {}
-): InferInsertModel<typeof schema.referralLinks> {
+  overrides: Partial<InferInsertModel<typeof schema.referral>> = {}
+): InferInsertModel<typeof schema.referral> {
   return {
     email: faker.internet.email(),
     referral_link: faker.internet.url(),
@@ -14,10 +14,10 @@ export function makeRawReferralLink(
 }
 
 export async function makeReferralLink(
-  overrides: Partial<InferInsertModel<typeof schema.referralLinks>>
+  overrides: Partial<InferInsertModel<typeof schema.referral>>
 ) {
   const [referralLink] = await db
-    .insert(schema.referralLinks)
+    .insert(schema.referral)
     .values(makeRawReferralLink(overrides))
     .returning()
 

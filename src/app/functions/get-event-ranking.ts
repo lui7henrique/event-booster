@@ -38,29 +38,42 @@ export async function getEventRanking({
       return makeLeft(new InvalidFutureDateError())
     }
 
+    const teste = await db
+      .select()
+      .from(schema.referral)
+      .leftJoin(
+        schema.subscriptions,
+        eq(schema.subscriptions.referral_link_id, schema.referral.id)
+      )
+      .where(eq(schema.referral.event_id, event_id))
+
+    console.log({ teste })
+
     const referralLinks = await db
       .select({
-        id: schema.referralLinks.id,
-        token: schema.referralLinks.token,
-        click_count: schema.referralLinks.click_count,
-        email: schema.referralLinks.email,
+        id: schema.referral.id,
+        token: schema.referral.token,
+        click_count: schema.referral.click_count,
+        email: schema.referral.email,
         subscription_count: sql`COUNT(${schema.subscriptions.id})`.as(
           'subscription_count'
         ),
       })
-      .from(schema.referralLinks)
-      .innerJoin(
+      .from(schema.referral)
+      .leftJoin(
         schema.subscriptions,
-        eq(schema.referralLinks.id, schema.subscriptions.referral_link_id)
+        eq(schema.referral.id, schema.subscriptions.referral_link_id)
       )
       .where(
         and(
-          eq(schema.referralLinks.event_id, event_id),
+          eq(schema.referral.event_id, event_id),
           buildDateFilter(selected_date)
         )
       )
-      .groupBy(schema.referralLinks.id)
+      .groupBy(schema.referral.id)
       .execute()
+
+    console.log({ referralLinks })
 
     return makeRight({
       referralLinks: referralLinks.map(link => ({

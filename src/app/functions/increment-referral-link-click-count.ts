@@ -14,25 +14,25 @@ export async function incrementReferralLinkCount({
   token,
 }: IncrementReferralLinkCountInput) {
   try {
-    const [referralLink] = await db
+    const [referral] = await db
       .select()
-      .from(schema.referralLinks)
+      .from(schema.referral)
       .where(
         and(
-          eq(schema.referralLinks.token, token),
-          eq(schema.referralLinks.event_id, event_id)
+          eq(schema.referral.token, token),
+          eq(schema.referral.event_id, event_id)
         )
       )
       .execute()
 
-    if (!referralLink) {
+    if (!referral) {
       return makeLeft(new ReferralLinkNotFound())
     }
 
     const [updatedReferralLink] = await db
-      .update(schema.referralLinks)
-      .set({ click_count: (referralLink.click_count || 0) + 1 })
-      .where(eq(schema.referralLinks.id, referralLink.id))
+      .update(schema.referral)
+      .set({ click_count: (referral.click_count || 0) + 1 })
+      .where(eq(schema.referral.id, referral.id))
       .returning()
 
     return makeRight({ updatedReferralLink })

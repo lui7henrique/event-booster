@@ -1,11 +1,11 @@
 import { hosts } from './hosts'
 import { events } from './events'
-import { referralLinks } from './referral-links'
+import { referral } from './referral'
 import { subscriptions } from './subscriptions'
 
 export const schema = {
   subscriptions,
   events,
-  referralLinks,
+  referral,
   hosts,
 }

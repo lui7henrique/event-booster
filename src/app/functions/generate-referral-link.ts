@@ -18,11 +18,11 @@ export async function generateReferralLink({
   try {
     const [existingReferralLink] = await db
       .select()
-      .from(schema.referralLinks)
+      .from(schema.referral)
       .where(
         and(
-          eq(schema.referralLinks.email, email),
-          eq(schema.referralLinks.event_id, event_id)
+          eq(schema.referral.email, email),
+          eq(schema.referral.event_id, event_id)
         )
       )
       .execute()
@@ -46,7 +46,7 @@ export async function generateReferralLink({
       )
 
     const [referralLink] = await db
-      .insert(schema.referralLinks)
+      .insert(schema.referral)
       .values({
         email,
         event_id,

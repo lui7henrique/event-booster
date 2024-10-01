@@ -22,11 +22,11 @@ export async function getReferralLinkStats({
   try {
     const [referralLink] = await db
       .select()
-      .from(schema.referralLinks)
+      .from(schema.referral)
       .where(
         and(
-          eq(schema.referralLinks.token, token),
-          eq(schema.referralLinks.event_id, event_id)
+          eq(schema.referral.token, token),
+          eq(schema.referral.event_id, event_id)
         )
       )
       .execute()

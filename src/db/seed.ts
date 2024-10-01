@@ -6,7 +6,7 @@ import { hashPassword } from '@/http/utils/password'
 
 async function main() {
   await db.delete(schema.hosts)
-  await db.delete(schema.referralLinks)
+  await db.delete(schema.referral)
   await db.delete(schema.subscriptions)
   await db.delete(schema.events)
 

@@ -9,7 +9,7 @@ import { ServerError } from '../errors/server-error'
 const EVENTS_LENGTH = 3
 
 describe('get events', () => {
-  it('should be to return host events', async () => {
+  it('should be able to return host events', async () => {
     const { id: host_id } = await makeHost()
 
     await Promise.all(
@@ -30,7 +30,7 @@ describe('get events', () => {
     })
   })
 
-  it('should return a ServerError when the database throws an error', async () => {
+  it('should be able to return a ServerError when the database throws an error', async () => {
     vi.spyOn(db, 'select').mockImplementationOnce(() => {
       throw new Error('Database error')
     })

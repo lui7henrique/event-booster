@@ -55,8 +55,8 @@ export async function registerSubscription({
       if (referral_link_token) {
         const [referralLink] = await db
           .select()
-          .from(schema.referralLinks)
-          .where(and(eq(schema.referralLinks.token, referral_link_token)))
+          .from(schema.referral)
+          .where(and(eq(schema.referral.token, referral_link_token)))
 
         const [subscription] = await db
           .insert(schema.subscriptions)
