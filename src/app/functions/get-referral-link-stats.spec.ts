@@ -1,14 +1,16 @@
 import { describe, expect, it } from 'vitest'
 
 import { isLeft, isRight, unwrapEither } from '@/core/either'
-import { makeEvent } from '@/test/factories/make-event'
+import { makeActiveEvent } from '@/test/factories/make-event'
 import { makeReferralLink } from '@/test/factories/make-referral-link'
 import { ReferralLinkNotFound } from '../errors/referral-link-not-found'
 import { getReferralLinkStats } from './get-referral-link-stats'
+import { makeHost } from '@/test/factories/make-host'
 
 describe('get referral link stats', () => {
   it('returns an error if referral link is not found', async () => {
-    const event = await makeEvent()
+    const host = await makeHost()
+    const event = await makeActiveEvent({ host_id: host.id })
     const token = 'nonexistent_token'
 
     const sut = await getReferralLinkStats({ token, event_id: event.id })
@@ -18,7 +20,9 @@ describe('get referral link stats', () => {
   })
 
   it('calculates direct conversion rate correctly', async () => {
-    const event = await makeEvent()
+    const host = await makeHost()
+    const event = await makeActiveEvent({ host_id: host.id })
+
     const { token } = await makeReferralLink({
       event_id: event.id,
       click_count: 100,
@@ -33,7 +37,8 @@ describe('get referral link stats', () => {
   })
 
   it('calculates indirect conversion rate correctly', async () => {
-    const event = await makeEvent()
+    const host = await makeHost()
+    const event = await makeActiveEvent({ host_id: host.id })
 
     const parentLink = await makeReferralLink({
       event_id: event.id,
@@ -60,7 +65,9 @@ describe('get referral link stats', () => {
   })
 
   it('avoids division by zero in conversion rate calculations', async () => {
-    const event = await makeEvent()
+    const host = await makeHost()
+    const event = await makeActiveEvent({ host_id: host.id })
+
     const { token } = await makeReferralLink({
       event_id: event.id,
       click_count: 0,
