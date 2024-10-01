@@ -19,8 +19,6 @@ describe('register subscription', () => {
 
     const sut = await registerSubscription({ name, email, event_id: event.id })
 
-    console.log({ sut })
-
     expect(isRight(sut)).toBe(true)
     expect(unwrapEither(sut)).toEqual({
       subscription: expect.objectContaining({
@@ -81,8 +79,6 @@ describe('register subscription', () => {
       event_id: event.id,
       referral_link_token: referralLink.token,
     })
-
-    console.log({ sut })
 
     expect(isRight(sut)).toBe(true)
     expect(unwrapEither(sut)).toHaveProperty('subscription.event_id', event.id)

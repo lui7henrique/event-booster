@@ -15,8 +15,6 @@ describe('login', () => {
     const host = await makeHost({ password: hashedPassword })
     const sut = await login({ email: host.email, password })
 
-    console.log({ sut })
-
     expect(isRight(sut)).toBe(true)
     expect(unwrapEither(sut)).toEqual({
       host: expect.objectContaining({
