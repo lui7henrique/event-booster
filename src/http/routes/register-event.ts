@@ -44,7 +44,7 @@ export async function registerEventRoute(app: FastifyInstance) {
       },
     },
     async (request, reply) => {
-      const { company_id } = request.user as { company_id: string }
+      const { host_id } = request.user as { host_id: string }
 
       const body = z
         .object({
@@ -54,7 +54,7 @@ export async function registerEventRoute(app: FastifyInstance) {
         })
         .parse(request.body)
 
-      const result = await registerEvent({ ...body, company_id })
+      const result = await registerEvent({ ...body, host_id })
 
       if (isLeft(result)) {
         const error = result.left

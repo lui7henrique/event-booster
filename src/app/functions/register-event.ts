@@ -9,14 +9,14 @@ type RegisterEventInput = {
   title: string
   start_date: string
   end_date: string
-  company_id: string
+  host_id: string
 }
 
 export async function registerEvent({
   title,
   start_date,
   end_date,
-  company_id,
+  host_id,
 }: RegisterEventInput) {
   try {
     const isInvalidRangeDate =
@@ -38,7 +38,7 @@ export async function registerEvent({
         start_date: new Date(start_date),
         end_date: new Date(end_date),
         title,
-        company_id,
+        host_id,
       })
       .returning()
 

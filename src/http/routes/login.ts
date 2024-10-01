@@ -1,4 +1,4 @@
-import { loginCompany } from '@/app/functions/login'
+import { login } from '@/app/functions/login'
 import { isLeft, unwrapEither } from '@/core/either'
 import type { FastifyInstance } from 'fastify'
 import { z } from 'zod'
@@ -8,7 +8,7 @@ export async function loginRoute(app: FastifyInstance) {
     '/login',
     {
       schema: {
-        description: 'Company login with email and password',
+        description: 'Host login with email and password',
         tags: ['Auth'],
         body: {
           type: 'object',
@@ -17,12 +17,12 @@ export async function loginRoute(app: FastifyInstance) {
             email: {
               type: 'string',
               format: 'email',
-              description: 'Email address of the company',
+              description: 'Email address of the host',
               default: 'vercel@vercel.com',
             },
             password: {
               type: 'string',
-              description: 'Password of the company',
+              description: 'Password of the host',
               default: 'vercel-password',
             },
           },
@@ -53,7 +53,7 @@ export async function loginRoute(app: FastifyInstance) {
         })
         .parse(request.body)
 
-      const result = await loginCompany({ ...body })
+      const result = await login({ ...body })
 
       if (isLeft(result)) {
         const error = result.left
@@ -67,7 +67,7 @@ export async function loginRoute(app: FastifyInstance) {
         }
       }
 
-      const token = app.jwt.sign({ company_id: result.right.company.id })
+      const token = app.jwt.sign({ host_id: result.right.host.id })
 
       return reply.status(200).send({ token })
     }

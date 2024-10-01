@@ -1,31 +1,31 @@
-import { registerCompany } from '@/app/functions/register-company'
+import { registerHost } from '@/app/functions/register-host'
 import { isLeft } from '@/core/either'
 import { faker } from '@faker-js/faker'
 import type { FastifyInstance } from 'fastify'
 import { z } from 'zod'
 
-export async function registerCompanyRoute(app: FastifyInstance) {
+export async function registerHostRoute(app: FastifyInstance) {
   app.post(
-    '/company',
+    '/register-host',
     {
       schema: {
-        description: 'Register company',
-        tags: ['Company'],
+        description: 'Register event host',
+        tags: ['Host'],
         body: {
           type: 'object',
           required: ['name', 'email', 'password'],
           properties: {
             name: {
               type: 'string',
-              description: 'Name of the company',
+              description: 'Name of the event host',
             },
             email: {
               type: 'string',
-              description: 'Email of the company',
+              description: 'Email of the event host',
             },
             password: {
               type: 'string',
-              description: 'Password of the company',
+              description: 'Password of the event host',
             },
           },
         },
@@ -40,13 +40,13 @@ export async function registerCompanyRoute(app: FastifyInstance) {
         })
         .parse(request.body)
 
-      const result = await registerCompany({ ...body })
+      const result = await registerHost({ ...body })
 
       if (isLeft(result)) {
         const error = result.left
 
         switch (error.constructor.name) {
-          case 'CompanyAlreadyRegisteredError':
+          case 'HostEmailAlreadyRegisteredError':
             return reply.status(409).send({ message: error.message })
 
           default:
@@ -54,7 +54,7 @@ export async function registerCompanyRoute(app: FastifyInstance) {
         }
       }
 
-      return reply.status(201).send({ company: result.right.company })
+      return reply.status(201).send({ host: result.right.host })
     }
   )
 }

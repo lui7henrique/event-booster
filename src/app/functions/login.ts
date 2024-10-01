@@ -6,30 +6,30 @@ import { eq } from 'drizzle-orm'
 import { InvalidEmailOrPassword } from '../errors/invalid-email-or-password'
 import { ServerError } from '../errors/server-error'
 
-type LoginCompanyInput = {
+type LoginInput = {
   email: string
   password: string
 }
 
-export async function loginCompany({ email, password }: LoginCompanyInput) {
+export async function login({ email, password }: LoginInput) {
   try {
-    const [company] = await db
+    const [host] = await db
       .select()
-      .from(schema.companies)
-      .where(eq(schema.companies.email, email))
+      .from(schema.hosts)
+      .where(eq(schema.hosts.email, email))
       .limit(1)
 
-    if (!company) {
+    if (!host) {
       return makeLeft(new InvalidEmailOrPassword())
     }
 
-    const isPasswordValid = await comparePassword(password, company.password)
+    const isPasswordValid = await comparePassword(password, host.password)
 
     if (!isPasswordValid) {
       return makeLeft(new InvalidEmailOrPassword())
     }
 
-    return makeRight({ company })
+    return makeRight({ host })
   } catch {
     return makeLeft(new ServerError())
   }

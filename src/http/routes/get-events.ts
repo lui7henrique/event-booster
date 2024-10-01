@@ -19,9 +19,9 @@ export async function getEventsRoutes(app: FastifyInstance) {
       onRequest: [verifyJwt],
     },
     async (request, reply) => {
-      const { company_id } = request.user as { company_id: string }
+      const { host_id } = request.user as { host_id: string }
 
-      const result = await getEvents({ company_id })
+      const result = await getEvents({ host_id })
 
       if (isLeft(result)) {
         const error = result.left

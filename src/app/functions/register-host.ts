@@ -4,24 +4,24 @@ import { schema } from '@/db/schema'
 import { PgIntegrityConstraintViolation } from '@/db/utils/postgres-errors'
 import { hashPassword } from '@/http/utils/password'
 import postgres from 'postgres'
-import { CompanyAlreadyRegisteredError } from '../errors/company-already-registered'
+import { HostEmailAlreadyRegisteredError } from '../errors/host-email-already-registered'
 
-type RegisterCompanyInput = {
+type RegisterHostInput = {
   name: string
   email: string
   password: string
 }
 
-export async function registerCompany({
+export async function registerHost({
   name,
   email,
   password,
-}: RegisterCompanyInput) {
+}: RegisterHostInput) {
   try {
     const hashedPassword = await hashPassword(password)
 
     const [_] = await db
-      .insert(schema.companies)
+      .insert(schema.hosts)
       .values({
         name,
         email,
@@ -29,18 +29,18 @@ export async function registerCompany({
       })
       .returning()
 
-    const { password: _password, ...company } = _
+    const { password: _password, ...host } = _
 
-    return makeRight({ company })
+    return makeRight({ host })
   } catch (err) {
-    const isCompanyAlreadyRegistered =
+    const isHostAlreadyRegistered =
       err instanceof postgres.PostgresError &&
       err.code === PgIntegrityConstraintViolation.UniqueViolation
 
-    if (!isCompanyAlreadyRegistered) {
+    if (!isHostAlreadyRegistered) {
       throw err
     }
 
-    return makeLeft(new CompanyAlreadyRegisteredError())
+    return makeLeft(new HostEmailAlreadyRegisteredError())
   }
 }

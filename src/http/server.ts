@@ -10,7 +10,7 @@ import { ZodError } from 'zod'
 import { registerSubscriptionRoute } from './routes/register-subscription'
 import { generateReferralLinkRoute } from './routes/generate-referral-link'
 import { registerEventRoute } from './routes/register-event'
-import { registerCompanyRoute } from './routes/register-company'
+import { registerHostRoute } from './routes/register-host'
 import { loginRoute } from './routes/login'
 import { getEventsRoutes } from './routes/get-events'
 import { incrementReferralLinkCountRoute } from './routes/increment-referral-link-count'
@@ -71,7 +71,7 @@ app.register(registerSubscriptionRoute)
 app.register(registerEventRoute)
 app.register(getEventRankingRoute)
 app.register(getEventsRoutes)
-app.register(registerCompanyRoute)
+app.register(registerHostRoute)
 app.register(generateReferralLinkRoute)
 app.register(incrementReferralLinkCountRoute)
 app.register(getReferralLinkStatsRoute)

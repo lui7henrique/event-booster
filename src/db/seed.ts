@@ -5,15 +5,15 @@ import { faker } from '@faker-js/faker'
 import { hashPassword } from '@/http/utils/password'
 
 async function main() {
+  await db.delete(schema.hosts)
   await db.delete(schema.referralLinks)
   await db.delete(schema.subscriptions)
   await db.delete(schema.events)
-  await db.delete(schema.companies)
 
   const hashedPassword = await hashPassword('vercel-password')
 
-  const [company] = await db
-    .insert(schema.companies)
+  const [host] = await db
+    .insert(schema.hosts)
     .values({
       email: 'vercel@vercel.com',
       name: 'Vercel',
@@ -28,7 +28,7 @@ async function main() {
       faker.date.future(),
       faker.number.int({ min: 1, max: 14 })
     ),
-    company_id: company.id,
+    host_id: host.id,
   })
 
   const events = Array.from({ length: 10 }).map(() => createEvent())

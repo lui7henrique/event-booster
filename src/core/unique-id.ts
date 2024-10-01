@@ -4,7 +4,7 @@ export const PREFIXES = {
   user: 'usr',
   event: 'evt',
   'referral-link': 'rfr',
-  company: 'cpn',
+  host: 'hst',
 } as const
 
 export function generateUniqueId(prefixKey: keyof typeof PREFIXES) {

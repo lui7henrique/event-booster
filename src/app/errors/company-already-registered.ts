@@ -1,5 +1,5 @@
-export class CompanyAlreadyRegisteredError extends Error {
+export class HostEmailAlreadyRegisteredError extends Error {
   constructor(message?: string) {
-    super(message ?? 'This company e-mail is already registered.')
+    super(message ?? 'This host e-mail is already registered.')
   }
 }
