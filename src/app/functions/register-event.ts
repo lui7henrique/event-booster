@@ -44,7 +44,6 @@ export async function registerEvent({
 
     return makeRight({ event })
   } catch (e) {
-    console.log({ e })
     return makeLeft(new ServerError())
   }
 }

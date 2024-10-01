@@ -11,10 +11,12 @@ import { addDays } from 'date-fns'
 import { EventDateError } from '../errors/event-date-error'
 import { EventNotFoundError } from '../errors/event-not-found-error'
 import { makeReferralLink } from '@/test/factories/make-referral-link'
+import { makeHost } from '@/test/factories/make-host'
 
 describe('register subscription', () => {
   it('should be able to make subscription', async () => {
-    const event = await makeEvent()
+    const host = await makeHost()
+    const event = await makeEvent({ host_id: host.id })
     const { name, email } = makeRawSubscription()
 
     const sut = await registerSubscription({ name, email, event_id: event.id })
@@ -28,7 +30,8 @@ describe('register subscription', () => {
   })
 
   it('should not be able to make subscription twice', async () => {
-    const event = await makeEvent()
+    const host = await makeHost()
+    const event = await makeEvent({ host_id: host.id })
 
     const { email, name } = await makeSubscription({
       event_id: event.id,
@@ -41,9 +44,12 @@ describe('register subscription', () => {
   })
 
   it('should not be able to make subscription out of the dates', async () => {
+    const host = await makeHost()
+
     const event = await makeEvent({
       start_date: addDays(new Date(), 10),
       end_date: addDays(new Date(), 15),
+      host_id: host.id,
     })
 
     const { email, name } = makeRawSubscription({
@@ -65,7 +71,11 @@ describe('register subscription', () => {
   })
 
   it('should be able to make subscription with a valid referral link token', async () => {
-    const event = await makeEvent()
+    const host = await makeHost()
+    const event = await makeEvent({
+      host_id: host.id,
+    })
+
     const { name, email } = makeRawSubscription()
 
     const referralLink = await makeReferralLink({
