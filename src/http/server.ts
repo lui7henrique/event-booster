@@ -47,7 +47,7 @@ app.register(fastifySwagger, {
     },
     servers: [
       {
-        url: 'http://localhost:3333',
+        url: env.BASE_URL,
         description: 'Development server',
       },
     ],
