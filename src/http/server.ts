@@ -30,7 +30,7 @@ app.register(fastifyJwt, {
 })
 
 app.register(fastifyRedis, {
-  host: '127.0.0.1',
+  host: env.REDIS_URL,
 })
 
 app.register(fastifyRateLimit, {
