@@ -102,7 +102,7 @@ app.setErrorHandler((error, _, reply) => {
 app.ready()
 app
   .listen({
-    port: env.NODE_ENV === 'dev' ? env.PORT : undefined,
+    port: env.PORT,
   })
   .then(() => {
     console.log('HTTP server running!')
