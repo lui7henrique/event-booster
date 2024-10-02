@@ -15,7 +15,9 @@
     "test:coverage": "dotenv -e .env.test -- vitest --coverage",
     "test:ui": "dotenv -e .env.test -- vitest --ui",
     "format": "biome check src --write",
-    "mail:dev": "email dev --dir src/mail/templates"
+    "mail:dev": "email dev --dir src/mail/templates",
+    "build": "dotenv -e .env -- tsup src/http/server.ts --out-dir dist --format esm,cjs --dts",
+    "start": "dotenv -e .env -- node dist/server.js"
   },
   "keywords": [],
   "author": "",
