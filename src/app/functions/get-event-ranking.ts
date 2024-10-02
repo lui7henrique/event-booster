@@ -1,24 +1,15 @@
 import { makeLeft, makeRight } from '@/core/either'
 import { db } from '@/db'
 import { schema } from '@/db/schema'
+import { isFuture, isSameDay, isValid } from 'date-fns'
 import { and, eq, sql } from 'drizzle-orm'
-import { ServerError } from '../errors/server-error'
-import { endOfDay, format, isFuture, isValid, startOfDay } from 'date-fns'
 import { InvalidDateError } from '../errors/invalid-date'
 import { InvalidFutureDateError } from '../errors/invalid-future-date'
+import { ServerError } from '../errors/server-error'
 
 type GetEventRankingInput = {
   event_id: string
   selected_date?: string
-}
-
-const buildDateFilter = (rawDate?: string) => {
-  if (!rawDate) return undefined
-
-  const date = new Date(rawDate)
-  const endDate = format(endOfDay(date), 'yyyy-MM-dd')
-
-  return sql`CAST(${schema.subscriptions.created_at} AS DATE) <= ${endDate}`
 }
 
 export async function getEventRanking({
@@ -38,23 +29,13 @@ export async function getEventRanking({
       return makeLeft(new InvalidFutureDateError())
     }
 
-    const teste = await db
-      .select()
-      .from(schema.referral)
-      .leftJoin(
-        schema.subscriptions,
-        eq(schema.subscriptions.referral_link_id, schema.referral.id)
-      )
-      .where(eq(schema.referral.event_id, event_id))
-
-    console.log({ teste })
-
     const referralLinks = await db
       .select({
         id: schema.referral.id,
         token: schema.referral.token,
         click_count: schema.referral.click_count,
         email: schema.referral.email,
+        created_at: schema.referral.created_at,
         subscription_count: sql`COUNT(${schema.subscriptions.id})`.as(
           'subscription_count'
         ),
@@ -64,24 +45,23 @@ export async function getEventRanking({
         schema.subscriptions,
         eq(schema.referral.id, schema.subscriptions.referral_link_id)
       )
-      .where(
-        and(
-          eq(schema.referral.event_id, event_id),
-          buildDateFilter(selected_date)
-        )
-      )
+      .where(and(eq(schema.referral.event_id, event_id)))
       .groupBy(schema.referral.id)
       .execute()
 
-    console.log({ referralLinks })
-
-    return makeRight({
-      referralLinks: referralLinks.map(link => ({
+    const formatted = referralLinks
+      .map(link => ({
         ...link,
         subscription_count: Number(link.subscription_count),
-      })),
+      }))
+      .filter(referral =>
+        isSameDay(referral.created_at, new Date(selected_date))
+      )
+
+    return makeRight({
+      ranking: formatted,
     })
-  } catch (e) {
+  } catch {
     return makeLeft(new ServerError())
   }
 }

@@ -1,10 +1,10 @@
-import { describe, expect, it } from 'vitest'
 import { isLeft, isRight, unwrapEither } from '@/core/either'
-import { ReferralLinkNotFound } from '../errors/referral-link-not-found'
-import { incrementReferralLinkCount } from './increment-referral-link-click-count'
-import { makeReferralLink } from '@/test/factories/make-referral-link'
 import { makeActiveEvent, makeEvent } from '@/test/factories/make-event'
 import { makeHost } from '@/test/factories/make-host'
+import { makeReferralLink } from '@/test/factories/make-referral-link'
+import { describe, expect, it } from 'vitest'
+import { ReferralLinkNotFound } from '../errors/referral-link-not-found'
+import { incrementReferralLinkCount } from './increment-referral-link-click-count'
 
 describe('increment referral link click count', () => {
   it('should be able to return an error if the referral link is not found', async () => {

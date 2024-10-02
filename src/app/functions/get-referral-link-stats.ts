@@ -1,7 +1,7 @@
 import { makeLeft, makeRight } from '@/core/either'
 import { db } from '@/db'
 import { schema } from '@/db/schema'
-import { and, eq, count, sql } from 'drizzle-orm'
+import { and, eq, sql } from 'drizzle-orm'
 import { ReferralLinkNotFound } from '../errors/referral-link-not-found'
 import { ServerError } from '../errors/server-error'
 
