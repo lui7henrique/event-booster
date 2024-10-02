@@ -47,7 +47,7 @@ app.register(fastifySwagger, {
     },
     servers: [
       {
-        url: env.BASE_URL,
+        url: `${env.BASE_URL}:${env.PORT}`,
         description: 'Development server',
       },
     ],
@@ -106,5 +106,5 @@ app
     host: '0.0.0.0',
   })
   .then(() => {
-    console.log(`HTTP server running at: ${env.BASE_URL}:${env.PORT}`)
+    console.log(`HTTP server running at: ${env.BASE_URL}`)
   })
