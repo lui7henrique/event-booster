@@ -10,7 +10,7 @@
 
    - [x] Implement JWT authentication for admin access.
    - [x] Add rate limiting to prevent abuse.
-   - [ ] Secure endpoints against SQL injection.
+   - [x] Secure endpoints against SQL injection.
    - [x] Ensure response times under 200ms
 
 3. **Core Features**
