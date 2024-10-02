@@ -100,6 +100,10 @@ app.setErrorHandler((error, _, reply) => {
 })
 
 app.ready()
-app.listen().then(() => {
-  console.log('HTTP server running!')
-})
+app
+  .listen({
+    port: env.PORT,
+  })
+  .then(() => {
+    console.log('HTTP server running!')
+  })
