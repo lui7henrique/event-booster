@@ -106,5 +106,5 @@ app
     host: '0.0.0.0',
   })
   .then(() => {
-    console.log('HTTP server running!')
+    console.log(`HTTP server running at: ${env.BASE_URL}:${env.PORT}`)
   })
