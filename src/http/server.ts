@@ -47,7 +47,7 @@ app.register(fastifySwagger, {
     },
     servers: [
       {
-        url: `${env.BASE_URL}:${env.PORT}`,
+        url: `${env.BASE_URL}`,
         description: 'Development server',
       },
     ],
