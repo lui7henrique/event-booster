@@ -1,8 +1,9 @@
 import { makeLeft, makeRight } from '@/core/either'
 import { db } from '@/db'
 import { schema } from '@/db/schema'
-import { and, eq } from 'drizzle-orm'
+import { and, eq, sql } from 'drizzle-orm'
 import { ReferralLinkNotFound } from '../errors/referral-link-not-found'
+import { ServerError } from '../errors/server-error'
 
 type IncrementReferralLinkCountInput = {
   token: string
@@ -14,29 +15,23 @@ export async function incrementReferralLinkCount({
   token,
 }: IncrementReferralLinkCountInput) {
   try {
-    const [referral] = await db
-      .select()
-      .from(schema.referral)
+    const [updatedReferralLink] = await db
+      .update(schema.referral)
+      .set({ click_count: sql`COALESCE(click_count, 0) + 1` })
       .where(
         and(
           eq(schema.referral.token, token),
           eq(schema.referral.event_id, event_id)
         )
       )
-      .execute()
+      .returning()
 
-    if (!referral) {
+    if (!updatedReferralLink) {
       return makeLeft(new ReferralLinkNotFound())
     }
 
-    const [updatedReferralLink] = await db
-      .update(schema.referral)
-      .set({ click_count: (referral.click_count || 0) + 1 })
-      .where(eq(schema.referral.id, referral.id))
-      .returning()
-
     return makeRight({ updatedReferralLink })
-  } catch (e) {
-    throw new Error()
+  } catch {
+    return makeLeft(new ServerError())
   }
 }
