@@ -38,8 +38,6 @@ app.register(fastifyRateLimit, {
   timeWindow: '1 min',
 })
 
-console.log({ env: env })
-
 app.register(fastifySwagger, {
   openapi: {
     openapi: '3.0.0',
