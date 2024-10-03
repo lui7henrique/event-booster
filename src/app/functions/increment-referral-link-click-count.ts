@@ -3,6 +3,7 @@ import { db } from '@/db'
 import { schema } from '@/db/schema'
 import { and, eq, sql } from 'drizzle-orm'
 import { ReferralLinkNotFound } from '../errors/referral-link-not-found'
+import { ServerError } from '../errors/server-error'
 
 type IncrementReferralLinkCountInput = {
   token: string
@@ -30,7 +31,7 @@ export async function incrementReferralLinkCount({
     }
 
     return makeRight({ updatedReferralLink })
-  } catch (e) {
-    throw new Error()
+  } catch {
+    return makeLeft(new ServerError())
   }
 }
