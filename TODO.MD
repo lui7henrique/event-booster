@@ -138,7 +138,10 @@
   - [ ] Na função `increment-referral-link-click-count`, remover o check desnecessário de `event_id`, já que o token deveria ser único.
 
 - [ ] **Adicionar Índice no Token**
+
   - [ ] Adicionar um índice (ou `unique`) ao campo `token` para otimizar as queries.
+
+  - [ ] Na query recursiva do stats, na interpolação, utilizar alias e `schema.table`
 
 ### Desafio
 
