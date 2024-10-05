@@ -9,10 +9,22 @@ services:
       - POSTGRES_USER=docker
       - POSTGRES_PASSWORD=docker
       - POSTGRES_DB=event-booster
-  redis:
-    image: redis:latest
+
+  pg-test:
+    image: bitnami/postgresql:13.16.0
     ports:
-      - "6379:6379"
+      - '5433:5432'
+    environment:
+      - POSTGRES_USER=docker
+      - POSTGRES_PASSWORD=docker
+      - POSTGRES_DB=event-booster-test
+      
+  redis:
+    image: bitnami/redis:latest
+    ports:
+      - '6379:6379'
+    environment:
+      - REDIS_PASSWORD=redis   
     volumes:
       - redis-data:/data
 
