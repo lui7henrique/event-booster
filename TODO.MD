@@ -18,9 +18,9 @@
 
   - [x] Alterar o padrão `await login({ body })` para que os parâmetros sejam passados individualmente, melhorando a legibilidade e compreensão do código.
 
-- [ ] **JWT Tipagem**
+- [x] **JWT Tipagem**
 
-  - [ ] Criar o arquivo `src/@types/fastify.d.ts` e adicionar a tipagem personalizada para o Fastify JWT:
+  - [x] Criar o arquivo `src/@types/fastify.d.ts` e adicionar a tipagem personalizada para o Fastify JWT:
     ```typescript
     import "@fastify/jwt";
     declare module "@fastify/jwt" {
