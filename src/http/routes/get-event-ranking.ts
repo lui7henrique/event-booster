@@ -67,14 +67,12 @@ export async function getEventRankingRoute(app: FastifyInstance) {
 
       await redis.set(
         cacheKey,
-        JSON.stringify(result.right.referralLinks),
+        JSON.stringify(result.right.ranking),
         'EX',
         isDatePast ? TWO_MONTHS : FIFTEEN_MINUTES
       )
 
-      return reply
-        .status(200)
-        .send({ referralLinks: result.right.referralLinks })
+      return reply.status(200).send({ ranking: result.right.ranking })
     }
   )
 }

@@ -6,7 +6,7 @@
   - [x] Adicionar um arquivo `.env.example` para facilitar o setup do projeto.
 
 - [x] **Redis**
-  - [ ] Substituir a imagem atual do Redis no Docker Compose pela imagem da Bitnami, que permite a configuração de senha.
+  - [x] Substituir a imagem atual do Redis no Docker Compose pela imagem da Bitnami, que permite a configuração de senha.
 
 ### Rotas / HTTP
 
