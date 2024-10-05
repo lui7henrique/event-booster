@@ -46,14 +46,14 @@ export async function loginRoute(app: FastifyInstance) {
       },
     },
     async (request, reply) => {
-      const body = z
+      const { email, password } = z
         .object({
           email: z.string().email(),
           password: z.string(),
         })
         .parse(request.body)
 
-      const result = await login({ ...body })
+      const result = await login({ email, password })
 
       if (isLeft(result)) {
         const error = result.left
