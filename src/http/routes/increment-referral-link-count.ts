@@ -1,38 +1,39 @@
 import { incrementReferralLinkCount } from '@/app/functions/increment-referral-link-click-count'
 import { isLeft } from '@/core/either'
 import type { FastifyInstance } from 'fastify'
+import type { ZodTypeProvider } from 'fastify-type-provider-zod'
 import { z } from 'zod'
 
+const querySchema = z.object({
+  token: z.string().min(1, 'Token is required'),
+  event_id: z.string().min(1, 'Event ID is required'),
+})
+
 export async function incrementReferralLinkCountRoute(app: FastifyInstance) {
-  app.get(
-    '/increment-referral-link-click-count',
-    {
-      schema: {
-        description: 'Increment referral link click count',
-        tags: ['Referral link'],
-        querystring: {
-          type: 'object',
-          required: ['token', 'event_id'],
-          properties: {
-            token: {
-              type: 'string',
-              description: 'Referral link token',
-            },
-            event_id: {
-              type: 'string',
-              description: 'ID of the event associated with the referral link',
-            },
-          },
-        },
+  app.withTypeProvider<ZodTypeProvider>().route({
+    method: 'GET',
+    url: '/increment-referral-link-click-count',
+    schema: {
+      description: 'Increment referral link click count',
+      tags: ['Referral link'],
+      querystring: querySchema,
+      response: {
+        200: z.object({
+          referral_link: z.object({
+            id: z.string(),
+            click_count: z.number(),
+          }),
+        }),
+        401: z.object({
+          message: z.string(),
+        }),
+        400: z.object({
+          message: z.string(),
+        }),
       },
     },
-    async (request, reply) => {
-      const { token, event_id } = z
-        .object({
-          token: z.string(),
-          event_id: z.string(),
-        })
-        .parse(request.query)
+    handler: async (request, reply) => {
+      const { token, event_id } = querySchema.parse(request.query)
 
       const result = await incrementReferralLinkCount({ token, event_id })
 
@@ -50,6 +51,6 @@ export async function incrementReferralLinkCountRoute(app: FastifyInstance) {
       return reply
         .status(200)
         .send({ referral_link: result.right.updatedReferralLink })
-    }
-  )
+    },
+  })
 }
