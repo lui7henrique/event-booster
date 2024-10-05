@@ -19,7 +19,7 @@ export async function getEventsRoutes(app: FastifyInstance) {
       onRequest: [verifyJwt],
     },
     async (request, reply) => {
-      const { host_id } = request.user as { host_id: string }
+      const { host_id } = request.user
 
       const result = await getEvents({ host_id })
 

@@ -16,7 +16,7 @@
 
 - [ ] **Refatorar Funções**
 
-  - [ ] Alterar o padrão `await login({ body })` para que os parâmetros sejam passados individualmente, melhorando a legibilidade e compreensão do código.
+  - [x] Alterar o padrão `await login({ body })` para que os parâmetros sejam passados individualmente, melhorando a legibilidade e compreensão do código.
 
 - [ ] **JWT Tipagem**
 

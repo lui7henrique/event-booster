@@ -44,7 +44,7 @@ export async function registerEventRoute(app: FastifyInstance) {
       },
     },
     async (request, reply) => {
-      const { host_id } = request.user as { host_id: string }
+      const { host_id } = request.user
 
       const body = z
         .object({
