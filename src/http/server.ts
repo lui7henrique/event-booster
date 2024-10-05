@@ -1,23 +1,29 @@
 import fastifyCors from '@fastify/cors'
+import fastifyJwt from '@fastify/jwt'
+import fastifyRateLimit from '@fastify/rate-limit'
+import fastifyRedis from '@fastify/redis'
 import fastifySwagger from '@fastify/swagger'
 import fastifySwaggerUi from '@fastify/swagger-ui'
-import fastifyJwt from '@fastify/jwt'
 import fastify from 'fastify'
 
-import { env } from '../env'
-import { ZodError } from 'zod'
+import {
+  jsonSchemaTransform,
+  serializerCompiler,
+  validatorCompiler,
+} from 'fastify-type-provider-zod'
 
-import { registerSubscriptionRoute } from './routes/register-subscription'
+import { ZodError } from 'zod'
+import { env } from '../env'
+
 import { generateReferralLinkRoute } from './routes/generate-referral-link'
+import { getEventRankingRoute } from './routes/get-event-ranking'
+import { getEventsRoutes } from './routes/get-events'
+import { getReferralLinkStatsRoute } from './routes/get-referral-link-stats'
+import { incrementReferralLinkCountRoute } from './routes/increment-referral-link-count'
+import { loginRoute } from './routes/login'
 import { registerEventRoute } from './routes/register-event'
 import { registerHostRoute } from './routes/register-host'
-import { loginRoute } from './routes/login'
-import { getEventsRoutes } from './routes/get-events'
-import { incrementReferralLinkCountRoute } from './routes/increment-referral-link-count'
-import { getReferralLinkStatsRoute } from './routes/get-referral-link-stats'
-import { getEventRankingRoute } from './routes/get-event-ranking'
-import fastifyRedis from '@fastify/redis'
-import fastifyRateLimit from '@fastify/rate-limit'
+import { registerSubscriptionRoute } from './routes/register-subscription'
 
 const app = fastify()
 
@@ -37,6 +43,9 @@ app.register(fastifyRateLimit, {
   max: 100,
   timeWindow: '1 min',
 })
+
+app.setValidatorCompiler(validatorCompiler)
+app.setSerializerCompiler(serializerCompiler)
 
 app.register(fastifySwagger, {
   openapi: {
@@ -60,6 +69,15 @@ app.register(fastifySwagger, {
         },
       },
     },
+  },
+  transform: schema => {
+    try {
+      return jsonSchemaTransform(schema)
+    } catch (err) {
+      console.error('Error transforming schema:', err)
+
+      return schema
+    }
   },
 })
 
