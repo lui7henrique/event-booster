@@ -3,64 +3,75 @@ import { verifyJwt } from '../hooks/verify-jwt'
 import { getEventRanking } from '@/app/functions/get-event-ranking'
 import { isLeft } from '@/core/either'
 import { isPast, parseISO } from 'date-fns'
+import { z } from 'zod'
+import type { ZodTypeProvider } from 'fastify-type-provider-zod'
 
 const FIFTEEN_MINUTES = 60 * 15
 const TWO_MONTHS = 60 * 60 * 24 * 30 * 2 // Seconds;Minutes;Hours;Days;Months
 
+const paramsSchema = z.object({
+  id: z.string().min(1, 'Event ID is required'),
+})
+
+const querySchema = z.object({
+  selected_date: z.string().optional().describe('Date to view ranking'),
+})
+
+const responseSchema = z.object({
+  ranking: z.array(
+    z.object({
+      subscription_count: z.number(),
+      id: z.string(),
+      token: z.string(),
+      click_count: z.number(),
+      email: z.string(),
+      created_at: z.date(),
+    })
+  ),
+})
+
 export async function getEventRankingRoute(app: FastifyInstance) {
-  app.get(
-    '/event/ranking/:id',
-    {
-      schema: {
-        description: 'Get referral links ranking of the event',
-        tags: ['Event'],
-        params: {
-          type: 'object',
-          properties: {
-            id: {
-              type: 'string',
-              description: 'ID of the event',
-            },
-          },
-          required: ['id'],
+  app.withTypeProvider<ZodTypeProvider>().route({
+    method: 'GET',
+    url: '/event/ranking/:id',
+    schema: {
+      description: 'Get referral links ranking of the event',
+      tags: ['Event'],
+      params: paramsSchema,
+      querystring: querySchema,
+      security: [
+        {
+          bearerAuth: [],
         },
-        querystring: {
-          type: 'object',
-          properties: {
-            selected_date: {
-              type: 'string',
-              description: 'Date to view ranking',
-            },
-          },
-        },
-        security: [
-          {
-            bearerAuth: [],
-          },
-        ],
+      ],
+      response: {
+        200: responseSchema,
+        400: z.object({
+          message: z.string(),
+        }),
       },
-      onRequest: [verifyJwt],
     },
-    async (request, reply) => {
-      const { id } = request.params as { id: string }
-      const { selected_date } = request.query as { selected_date?: string }
+    onRequest: [verifyJwt],
+    handler: async (request, reply) => {
+      const { id } = paramsSchema.parse(request.params)
+      const { selected_date } = querySchema.parse(request.query)
 
       const { redis } = app
       const cacheKey = `eventRanking:${id}-${selected_date}`
       const cachedResult = await redis.get(cacheKey)
 
       if (cachedResult) {
-        return reply
-          .status(200)
-          .send({ referralLinks: JSON.parse(cachedResult) })
+        return reply.status(200).send({ ranking: JSON.parse(cachedResult) })
       }
 
       const result = await getEventRanking({ event_id: id, selected_date })
 
       if (isLeft(result)) {
         const error = result.left
-
-        return reply.status(400).send({ message: error.message })
+        if (error.constructor.name === 'InvalidDateError') {
+          return reply.status(400).send({ message: error.message })
+        }
+        return reply.status(400).send({ message: 'An error occurred' })
       }
 
       const isDatePast = selected_date ? isPast(parseISO(selected_date)) : false
@@ -73,6 +84,6 @@ export async function getEventRankingRoute(app: FastifyInstance) {
       )
 
       return reply.status(200).send({ ranking: result.right.ranking })
-    }
-  )
+    },
+  })
 }
