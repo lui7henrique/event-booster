@@ -2,59 +2,64 @@ import { registerEvent } from '@/app/functions/register-event'
 import { isLeft } from '@/core/either'
 import { addDays, subDays } from 'date-fns'
 import type { FastifyInstance } from 'fastify'
+import type { ZodTypeProvider } from 'fastify-type-provider-zod'
 import { z } from 'zod'
 import { verifyJwt } from '../hooks/verify-jwt'
 
+const eventSchema = z.object({
+  title: z.string().min(1, 'Title is required').default('Unnamed Event'),
+  start_date: z
+    .string()
+    .datetime({ message: 'Start date must be in ISO 8601 format' })
+    .default(subDays(new Date(), 1).toISOString()),
+  end_date: z
+    .string()
+    .datetime({ message: 'End date must be in ISO 8601 format' })
+    .default(addDays(new Date(), 3).toISOString()),
+})
+
 export async function registerEventRoute(app: FastifyInstance) {
-  app.post(
-    '/event',
-    {
-      onRequest: [verifyJwt],
-      schema: {
-        description: 'Register event with date-time format',
-        tags: ['Event'],
-        body: {
-          type: 'object',
-          required: ['title', 'start_date', 'end_date'],
-          properties: {
-            title: {
-              type: 'string',
-              description: 'Title of the event',
-              default: 'Unnamed Event',
-            },
-            start_date: {
-              type: 'string',
-              format: 'date-time',
-              description: 'Start date and time of the event (ISO 8601 format)',
-              default: subDays(new Date(), 1).toISOString(),
-            },
-            end_date: {
-              type: 'string',
-              format: 'date-time',
-              description: 'End date and time of the event (ISO 8601 format)',
-              default: addDays(new Date(), 3).toISOString(),
-            },
-          },
+  app.withTypeProvider<ZodTypeProvider>().route({
+    method: 'POST',
+    url: '/event',
+    onRequest: [verifyJwt],
+    schema: {
+      description: 'Register event with date-time format',
+      tags: ['Event'],
+      body: eventSchema,
+      security: [
+        {
+          bearerAuth: [],
         },
-        security: [
-          {
-            bearerAuth: [],
-          },
-        ],
+      ],
+      response: {
+        201: z.object({
+          event: z.object({
+            id: z.string(),
+            title: z.string(),
+            start_date: z.date(),
+            end_date: z.date(),
+          }),
+        }),
+        400: z.object({
+          message: z.string(),
+        }),
+        409: z.object({
+          message: z.string(),
+        }),
       },
     },
-    async (request, reply) => {
+    handler: async (request, reply) => {
       const { host_id } = request.user
 
-      const body = z
-        .object({
-          title: z.string(),
-          start_date: z.string(),
-          end_date: z.string(),
-        })
-        .parse(request.body)
+      const { title, end_date, start_date } = eventSchema.parse(request.body)
 
-      const result = await registerEvent({ ...body, host_id })
+      const result = await registerEvent({
+        title,
+        start_date,
+        end_date,
+        host_id,
+      })
 
       if (isLeft(result)) {
         const error = result.left
@@ -70,6 +75,6 @@ export async function registerEventRoute(app: FastifyInstance) {
       }
 
       return reply.status(201).send({ event: result.right.event })
-    }
-  )
+    },
+  })
 }
