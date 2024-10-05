@@ -2,46 +2,47 @@ import { generateReferralLink } from '@/app/functions/generate-referral-link'
 import { isLeft } from '@/core/either'
 import type { FastifyInstance } from 'fastify'
 import { z } from 'zod'
+import type { ZodTypeProvider } from 'fastify-type-provider-zod'
+
+const generateReferralLinkSchema = z.object({
+  email: z.string().email('Invalid email format').default('john-doe@gmail.com'),
+  event_id: z.string().min(1, 'Event ID is required').default(''),
+})
 
 export async function generateReferralLinkRoute(app: FastifyInstance) {
-  app.post(
-    '/generate-referral-link',
-
-    {
-      schema: {
-        description: 'Generate event referral link',
-        tags: ['Referral link'],
-        body: {
-          type: 'object',
-          required: ['email', 'event_id'],
-          properties: {
-            email: {
-              type: 'string',
-              description: 'Email of the user',
-              default: 'john-doe@gmail.com',
-            },
-            event_id: {
-              type: 'string',
-              description: 'Id of the event',
-              default: '',
-            },
-          },
-        },
+  app.withTypeProvider<ZodTypeProvider>().route({
+    method: 'POST',
+    url: '/generate-referral-link',
+    schema: {
+      description: 'Generate event referral link',
+      tags: ['Referral link'],
+      body: generateReferralLinkSchema,
+      response: {
+        201: z.object({
+          referral_link: z.object({
+            email: z.string(),
+            event_id: z.string().nullable(),
+            referral_link: z.string(),
+            id: z.string(),
+            created_at: z.date(),
+            token: z.string(),
+            click_count: z.number(),
+            subscription_count: z.number(),
+            parent_id: z.string().nullable(),
+          }),
+        }),
+        400: z.object({
+          message: z.string().describe('Error occurred'),
+        }),
+        409: z.object({
+          message: z.string().describe('Referral link already exists'),
+        }),
       },
     },
+    handler: async (request, reply) => {
+      const { email, event_id } = generateReferralLinkSchema.parse(request.body)
 
-    async (request, reply) => {
-      const headers = z.object({
-        email: z.string().email(),
-        event_id: z.string(),
-      })
-
-      const { email, event_id } = headers.parse(request.body)
-
-      const result = await generateReferralLink({
-        email,
-        event_id,
-      })
+      const result = await generateReferralLink({ email, event_id })
 
       if (isLeft(result)) {
         const error = result.left
@@ -51,13 +52,13 @@ export async function generateReferralLinkRoute(app: FastifyInstance) {
             return reply.status(409).send({ message: error.message })
 
           default:
-            return reply.status(400).send()
+            return reply.status(400).send({ message: 'An error occurred' })
         }
       }
 
       return reply
         .status(201)
         .send({ referral_link: result.right.referralLink })
-    }
-  )
+    },
+  })
 }
