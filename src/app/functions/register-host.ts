@@ -1,11 +1,11 @@
 import { makeLeft, makeRight } from '@/core/either'
 import { db } from '@/db'
 import { schema } from '@/db/schema'
-import { hashPassword } from '@/http/utils/password'
-import { HostEmailAlreadyRegisteredError } from '../errors/host-email-already-registered'
-import { HashPasswordError } from '../errors/hash-password-error'
-import postgres from 'postgres'
 import { PgIntegrityConstraintViolation } from '@/db/utils/postgres-errors'
+import { hashPassword } from '@/http/utils/password'
+import postgres from 'postgres'
+import { HashPasswordError } from '../errors/hash-password-error'
+import { HostEmailAlreadyRegisteredError } from '../errors/host-email-already-registered'
 import { InternalServerError } from '../errors/internal-server-error'
 
 type RegisterHostInput = {
@@ -38,7 +38,6 @@ export async function registerHost({
       .returning()
 
     const { password: removedPassword, ...formattedHost } = host
-
     return makeRight({ host: formattedHost })
   } catch (error) {
     const isHostEmailAlreadyRegistered =
