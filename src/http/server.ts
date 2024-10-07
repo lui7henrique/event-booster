@@ -19,7 +19,7 @@ import { generateReferralLinkRoute } from './routes/generate-referral-link'
 import { getEventRankingRoute } from './routes/get-event-ranking'
 import { getEventsRoutes } from './routes/get-events'
 import { getReferralLinkStatsRoute } from './routes/get-referral-link-stats'
-import { incrementReferralLinkCountRoute } from './routes/increment-referral-link-count'
+import { incrementReferralClickCountRoute } from './routes/increment-referral-click-count'
 import { loginRoute } from './routes/login'
 import { registerEventRoute } from './routes/register-event'
 import { registerHostRoute } from './routes/register-host'
@@ -91,7 +91,7 @@ app.register(getEventRankingRoute)
 app.register(getEventsRoutes)
 app.register(registerHostRoute)
 app.register(generateReferralLinkRoute)
-app.register(incrementReferralLinkCountRoute)
+app.register(incrementReferralClickCountRoute)
 app.register(getReferralLinkStatsRoute)
 app.register(loginRoute)
 
