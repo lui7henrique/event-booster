@@ -32,9 +32,9 @@
     }
     ```
 
-- [ ] **Renomear Rota**
+- [x] **Renomear Rota**
 
-  - [ ] Renomear a rota `incrementReferralLinkCountRoute` para algo mais claro, como `incrementReferralLinkClickCountRoute`, já que o propósito é registrar cliques no link, não aumentar contagens de indicação.
+  - [x] Renomear a rota `incrementReferralLinkCountRoute` para algo mais claro, como `incrementReferralLinkClickCountRoute`, já que o propósito é registrar cliques no link, não aumentar contagens de indicação.
 
 - [ ] **Redis na Camada Correta**
 
@@ -45,9 +45,9 @@
 
 ### Funções
 
-- [ ] **Correções de Nome de Variáveis**
+- [x] **Correções de Nome de Variáveis**
 
-  - [ ] Substituir `const [_]` por `const [host]`, para maior clareza no código.
+  - [ X Substituir `const [_]` por `const [host]`, para maior clareza no código.
 
 - [ ] **Tratamento de Erros**
 

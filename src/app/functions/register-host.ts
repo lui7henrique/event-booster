@@ -18,7 +18,7 @@ export async function registerHost({
   try {
     const hashedPassword = await hashPassword(password)
 
-    const [_] = await db
+    const [host] = await db
       .insert(schema.hosts)
       .values({
         name,
@@ -27,9 +27,9 @@ export async function registerHost({
       })
       .returning()
 
-    const { password: _password, ...host } = _
+    const { password: removedPassword, ...formattedHost } = host
 
-    return makeRight({ host })
+    return makeRight({ host: formattedHost })
   } catch (err) {
     return makeLeft(new HostEmailAlreadyRegisteredError())
   }
