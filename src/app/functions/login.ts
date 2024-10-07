@@ -17,7 +17,6 @@ export async function login({ email, password }: LoginInput) {
       .select()
       .from(schema.hosts)
       .where(eq(schema.hosts.email, email))
-      .limit(1)
 
     if (!host) {
       return makeLeft(new InvalidEmailOrPassword())
