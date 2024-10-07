@@ -5,7 +5,8 @@ import { makeHost, makeRawHost } from '@/test/factories/make-host'
 import { login } from './login'
 import { hashPassword } from '@/http/utils/password'
 import { faker } from '@faker-js/faker'
-import { InvalidEmailOrPassword } from '../errors/invalid-email-or-password'
+import { InvalidEmailError } from '../errors/invalid-email-error'
+import { InvalidPasswordError } from '../errors/invalid-password-error'
 
 describe('login', () => {
   it('should be able to login', async () => {
@@ -28,7 +29,7 @@ describe('login', () => {
     const sut = await login({ email: host.email, password: host.password })
 
     expect(isLeft(sut)).toBe(true)
-    expect(unwrapEither(sut)).toBeInstanceOf(InvalidEmailOrPassword)
+    expect(unwrapEither(sut)).toBeInstanceOf(InvalidEmailError)
   })
 
   it('should not be able to login with invalid credentials', async () => {
@@ -36,6 +37,6 @@ describe('login', () => {
     const sut = await login({ email: host.email, password: host.password })
 
     expect(isLeft(sut)).toBe(true)
-    expect(unwrapEither(sut)).toBeInstanceOf(InvalidEmailOrPassword)
+    expect(unwrapEither(sut)).toBeInstanceOf(InvalidPasswordError)
   })
 })

@@ -3,8 +3,10 @@ import { db } from '@/db'
 import { schema } from '@/db/schema'
 import { comparePassword } from '@/http/utils/password'
 import { eq } from 'drizzle-orm'
-import { InvalidEmailOrPassword } from '../errors/invalid-email-or-password'
 import { ServerError } from '../errors/server-error'
+
+import { InvalidPasswordError } from '../errors/invalid-password-error'
+import { InvalidEmailError } from '../errors/invalid-email-error'
 
 type LoginInput = {
   email: string
@@ -19,13 +21,13 @@ export async function login({ email, password }: LoginInput) {
       .where(eq(schema.hosts.email, email))
 
     if (!host) {
-      return makeLeft(new InvalidEmailOrPassword())
+      return makeLeft(new InvalidEmailError())
     }
 
     const isPasswordValid = await comparePassword(password, host.password)
 
     if (!isPasswordValid) {
-      return makeLeft(new InvalidEmailOrPassword())
+      return makeLeft(new InvalidPasswordError())
     }
 
     return makeRight({ host })

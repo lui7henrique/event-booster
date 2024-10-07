@@ -65,9 +65,9 @@
 
   - [ ] Não usar `ServerError` como um `catch` global. O handler global já captura erros desconhecidos. Trate os erros conhecidos com `makeLeft`.
 
-- [ ] **Otimização da Query de Login**
+- [x] **Otimização da Query de Login**
 
-  - [ ] Remover o uso de `.limit(1)` na função de login, já que o e-mail é único.
+  - [x] Remover o uso de `.limit(1)` na função de login, já que o e-mail é único.
 
 - [ ] **Melhorar Testes**
 
