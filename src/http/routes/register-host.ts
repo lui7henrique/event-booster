@@ -45,6 +45,7 @@ export async function registerHostRoute(app: FastifyInstance) {
           switch (error.constructor.name) {
             case 'HostEmailAlreadyRegisteredError':
               return reply.status(409).send({ message: error.message })
+
             default:
               return reply.status(400).send()
           }
