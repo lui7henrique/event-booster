@@ -4,11 +4,11 @@ import { makeHost } from '@/test/factories/make-host'
 import { makeReferralLink } from '@/test/factories/make-referral-link'
 import { describe, expect, it } from 'vitest'
 import { ReferralLinkNotFound } from '../errors/referral-link-not-found'
-import { incrementReferralLinkCount } from './increment-referral-link-click-count'
+import { incrementReferralClickCount } from './increment-referral-click-count'
 
-describe('increment referral link click count', () => {
+describe('increment referral click count', () => {
   it('should be able to return an error if the referral link is not found', async () => {
-    const sut = await incrementReferralLinkCount({
+    const sut = await incrementReferralClickCount({
       token: 'nonexistent_token',
       event_id: 'event123',
     })
@@ -26,7 +26,7 @@ describe('increment referral link click count', () => {
       token: '',
     })
 
-    const sut = await incrementReferralLinkCount({
+    const sut = await incrementReferralClickCount({
       token: token,
       event_id: event.id,
     })

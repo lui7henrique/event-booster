@@ -5,15 +5,15 @@ import { and, eq, sql } from 'drizzle-orm'
 import { ReferralLinkNotFound } from '../errors/referral-link-not-found'
 import { ServerError } from '../errors/server-error'
 
-type IncrementReferralLinkCountInput = {
+type IncrementReferralClickCountInput = {
   token: string
   event_id: string
 }
 
-export async function incrementReferralLinkCount({
+export async function incrementReferralClickCount({
   event_id,
   token,
-}: IncrementReferralLinkCountInput) {
+}: IncrementReferralClickCountInput) {
   try {
     const [updatedReferralLink] = await db
       .update(schema.referral)
