@@ -69,9 +69,9 @@
 
   - [x] Remover o uso de `.limit(1)` na função de login, já que o e-mail é único.
 
-- [ ] **Melhorar Testes**
+- [x] **Melhorar Testes**
 
-  - [ ] No login, evite retornar o mesmo erro para e-mail e senha. Isso prejudica os testes ao dificultar a validação se o erro é realmente o esperado.
+  - [x] No login, evite retornar o mesmo erro para e-mail e senha. Isso prejudica os testes ao dificultar a validação se o erro é realmente o esperado.
 
 - [ ] **Consistência de Variáveis**
 
