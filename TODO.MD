@@ -10,11 +10,11 @@
 
 ### Rotas / HTTP
 
-- [ ] **Melhorar a Tipagem**
+- [x] **Melhorar a Tipagem**
 
-  - [ ] Usar o pacote `fastify-type-provider-zod` para facilitar a validação de entrada e saída nas rotas, reduzindo a necessidade de escrever manualmente as propriedades para o Swagger.
+  - [x] Usar o pacote `fastify-type-provider-zod` para facilitar a validação de entrada e saída nas rotas, reduzindo a necessidade de escrever manualmente as propriedades para o Swagger.
 
-- [ ] **Refatorar Funções**
+- [x] **Refatorar Funções**
 
   - [x] Alterar o padrão `await login({ body })` para que os parâmetros sejam passados individualmente, melhorando a legibilidade e compreensão do código.
 
