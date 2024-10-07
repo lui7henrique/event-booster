@@ -36,12 +36,12 @@
 
   - [x] Renomear a rota `incrementReferralLinkCountRoute` para algo mais claro, como `incrementReferralLinkClickCountRoute`, já que o propósito é registrar cliques no link, não aumentar contagens de indicação.
 
-- [ ] **Redis na Camada Correta**
+- [x] **Redis na Camada Correta**
 
-  - [ ] Mover a lógica de acesso ao Redis da camada HTTP para as funções, como é feito com o banco de dados. Isso ajuda a manter a coesão e clareza no código.
+  - [x] Mover a lógica de acesso ao Redis da camada HTTP para as funções, como é feito com o banco de dados. Isso ajuda a manter a coesão e clareza no código.
 
-- [ ] **Correção no Retorno**
-  - [ ] Na rota `getEventRankings`, revisar o retorno, pois atualmente está salvando e retornando `referralLinks`, mas a função deveria retornar rankings.
+- [x] **Correção no Retorno**
+  - [x] Na rota `getEventRankings`, revisar o retorno, pois atualmente está salvando e retornando `referralLinks`, mas a função deveria retornar rankings.
 
 ### Funções
 
