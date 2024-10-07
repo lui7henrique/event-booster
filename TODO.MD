@@ -49,13 +49,13 @@
 
   - [x] Substituir `const [_]` por `const [host]`, para maior clareza no código.
 
-- [ ] **Tratamento de Erros**
+- [x] **Tratamento de Erros**
 
-  - [ ] Refatorar o `catch` global da função `register-host` para capturar erros específicos, como erros de hash ou Postgres, evitando capturar todos os erros como `HostEmailAlreadyRegisteredError`.
+  - [x] Refatorar o `catch` global da função `register-host` para capturar erros específicos, como erros de hash ou Postgres, evitando capturar todos os erros como `HostEmailAlreadyRegisteredError`.
 
-- [ ] **Renomear Variável**
+- [x] **Renomear Variável**
 
-  - [ ] Na função `register-event`, renomear `isInvalidRangeDate` para algo mais descritivo, que indique a comparação de início e fim de datas.
+  - [x] Na função `register-event`, renomear `isInvalidRangeDate` para algo mais descritivo, que indique a comparação de início e fim de datas.
 
 - [ ] **Manipulação de Datas**
 

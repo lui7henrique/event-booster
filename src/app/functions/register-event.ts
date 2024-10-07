@@ -19,31 +19,37 @@ export async function registerEvent({
   host_id,
 }: RegisterEventInput) {
   try {
-    const isInvalidRangeDate =
+    const startDateIsAfterEndDate =
       new Date(start_date).getTime() > new Date(end_date).getTime()
 
-    if (isInvalidRangeDate) {
-      return makeLeft(new EventInvalidDateError())
+    if (startDateIsAfterEndDate) {
+      return makeLeft(
+        new EventInvalidDateError('Start date cannot be after end date.')
+      )
     }
 
     const isEventInPast = new Date(start_date).getTime() < new Date().getTime()
 
     if (isEventInPast) {
-      return makeLeft(new EventPastDateError())
+      return makeLeft(
+        new EventPastDateError('Event start date is in the past.')
+      )
     }
 
     const [event] = await db
       .insert(schema.events)
       .values({
+        title,
         start_date: new Date(start_date),
         end_date: new Date(end_date),
-        title,
         host_id,
       })
       .returning()
 
     return makeRight({ event })
   } catch (e) {
-    return makeLeft(new ServerError())
+    return makeLeft(
+      new ServerError('Failed to register the event due to a server error.')
+    )
   }
 }
