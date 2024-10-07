@@ -5,13 +5,13 @@ import { addDays, subDays } from 'date-fns'
 import type { InferInsertModel } from 'drizzle-orm'
 
 type Event = InferInsertModel<typeof schema.events>
-type Overrides = Partial<Event> & { host_id: string }
+type Overrides = Partial<Event> & { hostId: string }
 
 export function makeRawEvent(overrides: Overrides): Event {
   return {
     title: faker.commerce.productName(),
-    start_date: addDays(new Date(), 1),
-    end_date: addDays(new Date(), 3),
+    startDate: addDays(new Date(), 1),
+    endDate: addDays(new Date(), 3),
     ...overrides,
   }
 }
@@ -30,8 +30,8 @@ export async function makeActiveEvent(overrides: Overrides) {
     .insert(schema.events)
     .values({
       ...makeRawEvent(overrides),
-      start_date: subDays(new Date(), 1),
-      end_date: addDays(new Date(), 1),
+      startDate: subDays(new Date(), 1),
+      endDate: addDays(new Date(), 1),
     })
     .returning()
 

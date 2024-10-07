@@ -8,11 +8,11 @@ import { verifyJwt } from '../hooks/verify-jwt'
 
 const eventSchema = z.object({
   title: z.string().min(1, 'Title is required').default('Unnamed Event'),
-  start_date: z
+  startDate: z
     .string()
     .datetime({ message: 'Start date must be in ISO 8601 format' })
     .default(subDays(new Date(), 1).toISOString()),
-  end_date: z
+  endDate: z
     .string()
     .datetime({ message: 'End date must be in ISO 8601 format' })
     .default(addDays(new Date(), 3).toISOString()),
@@ -37,8 +37,8 @@ export async function registerEventRoute(app: FastifyInstance) {
           event: z.object({
             id: z.string(),
             title: z.string(),
-            start_date: z.date(),
-            end_date: z.date(),
+            startDate: z.date(),
+            endDate: z.date(),
           }),
         }),
         400: z.object({
@@ -51,14 +51,13 @@ export async function registerEventRoute(app: FastifyInstance) {
     },
     handler: async (request, reply) => {
       const { host_id } = request.user
-
-      const { title, end_date, start_date } = eventSchema.parse(request.body)
+      const { title, endDate, startDate } = eventSchema.parse(request.body)
 
       const result = await registerEvent({
         title,
-        start_date,
-        end_date,
-        host_id,
+        startDate: new Date(startDate),
+        endDate: new Date(endDate),
+        hostId: host_id,
       })
 
       if (isLeft(result)) {

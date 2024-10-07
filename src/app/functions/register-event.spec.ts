@@ -10,12 +10,10 @@ import { EventPastDateError } from '../errors/event-past-date-error'
 describe('register event', () => {
   it('should be able to register an event', async () => {
     const host = await makeHost()
-    const event = makeRawEvent({ host_id: host.id })
+    const event = makeRawEvent({ hostId: host.id })
 
     const sut = await registerEvent({
       ...event,
-      end_date: event.end_date.toISOString(),
-      start_date: event.start_date.toISOString(),
     })
 
     expect(isRight(sut)).toBe(true)
@@ -30,17 +28,15 @@ describe('register event', () => {
     const host = await makeHost()
 
     const event = makeRawEvent({
-      host_id: host.id,
+      hostId: host.id,
 
       // start date > end date
-      start_date: addDays(new Date(), 2),
-      end_date: addDays(new Date(), 1),
+      startDate: addDays(new Date(), 2),
+      endDate: addDays(new Date(), 1),
     })
 
     const sut = await registerEvent({
       ...event,
-      end_date: event.end_date.toISOString(),
-      start_date: event.start_date.toISOString(),
     })
 
     expect(isLeft(sut)).toBe(true)
@@ -52,14 +48,12 @@ describe('register event', () => {
 
     const pastDate = subDays(new Date(), 1)
     const event = makeRawEvent({
-      host_id: host.id,
-      start_date: pastDate,
+      hostId: host.id,
+      startDate: pastDate,
     })
 
     const sut = await registerEvent({
       ...event,
-      end_date: event.end_date.toISOString(),
-      start_date: event.start_date.toISOString(),
     })
 
     expect(isLeft(sut)).toBe(true)

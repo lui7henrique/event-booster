@@ -7,20 +7,21 @@ import { EventPastDateError } from '../errors/event-past-date-error'
 
 type RegisterEventInput = {
   title: string
-  start_date: string
-  end_date: string
-  host_id: string
+  startDate: Date
+  endDate: Date
+  hostId: string
 }
 
 export async function registerEvent({
   title,
-  start_date,
-  end_date,
-  host_id,
+  startDate,
+  endDate,
+  hostId,
 }: RegisterEventInput) {
+  const today = new Date()
+
   try {
-    const startDateIsAfterEndDate =
-      new Date(start_date).getTime() > new Date(end_date).getTime()
+    const startDateIsAfterEndDate = startDate.getTime() > endDate.getTime()
 
     if (startDateIsAfterEndDate) {
       return makeLeft(
@@ -28,7 +29,7 @@ export async function registerEvent({
       )
     }
 
-    const isEventInPast = new Date(start_date).getTime() < new Date().getTime()
+    const isEventInPast = startDate.getTime() < today.getTime()
 
     if (isEventInPast) {
       return makeLeft(
@@ -40,9 +41,9 @@ export async function registerEvent({
       .insert(schema.events)
       .values({
         title,
-        start_date: new Date(start_date),
-        end_date: new Date(end_date),
-        host_id,
+        startDate,
+        endDate,
+        hostId,
       })
       .returning()
 

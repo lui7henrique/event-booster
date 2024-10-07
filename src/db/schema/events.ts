@@ -9,10 +9,9 @@ export const events = pgTable('events', {
     .$defaultFn(() => generateUniqueId('event')),
 
   title: text('title').notNull(),
-  start_date: timestamp('start_date').notNull(),
-  end_date: timestamp('end_date').notNull(),
-
-  host_id: text('host_id')
+  startDate: timestamp('start_date').notNull(),
+  endDate: timestamp('end_date').notNull(),
+  hostId: text('host_id')
     .notNull()
     .references(() => hosts.id, {
       onDelete: 'cascade',
