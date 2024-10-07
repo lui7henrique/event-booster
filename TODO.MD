@@ -47,7 +47,7 @@
 
 - [x] **Correções de Nome de Variáveis**
 
-  - [ X Substituir `const [_]` por `const [host]`, para maior clareza no código.
+  - [x] Substituir `const [_]` por `const [host]`, para maior clareza no código.
 
 - [ ] **Tratamento de Erros**
 
