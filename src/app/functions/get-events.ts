@@ -5,15 +5,15 @@ import { ServerError } from '../errors/server-error'
 import { makeLeft, makeRight } from '@/core/either'
 
 type GetEventsInput = {
-  host_id: string
+  hostId: string
 }
 
-export async function getEvents({ host_id }: GetEventsInput) {
+export async function getEvents({ hostId }: GetEventsInput) {
   try {
     const events = await db
       .select()
       .from(schema.events)
-      .where(eq(schema.events.host_id, host_id))
+      .where(eq(schema.events.hostId, hostId))
 
     return makeRight({ events })
   } catch {

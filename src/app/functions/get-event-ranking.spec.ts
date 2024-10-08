@@ -23,27 +23,26 @@ const VALID_DATE = format(new Date(), 'MM/dd/yyyy')
 describe('get event ranking', () => {
   beforeAll(async () => {
     host = await makeHost()
-    event = await makeEvent({ host_id: host.id })
+    event = await makeEvent({ hostId: host.id })
     firstSubscription = await makeSubscription()
     firstReferral = await makeReferralLink({
       email: firstSubscription.email,
-      event_id: event.id,
+      eventId: event.id,
       token: '',
-      click_count: 10,
+      clickCount: 10,
     })
 
     await Promise.all(
       Array.from({ length: 5 }).map(
-        async () =>
-          await makeSubscription({ referral_link_id: firstReferral.id })
+        async () => await makeSubscription({ referralId: firstReferral.id })
       )
     )
   })
 
   it('should be able to return ranking', async () => {
     const sut = await getEventRanking({
-      event_id: event.id,
-      selected_date: VALID_DATE,
+      eventId: event.id,
+      selectedDate: VALID_DATE,
     })
 
     expect(isRight(sut)).toBe(true)
@@ -51,7 +50,7 @@ describe('get event ranking', () => {
 
   it('should not be able to return ranking when selected_date is missing', async () => {
     const sut = await getEventRanking({
-      event_id: event.id,
+      eventId: event.id,
     })
 
     expect(isLeft(sut)).toBe(true)
@@ -60,8 +59,8 @@ describe('get event ranking', () => {
 
   it('should not be able to return ranking when selected_date is invalid', async () => {
     const sut = await getEventRanking({
-      event_id: event.id,
-      selected_date: 'invalid',
+      eventId: event.id,
+      selectedDate: 'invalid',
     })
 
     expect(isLeft(sut)).toBe(true)
@@ -70,8 +69,8 @@ describe('get event ranking', () => {
 
   it('should not be able to return ranking when selected_date is in the future', async () => {
     const sut = await getEventRanking({
-      event_id: event.id,
-      selected_date: format(addDays(new Date(), 1), 'MM/dd/yyyy'),
+      eventId: event.id,
+      selectedDate: format(addDays(new Date(), 1), 'MM/dd/yyyy'),
     })
 
     expect(isLeft(sut)).toBe(true)
@@ -84,8 +83,8 @@ describe('get event ranking', () => {
     })
 
     const sut = await getEventRanking({
-      event_id: event.id,
-      selected_date: VALID_DATE,
+      eventId: event.id,
+      selectedDate: VALID_DATE,
     })
 
     expect(isLeft(sut)).toBe(true)

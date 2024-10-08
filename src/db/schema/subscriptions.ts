@@ -11,16 +11,15 @@ export const subscriptions = pgTable('subscriptions', {
     .$defaultFn(() => generateUniqueId('user')),
   name: text('name').notNull(),
   email: text('email').notNull(),
-  event_id: text('event_id').references(() => events.id),
+  eventId: text('event_id').references(() => events.id),
 
-  referral_link_id: text('referral_link_id').references(() => referral.id),
-
+  referralId: text('referral_id').references(() => referral.id),
   created_at: timestamp('created_at').notNull().defaultNow(),
 })
 
 export const subscriptionsRelations = relations(subscriptions, ({ one }) => ({
   referral_link: one(referral, {
-    fields: [subscriptions.referral_link_id],
+    fields: [subscriptions.referralId],
     references: [referral.id],
   }),
 }))

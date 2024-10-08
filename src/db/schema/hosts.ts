@@ -6,9 +6,8 @@ export const hosts = pgTable('hosts', {
   id: text('id')
     .primaryKey()
     .$defaultFn(() => generateUniqueId('host')),
-
   name: text('name').notNull(),
   email: varchar('email', { length: 255 }).notNull().unique(),
   password: text('password').notNull(),
-  created_at: timestamp('created_at').defaultNow(),
+  createdAt: timestamp('created_at').defaultNow(),
 })

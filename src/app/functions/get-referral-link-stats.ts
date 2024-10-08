@@ -7,45 +7,45 @@ import { ServerError } from '../errors/server-error'
 
 type GetReferralLinkInput = {
   token: string
-  event_id: string
+  eventId: string
 }
 
 type TotalSubscriptions = {
-  click_count: string
-  subscription_count: string
+  clickCount: string
+  subscriptionCount: string
 }
 
 export async function getReferralLinkStats({
-  event_id,
+  eventId,
   token,
 }: GetReferralLinkInput) {
   try {
-    const [referralLink] = await db
+    const [referral] = await db
       .select()
       .from(schema.referral)
       .where(
         and(
           eq(schema.referral.token, token),
-          eq(schema.referral.event_id, event_id)
+          eq(schema.referral.eventId, eventId)
         )
       )
       .execute()
 
-    if (!referralLink) {
+    if (!referral) {
       return makeLeft(new ReferralLinkNotFound())
     }
 
     const directConversionRate =
-      referralLink.click_count === 0
+      referral.clickCount === 0
         ? 0
-        : (referralLink.subscription_count / referralLink.click_count) * 100
+        : (referral.subscriptionCount / referral.clickCount) * 100
 
     const [totalSubscriptions] = await db.execute<TotalSubscriptions>(
       sql`
         WITH RECURSIVE referral_chain AS (
           SELECT id, parent_id, click_count, subscription_count
           FROM referral_links
-          WHERE id = ${referralLink.id}
+          WHERE id = ${referral.id}
     
           UNION ALL
     
@@ -59,14 +59,14 @@ export async function getReferralLinkStats({
     )
 
     const indirectConversionRate =
-      Number(totalSubscriptions.click_count) === 0
+      Number(totalSubscriptions.clickCount) === 0
         ? 0
-        : (Number(totalSubscriptions.subscription_count) /
-            Number(totalSubscriptions.click_count)) *
+        : (Number(totalSubscriptions.subscriptionCount) /
+            Number(totalSubscriptions.clickCount)) *
           100
 
     return makeRight({
-      referralLink,
+      referral,
       directConversionRate,
       indirectConversionRate,
     })
