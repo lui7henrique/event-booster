@@ -3,7 +3,7 @@ import { db } from '@/db'
 import { schema } from '@/db/schema'
 import type { FastifyRedis } from '@fastify/redis'
 import { isFuture, isPast, isSameDay, isValid, parseISO } from 'date-fns'
-import { and, eq, sql } from 'drizzle-orm'
+import { and, count, eq } from 'drizzle-orm'
 import { InvalidDateError } from '../errors/invalid-date'
 import { InvalidFutureDateError } from '../errors/invalid-future-date'
 import { ServerError } from '../errors/server-error'
@@ -49,9 +49,7 @@ export async function getEventRanking({
         click_count: schema.referral.clickCount,
         email: schema.referral.email,
         created_at: schema.referral.createdAt,
-        subscription_count: sql`COUNT(${schema.subscriptions.id})`.as(
-          'subscription_count'
-        ),
+        subscription_count: count(schema.subscriptions.id),
       })
       .from(schema.referral)
       .leftJoin(

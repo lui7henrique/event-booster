@@ -73,9 +73,9 @@
 
   - [x] No login, evite retornar o mesmo erro para e-mail e senha. Isso prejudica os testes ao dificultar a validação se o erro é realmente o esperado.
 
-- [ ] **Consistência de Variáveis**
+- [x] **Consistência de Variáveis**
 
-  - [ ] Manter um padrão de nomeação de variáveis internas (camelCase, kebab-case, etc.), independente de como os dados são enviados/recebidos pelo front-end.
+  - [x] Manter um padrão de nomeação de variáveis internas (camelCase, kebab-case, etc.), independente de como os dados são enviados/recebidos pelo front-end.
 
 - [ ] **Uso de `count` no Drizzle**
 
