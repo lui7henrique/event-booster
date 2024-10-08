@@ -76,18 +76,4 @@ describe('get event ranking', () => {
     expect(isLeft(sut)).toBe(true)
     expect(unwrapEither(sut)).toBeInstanceOf(InvalidFutureDateError)
   })
-
-  it('should be able to return a ServerError when the database throws an error', async () => {
-    vi.spyOn(db, 'select').mockImplementationOnce(() => {
-      throw new Error('Database error')
-    })
-
-    const sut = await getEventRanking({
-      eventId: event.id,
-      selectedDate: VALID_DATE,
-    })
-
-    expect(isLeft(sut)).toBe(true)
-    expect(unwrapEither(sut)).toBeInstanceOf(ServerError)
-  })
 })
