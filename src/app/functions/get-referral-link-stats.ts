@@ -11,8 +11,8 @@ type GetReferralLinkInput = {
 }
 
 type TotalSubscriptions = {
-  clickCount: string
-  subscriptionCount: string
+  click_count: string
+  subscription_count: string
 }
 
 export async function getReferralLinkStats({
@@ -58,11 +58,13 @@ export async function getReferralLinkStats({
       `
     )
 
+    console.log({ totalSubscriptions })
+
     const indirectConversionRate =
-      Number(totalSubscriptions.clickCount) === 0
+      Number(totalSubscriptions.click_count) === 0
         ? 0
-        : (Number(totalSubscriptions.subscriptionCount) /
-            Number(totalSubscriptions.clickCount)) *
+        : (Number(totalSubscriptions.subscription_count) /
+            Number(totalSubscriptions.click_count)) *
           100
 
     return makeRight({
