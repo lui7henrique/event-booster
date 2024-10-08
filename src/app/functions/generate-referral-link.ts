@@ -28,7 +28,6 @@ export async function generateReferralLink({
       .execute()
 
     if (existingReferralLink) {
-      console.log('aqui')
       return makeLeft(new ReferralLinkAlreadyExists())
     }
 
@@ -44,8 +43,6 @@ export async function generateReferralLink({
           eq(schema.subscriptions.eventId, eventId)
         )
       )
-
-    console.log({ url })
 
     const [referralLink] = await db
       .insert(schema.referral)

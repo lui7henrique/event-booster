@@ -86,8 +86,6 @@ describe('register subscription', () => {
       referralToken: referralLink.token,
     })
 
-    console.log({ sut })
-
     expect(isRight(sut)).toBe(true)
     expect(unwrapEither(sut)).toHaveProperty('subscription.eventId', event.id)
   })

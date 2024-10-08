@@ -6,7 +6,7 @@ import { z } from 'zod'
 
 const querySchema = z.object({
   token: z.string().min(1, 'Token is required'),
-  event_id: z.string().min(1, 'Event ID is required'),
+  eventId: z.string().min(1, 'Event ID is required'),
 })
 
 export async function incrementReferralClickCountRoute(app: FastifyInstance) {
@@ -17,25 +17,24 @@ export async function incrementReferralClickCountRoute(app: FastifyInstance) {
       description: 'Increment referral link click count',
       tags: ['Referral link'],
       querystring: querySchema,
-      response: {
-        200: z.object({
-          referral_link: z.object({
-            id: z.string(),
-            click_count: z.number(),
-          }),
-        }),
-        401: z.object({
-          message: z.string(),
-        }),
-        400: z.object({
-          message: z.string(),
-        }),
-      },
+      // response: {
+      //   200: z.object({
+      //     referral_link: z.object({
+      //       id: z.string(),
+      //       click_count: z.number(),
+      //     }),
+      //   }),
+      //   401: z.object({
+      //     message: z.string(),
+      //   }),
+      //   400: z.object({
+      //     message: z.string(),
+      //   }),
+      // },
     },
     handler: async (request, reply) => {
-      const { token, event_id } = querySchema.parse(request.query)
-
-      const result = await incrementReferralClickCount({ token, event_id })
+      const { token, eventId } = querySchema.parse(request.query)
+      const result = await incrementReferralClickCount({ token, eventId })
 
       if (isLeft(result)) {
         const error = result.left

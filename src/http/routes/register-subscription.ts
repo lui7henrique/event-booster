@@ -7,8 +7,8 @@ import { z } from 'zod'
 const schema = z.object({
   name: z.string().min(1, 'Name is required'),
   email: z.string().email('Invalid email format'),
-  event_id: z.string().min(1, 'Event ID is required'),
-  referral_link_token: z.string().optional(),
+  eventId: z.string().min(1, 'Event ID is required'),
+  referralToken: z.string().optional(),
 })
 
 export async function registerSubscriptionRoute(app: FastifyInstance) {
@@ -20,34 +20,36 @@ export async function registerSubscriptionRoute(app: FastifyInstance) {
         description: 'Register a subscription for an event',
         tags: ['Subscription'],
         body: schema,
-        response: {
-          201: z.object({
-            subscription: z.object({
-              id: z.string(),
-              name: z.string(),
-              email: z.string(),
-              event_id: z.string().nullable(),
-            }),
-          }),
-          400: z.object({
-            message: z.string(),
-          }),
-          409: z.object({
-            message: z.string(),
-          }),
-          404: z.object({
-            message: z.string(),
-          }),
-        },
+        // response: {
+        //   201: z.object({
+        //     subscription: z.object({
+        //       id: z.string(),
+        //       name: z.string(),
+        //       email: z.string(),
+        //       event_id: z.string().nullable(),
+        //     }),
+        //   }),
+        //   400: z.object({
+        //     message: z.string(),
+        //   }),
+        //   409: z.object({
+        //     message: z.string(),
+        //   }),
+        //   404: z.object({
+        //     message: z.string(),
+        //   }),
+        // },
       },
       handler: async (request, reply) => {
-        const { referral_link_token, event_id, name, email } = request.body
+        const { referralToken, eventId, name, email } = request.body
+
         const result = await registerSubscription({
           name,
           email,
-          event_id,
-          referral_link_token,
+          eventId,
+          referralToken,
         })
+
         if (isLeft(result)) {
           const error = result.left
           switch (error.constructor.name) {
@@ -61,9 +63,8 @@ export async function registerSubscriptionRoute(app: FastifyInstance) {
               return reply.status(400).send()
           }
         }
-        return reply
-          .status(201)
-          .send({ subscription: result.right.subscription })
+
+        return reply.status(201).send({ ...result.right })
       },
     })
   })

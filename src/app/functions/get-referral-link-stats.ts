@@ -58,8 +58,6 @@ export async function getReferralLinkStats({
       `
     )
 
-    console.log({ totalSubscriptions })
-
     const indirectConversionRate =
       Number(totalSubscriptions.click_count) === 0
         ? 0

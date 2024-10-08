@@ -6,11 +6,11 @@ import { z } from 'zod'
 import type { ZodTypeProvider } from 'fastify-type-provider-zod'
 
 const params = z.object({
-  id: z.string().min(1, 'Event ID is required'),
+  eventId: z.string().min(1, 'Event ID is required'),
 })
 
 const query = z.object({
-  selected_date: z.string().optional().describe('Date to view ranking'),
+  selectedDate: z.string().optional().describe('Date to view ranking'),
 })
 
 const response = z.object({
@@ -29,7 +29,7 @@ const response = z.object({
 export async function getEventRankingRoute(app: FastifyInstance) {
   app.withTypeProvider<ZodTypeProvider>().route({
     method: 'GET',
-    url: '/event/ranking/:id',
+    url: '/event/ranking/:eventId',
     schema: {
       description: 'Get referral links ranking of the event',
       tags: ['Event'],
@@ -40,23 +40,23 @@ export async function getEventRankingRoute(app: FastifyInstance) {
           bearerAuth: [],
         },
       ],
-      response: {
-        200: response,
-        400: z.object({
-          message: z.string(),
-        }),
-      },
+      // response: {
+      //   200: response,
+      //   400: z.object({
+      //     message: z.string(),
+      //   }),
+      // },
     },
     onRequest: [verifyJwt],
     handler: async (request, reply) => {
-      const { id } = params.parse(request.params)
-      const { selected_date } = query.parse(request.query)
+      const { eventId } = params.parse(request.params)
+      const { selectedDate } = query.parse(request.query)
 
       const { redis } = app
 
       const result = await getEventRanking({
-        event_id: id,
-        selected_date,
+        eventId,
+        selectedDate,
         redis,
       })
 
