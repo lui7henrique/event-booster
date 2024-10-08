@@ -6,7 +6,6 @@ import { z } from 'zod'
 
 const loginSchema = z.object({
   email: z.string().email('Invalid email format').default('vercel@vercel.com'),
-
   password: z
     .string()
     .min(6, 'Password must be at least 6 characters long')
@@ -46,8 +45,7 @@ export async function loginRoute(app: FastifyInstance) {
         }
       }
 
-      const token = app.jwt.sign({ host_id: result.right.host.id })
-
+      const token = app.jwt.sign({ hostId: result.right.host.id })
       return reply.status(200).send({ token })
     },
   })

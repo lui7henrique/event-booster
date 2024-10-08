@@ -26,7 +26,7 @@
     declare module "@fastify/jwt" {
       export interface FastifyJWT {
         user: {
-          host_id: string;
+          hostId: string;
         };
       }
     }
