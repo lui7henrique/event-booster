@@ -10,7 +10,7 @@ describe('increment referral click count', () => {
   it('should be able to return an error if the referral link is not found', async () => {
     const sut = await incrementReferralClickCount({
       token: 'nonexistent_token',
-      event_id: 'event123',
+      eventId: 'event123',
     })
 
     expect(isLeft(sut)).toBe(true)
@@ -19,16 +19,16 @@ describe('increment referral click count', () => {
 
   it('should be able to increment click count', async () => {
     const host = await makeHost()
-    const event = await makeActiveEvent({ host_id: host.id })
+    const event = await makeActiveEvent({ hostId: host.id })
 
     const { token } = await makeReferralLink({
-      event_id: event.id,
+      eventId: event.id,
       token: '',
     })
 
     const sut = await incrementReferralClickCount({
       token: token,
-      event_id: event.id,
+      eventId: event.id,
     })
 
     expect(isRight(sut)).toBe(true)
