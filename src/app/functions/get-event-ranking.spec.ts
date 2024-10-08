@@ -1,6 +1,6 @@
 import { isLeft, isRight, unwrapEither } from '@/core/either'
 import type { schema } from '@/db/schema'
-import { makeEvent } from '@/test/factories/make-event'
+import { makeActiveEvent, makeEvent } from '@/test/factories/make-event'
 import { makeHost } from '@/test/factories/make-host'
 import { makeReferralLink } from '@/test/factories/make-referral-link'
 import { makeSubscription } from '@/test/factories/make-subscription'
@@ -10,8 +10,6 @@ import { beforeAll, describe, expect, it, vi } from 'vitest'
 import { InvalidDateError } from '../errors/invalid-date'
 import { InvalidFutureDateError } from '../errors/invalid-future-date'
 import { getEventRanking } from './get-event-ranking'
-import { db } from '@/db'
-import { ServerError } from '../errors/server-error'
 
 let host: InferSelectModel<typeof schema.hosts>
 let event: InferSelectModel<typeof schema.events>
@@ -23,7 +21,7 @@ const VALID_DATE = format(new Date(), 'MM/dd/yyyy')
 describe('get event ranking', () => {
   beforeAll(async () => {
     host = await makeHost()
-    event = await makeEvent({ hostId: host.id })
+    event = await makeActiveEvent({ hostId: host.id })
     firstSubscription = await makeSubscription()
     firstReferral = await makeReferralLink({
       email: firstSubscription.email,

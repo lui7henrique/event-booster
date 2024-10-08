@@ -31,7 +31,7 @@ export async function makeActiveEvent(overrides: Overrides) {
     .values({
       ...makeRawEvent(overrides),
       startDate: subDays(new Date(), 1),
-      endDate: addDays(new Date(), 1),
+      endDate: addDays(new Date(), 3),
     })
     .returning()
 
