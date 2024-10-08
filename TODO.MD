@@ -77,16 +77,16 @@
 
   - [x] Manter um padrão de nomeação de variáveis internas (camelCase, kebab-case, etc.), independente de como os dados são enviados/recebidos pelo front-end.
 
-- [ ] **Uso de `count` no Drizzle**
+- [x] **Uso de `count` no Drizzle**
 
-  - [ ] Na função `get-event-ranking`, usar o método `count` do Drizzle para calcular `subscription_count`:
+  - [x] Na função `get-event-ranking`, usar o método `count` do Drizzle para calcular `subscription_count`:
     ```typescript
     subscription_count: count(schema.subscriptions.id);
     ```
 
-- [ ] **Remover `execute()` Desnecessário**
+- [x] **Remover `execute()` Desnecessário**
 
-  - [ ] Verificar se o uso de `.execute()` no final da query é realmente necessário e remover se não for.
+  - [x] Verificar se o uso de `.execute()` no final da query é realmente necessário e remover se não for.
 
 - [ ] **Uso do `mapWith` no Drizzle**
 

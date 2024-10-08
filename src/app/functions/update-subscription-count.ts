@@ -7,11 +7,9 @@ export async function updateSubscriptionCount(referralId: string) {
     .select({ count: count() })
     .from(schema.subscriptions)
     .where(eq(schema.subscriptions.referralId, referralId))
-    .execute()
 
   await db
     .update(schema.referral)
     .set({ subscriptionCount: subscriptionCount.count })
     .where(eq(schema.referral.id, referralId))
-    .execute()
 }

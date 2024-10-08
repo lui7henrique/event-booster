@@ -32,7 +32,6 @@ export async function registerSubscription({
           eq(schema.subscriptions.eventId, eventId)
         )
       )
-      .execute()
 
     if (existingSubscription) {
       return makeLeft(new EmailAlreadySubscribedError())

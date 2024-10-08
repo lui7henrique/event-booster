@@ -25,7 +25,6 @@ export async function generateReferralLink({
           eq(schema.referral.eventId, eventId)
         )
       )
-      .execute()
 
     if (existingReferralLink) {
       return makeLeft(new ReferralLinkAlreadyExists())
@@ -54,7 +53,6 @@ export async function generateReferralLink({
         parentId: subscription.referralId || null,
       })
       .returning()
-      .execute()
 
     return makeRight({ referralLink })
   } catch (err) {

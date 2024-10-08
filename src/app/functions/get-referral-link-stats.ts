@@ -29,7 +29,6 @@ export async function getReferralLinkStats({
           eq(schema.referral.eventId, eventId)
         )
       )
-      .execute()
 
     if (!referral) {
       return makeLeft(new ReferralLinkNotFound())

@@ -58,7 +58,6 @@ export async function getEventRanking({
       )
       .where(and(eq(schema.referral.eventId, eventId)))
       .groupBy(schema.referral.id)
-      .execute()
 
     const formatted = referralLinks
       .map(link => ({
