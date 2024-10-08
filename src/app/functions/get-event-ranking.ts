@@ -59,14 +59,9 @@ export async function getEventRanking({
       .where(and(eq(schema.referral.eventId, eventId)))
       .groupBy(schema.referral.id)
 
-    const formatted = referralLinks
-      .map(link => ({
-        ...link,
-        subscription_count: Number(link.subscription_count),
-      }))
-      .filter(referral =>
-        isSameDay(referral.created_at, new Date(selectedDate))
-      )
+    const formatted = referralLinks.filter(referral =>
+      isSameDay(referral.created_at, new Date(selectedDate))
+    )
 
     const isDatePast = selectedDate ? isPast(parseISO(selectedDate)) : false
 

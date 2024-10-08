@@ -88,9 +88,11 @@
 
   - [x] Verificar se o uso de `.execute()` no final da query é realmente necessário e remover se não for.
 
-- [ ] **Uso do `mapWith` no Drizzle**
+- [x] **Uso do `mapWith` no Drizzle**
 
-  - [ ] Evitar o uso de `Number(link.subscription_count)` e usar o `.mapWith` do Drizzle para a conversão de valores:
+  - Não foi preciso, pois usando o método count() do `drizzle`, por padrão retorna um número.
+
+  - [x] Evitar o uso de `Number(link.subscription_count)` e usar o `.mapWith` do Drizzle para a conversão de valores:
     ```typescript
     subscription_count: sql < number > "COUNT()".mapWith(Number);
     ```
