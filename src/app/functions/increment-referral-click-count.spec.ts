@@ -33,7 +33,7 @@ describe('increment referral click count', () => {
 
     expect(isRight(sut)).toBe(true)
     expect(unwrapEither(sut)).toHaveProperty(
-      'updatedReferralLink.click_count',
+      'updatedReferralLink.clickCount',
       1
     )
   })
