@@ -1,15 +1,11 @@
 import { db } from '@/db'
 import { schema } from '@/db/schema'
-import { count, eq } from 'drizzle-orm'
+import { referral } from '@/db/schema/referral'
+import { count, eq, sql } from 'drizzle-orm'
 
 export async function updateSubscriptionCount(referralId: string) {
-  const [subscriptionCount] = await db
-    .select({ count: count() })
-    .from(schema.subscriptions)
-    .where(eq(schema.subscriptions.referralId, referralId))
-
   await db
     .update(schema.referral)
-    .set({ subscriptionCount: subscriptionCount.count })
+    .set({ subscriptionCount: sql`${referral.subscriptionCount} + 1` })
     .where(eq(schema.referral.id, referralId))
 }
