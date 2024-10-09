@@ -8,12 +8,12 @@ import { ServerError } from '../errors/server-error'
 
 type GenerateReferralLinkInput = {
   email: string
-  event_id: string
+  eventId: string
 }
 
 export async function generateReferralLink({
   email,
-  event_id,
+  eventId,
 }: GenerateReferralLinkInput) {
   try {
     const [existingReferralLink] = await db
@@ -22,18 +22,16 @@ export async function generateReferralLink({
       .where(
         and(
           eq(schema.referral.email, email),
-          eq(schema.referral.event_id, event_id)
+          eq(schema.referral.eventId, eventId)
         )
       )
-      .execute()
 
     if (existingReferralLink) {
       return makeLeft(new ReferralLinkAlreadyExists())
     }
 
     const token = randomBytes(16).toString('hex')
-    const baseUrl = process.env.BASE_URL
-    const url = `${baseUrl}/referral?token=${token}&event_id=${event_id}`
+    const url = `${process.env.BASE_URL}/referral?token=${token}&eventId=${eventId}`
 
     const [subscription] = await db
       .select()
@@ -41,7 +39,7 @@ export async function generateReferralLink({
       .where(
         and(
           eq(schema.subscriptions.email, email),
-          eq(schema.subscriptions.event_id, event_id)
+          eq(schema.subscriptions.eventId, eventId)
         )
       )
 
@@ -49,13 +47,12 @@ export async function generateReferralLink({
       .insert(schema.referral)
       .values({
         email,
-        event_id,
-        referral_link: url,
+        eventId,
+        link: url,
         token: token,
-        parent_id: subscription.referral_link_id || null,
+        parentId: subscription.referralId || null,
       })
       .returning()
-      .execute()
 
     return makeRight({ referralLink })
   } catch (err) {

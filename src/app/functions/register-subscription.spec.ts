@@ -16,10 +16,10 @@ import { makeHost } from '@/test/factories/make-host'
 describe('register subscription', () => {
   it('should be able to register subscription', async () => {
     const host = await makeHost()
-    const event = await makeActiveEvent({ host_id: host.id })
+    const event = await makeActiveEvent({ hostId: host.id })
     const { name, email } = makeRawSubscription()
 
-    const sut = await registerSubscription({ name, email, event_id: event.id })
+    const sut = await registerSubscription({ name, email, eventId: event.id })
 
     expect(isRight(sut)).toBe(true)
     expect(unwrapEither(sut)).toEqual({
@@ -31,12 +31,12 @@ describe('register subscription', () => {
 
   it('should not be able to register subscription twice', async () => {
     const host = await makeHost()
-    const event = await makeActiveEvent({ host_id: host.id })
+    const event = await makeActiveEvent({ hostId: host.id })
     const { email, name } = await makeSubscription({
-      event_id: event.id,
+      eventId: event.id,
     })
 
-    const sut = await registerSubscription({ name, email, event_id: event.id })
+    const sut = await registerSubscription({ name, email, eventId: event.id })
 
     expect(isLeft(sut)).toBe(true)
     expect(unwrapEither(sut)).toBeInstanceOf(EmailAlreadySubscribedError)
@@ -45,16 +45,16 @@ describe('register subscription', () => {
   it('should not be able to register subscription out of the dates', async () => {
     const host = await makeHost()
     const event = await makeEvent({
-      start_date: addDays(new Date(), 10),
-      end_date: addDays(new Date(), 15),
-      host_id: host.id,
+      startDate: addDays(new Date(), 10),
+      endDate: addDays(new Date(), 15),
+      hostId: host.id,
     })
 
     const { email, name } = makeRawSubscription({
-      event_id: event.id,
+      eventId: event.id,
     })
 
-    const sut = await registerSubscription({ name, email, event_id: event.id })
+    const sut = await registerSubscription({ name, email, eventId: event.id })
 
     expect(isLeft(sut)).toBe(true)
     expect(unwrapEither(sut)).toBeInstanceOf(EventDateError)
@@ -62,7 +62,7 @@ describe('register subscription', () => {
 
   it('should not be able to register subscription with invalid event', async () => {
     const { email, name } = makeRawSubscription()
-    const sut = await registerSubscription({ name, email, event_id: 'invalid' })
+    const sut = await registerSubscription({ name, email, eventId: 'invalid' })
 
     expect(isLeft(sut)).toBe(true)
     expect(unwrapEither(sut)).toBeInstanceOf(EventNotFoundError)
@@ -71,23 +71,22 @@ describe('register subscription', () => {
   it('should be able to register subscription with a valid referral link token', async () => {
     const host = await makeHost()
     const event = await makeActiveEvent({
-      host_id: host.id,
+      hostId: host.id,
     })
     const { name, email } = makeRawSubscription()
-
     const referralLink = await makeReferralLink({
       token: 'valid-token',
-      event_id: event.id,
+      eventId: event.id,
     })
 
     const sut = await registerSubscription({
       name,
       email,
-      event_id: event.id,
-      referral_link_token: referralLink.token,
+      eventId: event.id,
+      referralToken: referralLink.token,
     })
 
     expect(isRight(sut)).toBe(true)
-    expect(unwrapEither(sut)).toHaveProperty('subscription.event_id', event.id)
+    expect(unwrapEither(sut)).toHaveProperty('subscription.eventId', event.id)
   })
 })

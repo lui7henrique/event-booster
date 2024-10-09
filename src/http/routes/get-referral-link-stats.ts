@@ -6,7 +6,7 @@ import { z } from 'zod'
 
 const querySchema = z.object({
   token: z.string().min(1, 'Token is required'),
-  event_id: z.string().min(1, 'Event ID is required'),
+  eventId: z.string().min(1, 'Event ID is required'),
 })
 
 export async function getReferralLinkStatsRoute(app: FastifyInstance) {
@@ -17,34 +17,33 @@ export async function getReferralLinkStatsRoute(app: FastifyInstance) {
       description: 'Retrieve referral link statistics',
       tags: ['Referral link'],
       querystring: querySchema,
-      response: {
-        200: z.object({
-          referralLink: z.object({
-            token: z.string(),
-            event_id: z.string().nullable(),
-            id: z.string(),
-            email: z.string(),
-            created_at: z.date(),
-            referral_link: z.string(),
-            click_count: z.number(),
-            subscription_count: z.number(),
-            parent_id: z.string().nullable(),
-          }),
-          directConversionRate: z.number(),
-          indirectConversionRate: z.number(),
-        }),
-        401: z.object({
-          message: z.string().describe('Invalid or non-existent referral link'),
-        }),
-        400: z.object({
-          message: z.string().describe('Invalid request data'),
-        }),
-      },
+      // response: {
+      //   200: z.object({
+      //     referralLink: z.object({
+      //       token: z.string(),
+      //       event_id: z.string().nullable(),
+      //       id: z.string(),
+      //       email: z.string(),
+      //       created_at: z.date(),
+      //       referral_link: z.string(),
+      //       click_count: z.number(),
+      //       subscription_count: z.number(),
+      //       parent_id: z.string().nullable(),
+      //     }),
+      //     directConversionRate: z.number(),
+      //     indirectConversionRate: z.number(),
+      //   }),
+      //   401: z.object({
+      //     message: z.string().describe('Invalid or non-existent referral link'),
+      //   }),
+      //   400: z.object({
+      //     message: z.string().describe('Invalid request data'),
+      //   }),
+      // },
     },
     handler: async (request, reply) => {
-      const { token, event_id } = querySchema.parse(request.query)
-
-      const result = await getReferralLinkStats({ token, event_id })
+      const { token, eventId } = querySchema.parse(request.query)
+      const result = await getReferralLinkStats({ token, eventId })
 
       if (isLeft(result)) {
         const error = result.left
@@ -57,11 +56,11 @@ export async function getReferralLinkStatsRoute(app: FastifyInstance) {
         }
       }
 
-      const { referralLink, directConversionRate, indirectConversionRate } =
+      const { referral, directConversionRate, indirectConversionRate } =
         result.right
 
       return reply.status(200).send({
-        referralLink,
+        referral,
         directConversionRate,
         indirectConversionRate,
       })

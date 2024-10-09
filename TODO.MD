@@ -26,7 +26,7 @@
     declare module "@fastify/jwt" {
       export interface FastifyJWT {
         user: {
-          host_id: string;
+          hostId: string;
         };
       }
     }
@@ -73,24 +73,26 @@
 
   - [x] No login, evite retornar o mesmo erro para e-mail e senha. Isso prejudica os testes ao dificultar a validação se o erro é realmente o esperado.
 
-- [ ] **Consistência de Variáveis**
+- [x] **Consistência de Variáveis**
 
-  - [ ] Manter um padrão de nomeação de variáveis internas (camelCase, kebab-case, etc.), independente de como os dados são enviados/recebidos pelo front-end.
+  - [x] Manter um padrão de nomeação de variáveis internas (camelCase, kebab-case, etc.), independente de como os dados são enviados/recebidos pelo front-end.
 
-- [ ] **Uso de `count` no Drizzle**
+- [x] **Uso de `count` no Drizzle**
 
-  - [ ] Na função `get-event-ranking`, usar o método `count` do Drizzle para calcular `subscription_count`:
+  - [x] Na função `get-event-ranking`, usar o método `count` do Drizzle para calcular `subscription_count`:
     ```typescript
     subscription_count: count(schema.subscriptions.id);
     ```
 
-- [ ] **Remover `execute()` Desnecessário**
+- [x] **Remover `execute()` Desnecessário**
 
-  - [ ] Verificar se o uso de `.execute()` no final da query é realmente necessário e remover se não for.
+  - [x] Verificar se o uso de `.execute()` no final da query é realmente necessário e remover se não for.
 
-- [ ] **Uso do `mapWith` no Drizzle**
+- [x] **Uso do `mapWith` no Drizzle**
 
-  - [ ] Evitar o uso de `Number(link.subscription_count)` e usar o `.mapWith` do Drizzle para a conversão de valores:
+  - Não foi preciso, pois usando o método count() do `drizzle`, por padrão retorna um número.
+
+  - [x] Evitar o uso de `Number(link.subscription_count)` e usar o `.mapWith` do Drizzle para a conversão de valores:
     ```typescript
     subscription_count: sql < number > "COUNT()".mapWith(Number);
     ```

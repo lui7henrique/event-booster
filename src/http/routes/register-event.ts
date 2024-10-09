@@ -32,32 +32,32 @@ export async function registerEventRoute(app: FastifyInstance) {
           bearerAuth: [],
         },
       ],
-      response: {
-        201: z.object({
-          event: z.object({
-            id: z.string(),
-            title: z.string(),
-            startDate: z.date(),
-            endDate: z.date(),
-          }),
-        }),
-        400: z.object({
-          message: z.string(),
-        }),
-        409: z.object({
-          message: z.string(),
-        }),
-      },
+      // response: {
+      //   201: z.object({
+      //     event: z.object({
+      //       id: z.string(),
+      //       title: z.string(),
+      //       startDate: z.date(),
+      //       endDate: z.date(),
+      //     }),
+      //   }),
+      //   400: z.object({
+      //     message: z.string(),
+      //   }),
+      //   409: z.object({
+      //     message: z.string(),
+      //   }),
+      // },
     },
     handler: async (request, reply) => {
-      const { host_id } = request.user
+      const { hostId } = request.user
       const { title, endDate, startDate } = eventSchema.parse(request.body)
 
       const result = await registerEvent({
         title,
         startDate: new Date(startDate),
         endDate: new Date(endDate),
-        hostId: host_id,
+        hostId: hostId,
       })
 
       if (isLeft(result)) {

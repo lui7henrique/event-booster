@@ -6,22 +6,22 @@ import { ReferralLinkNotFound } from '../errors/referral-link-not-found'
 import { ServerError } from '../errors/server-error'
 
 type IncrementReferralClickCountInput = {
+  eventId: string
   token: string
-  event_id: string
 }
 
 export async function incrementReferralClickCount({
-  event_id,
+  eventId,
   token,
 }: IncrementReferralClickCountInput) {
   try {
     const [updatedReferralLink] = await db
       .update(schema.referral)
-      .set({ click_count: sql`COALESCE(click_count, 0) + 1` })
+      .set({ clickCount: sql`COALESCE(click_count, 0) + 1` })
       .where(
         and(
           eq(schema.referral.token, token),
-          eq(schema.referral.event_id, event_id)
+          eq(schema.referral.eventId, eventId)
         )
       )
       .returning()

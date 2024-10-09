@@ -15,28 +15,28 @@ let event: InferSelectModel<typeof schema.events>
 describe('get referral link stats', () => {
   beforeAll(async () => {
     host = await makeHost()
-    event = await makeActiveEvent({ host_id: host.id })
+    event = await makeActiveEvent({ hostId: host.id })
   })
 
   it('should not be able to return if referral link is not found', async () => {
     const token = 'nonexistent_token'
-    const sut = await getReferralLinkStats({ token, event_id: event.id })
+    const sut = await getReferralLinkStats({ token, eventId: event.id })
 
     expect(isLeft(sut)).toBe(true)
     expect(unwrapEither(sut)).toBeInstanceOf(ReferralLinkNotFound)
   })
 
   it('should be able to calculates direct conversion rate correctly', async () => {
-    const event = await makeActiveEvent({ host_id: host.id })
+    const event = await makeActiveEvent({ hostId: host.id })
 
     const { token } = await makeReferralLink({
-      event_id: event.id,
-      click_count: 100,
-      subscription_count: 20,
+      eventId: event.id,
+      clickCount: 100,
+      subscriptionCount: 20,
       token: 'token',
     })
 
-    const sut = await getReferralLinkStats({ token, event_id: event.id })
+    const sut = await getReferralLinkStats({ token, eventId: event.id })
 
     expect(isRight(sut)).toBe(true)
     expect(unwrapEither(sut)).toHaveProperty('directConversionRate', 20)
@@ -44,23 +44,23 @@ describe('get referral link stats', () => {
 
   it('should be able to calculates indirect conversion rate correctly', async () => {
     const parentLink = await makeReferralLink({
-      event_id: event.id,
-      click_count: 50,
-      subscription_count: 10,
+      eventId: event.id,
+      clickCount: 50,
+      subscriptionCount: 10,
       token: 'token-1',
     })
 
     const childLink = await makeReferralLink({
-      event_id: event.id,
-      parent_id: parentLink.id,
-      click_count: 150,
-      subscription_count: 30,
+      eventId: event.id,
+      parentId: parentLink.id,
+      clickCount: 150,
+      subscriptionCount: 30,
       token: 'token-2',
     })
 
     const sut = await getReferralLinkStats({
       token: childLink.token,
-      event_id: event.id,
+      eventId: event.id,
     })
 
     expect(isRight(sut)).toBe(true)
@@ -69,13 +69,13 @@ describe('get referral link stats', () => {
 
   it('should be able to avoids division by zero in conversion rate calculations', async () => {
     const { token } = await makeReferralLink({
-      event_id: event.id,
-      click_count: 0,
-      subscription_count: 0,
+      eventId: event.id,
+      clickCount: 0,
+      subscriptionCount: 0,
       token: 'token',
     })
 
-    const sut = await getReferralLinkStats({ token, event_id: event.id })
+    const sut = await getReferralLinkStats({ token, eventId: event.id })
 
     expect(unwrapEither(sut)).toHaveProperty('directConversionRate', 0)
 

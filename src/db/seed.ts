@@ -23,12 +23,12 @@ async function main() {
 
   const createEvent = () => ({
     title: faker.company.catchPhrase(),
-    start_date: faker.date.past(),
-    end_date: addDays(
+    startDate: faker.date.past(),
+    endDate: addDays(
       faker.date.future(),
       faker.number.int({ min: 1, max: 14 })
     ),
-    host_id: host.id,
+    hostId: host.id,
   })
 
   const events = Array.from({ length: 10 }).map(() => createEvent())

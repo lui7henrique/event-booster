@@ -45,8 +45,7 @@ export async function loginRoute(app: FastifyInstance) {
         }
       }
 
-      const token = app.jwt.sign({ host_id: result.right.host.id })
-
+      const token = app.jwt.sign({ hostId: result.right.host.id })
       return reply.status(200).send({ token })
     },
   })

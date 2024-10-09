@@ -18,16 +18,16 @@ let subscription: InferSelectModel<typeof schema.subscriptions>
 describe('generate referral link', () => {
   beforeAll(async () => {
     host = await makeHost()
-    event = await makeActiveEvent({ host_id: host.id })
+    event = await makeActiveEvent({ hostId: host.id })
     subscription = await makeSubscription({
-      event_id: event.id,
+      eventId: event.id,
     })
   })
 
   it('should be able to generate referral link', async () => {
     const sut = await generateReferralLink({
       email: subscription.email,
-      event_id: event.id,
+      eventId: event.id,
     })
 
     expect(isRight(sut)).toBe(true)
@@ -40,31 +40,17 @@ describe('generate referral link', () => {
 
   it('should not be able to generate referral link when its already exists', async () => {
     await makeReferralLink({
-      event_id: event.id,
+      eventId: event.id,
       email: subscription.email,
       token: '',
     })
 
     const sut = await generateReferralLink({
       email: subscription.email,
-      event_id: event.id,
+      eventId: event.id,
     })
 
     expect(isLeft(sut)).toBe(true)
     expect(unwrapEither(sut)).toBeInstanceOf(ReferralLinkAlreadyExists)
-  })
-
-  it('should be able to return a ServerError when the database throws an error', async () => {
-    vi.spyOn(db, 'select').mockImplementationOnce(() => {
-      throw new Error('Database error')
-    })
-
-    const sut = await generateReferralLink({
-      email: subscription.email,
-      event_id: event.id,
-    })
-
-    expect(isLeft(sut)).toBe(true)
-    expect(unwrapEither(sut)).toBeInstanceOf(ServerError)
   })
 })

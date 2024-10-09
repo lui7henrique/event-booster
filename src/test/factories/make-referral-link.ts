@@ -8,7 +8,8 @@ export function makeRawReferralLink(
 ): InferInsertModel<typeof schema.referral> {
   return {
     email: faker.internet.email(),
-    referral_link: faker.internet.url(),
+    link: faker.internet.url(),
+    token: 'token', // TODO: TROCAR
     ...overrides,
   }
 }

@@ -12,15 +12,15 @@ import { updateSubscriptionCount } from './update-subscription-count'
 type RegisterSubscriptionInput = {
   name: string
   email: string
-  event_id: string
-  referral_link_token?: string | null
+  eventId: string
+  referralToken?: string | null
 }
 
 export async function registerSubscription({
   name,
   email,
-  event_id,
-  referral_link_token,
+  eventId,
+  referralToken,
 }: RegisterSubscriptionInput) {
   try {
     const [existingSubscription] = await db
@@ -29,17 +29,16 @@ export async function registerSubscription({
       .where(
         and(
           eq(schema.subscriptions.email, email),
-          eq(schema.subscriptions.event_id, event_id)
+          eq(schema.subscriptions.eventId, eventId)
         )
       )
-      .execute()
 
     if (existingSubscription) {
       return makeLeft(new EmailAlreadySubscribedError())
     }
 
     const event = await db.query.events.findFirst({
-      where: eq(schema.events.id, event_id),
+      where: eq(schema.events.id, eventId),
     })
 
     if (!event) {
@@ -47,28 +46,28 @@ export async function registerSubscription({
     }
 
     const isValidDate = isWithinInterval(new Date(), {
-      start: new Date(event.start_date),
-      end: new Date(event.end_date),
+      start: new Date(event.startDate),
+      end: new Date(event.endDate),
     })
 
     if (isValidDate) {
-      if (referral_link_token) {
-        const [referralLink] = await db
+      if (referralToken) {
+        const [referral] = await db
           .select()
           .from(schema.referral)
-          .where(and(eq(schema.referral.token, referral_link_token)))
+          .where(eq(schema.referral.token, referralToken))
 
         const [subscription] = await db
           .insert(schema.subscriptions)
           .values({
             email,
             name,
-            event_id,
-            referral_link_id: referralLink.id,
+            eventId,
+            referralId: referral.id,
           })
           .returning()
 
-        await updateSubscriptionCount(referralLink.id)
+        await updateSubscriptionCount(referral.id)
 
         return makeRight({ subscription })
       }
@@ -78,7 +77,7 @@ export async function registerSubscription({
         .values({
           email,
           name,
-          event_id,
+          eventId,
         })
         .returning()
 
