@@ -1,0 +1,1 @@
+ALTER TABLE "referral_links" ADD CONSTRAINT "referral_links_token_unique" UNIQUE("token");

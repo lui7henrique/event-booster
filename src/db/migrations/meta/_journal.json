@@ -162,6 +162,13 @@
       "when": 1728428316360,
       "tag": "0022_elite_multiple_man",
       "breakpoints": true
+    },
+    {
+      "idx": 23,
+      "version": "7",
+      "when": 1728511650560,
+      "tag": "0023_worthless_richard_fisk",
+      "breakpoints": true
     }
   ]
 }

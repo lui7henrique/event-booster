@@ -12,7 +12,7 @@ export const referral = pgTable('referral_links', {
   email: text('email').notNull(),
   eventId: text('event_id').references(() => events.id),
   link: text('link').notNull(),
-  token: text('token').notNull(),
+  token: text('token').notNull().unique(),
   clickCount: integer('click_count').default(0).notNull(),
   subscriptionCount: integer('subscription_count').default(0).notNull(),
   parentId: text('parent_id').references((): AnyPgColumn => referral.id),
