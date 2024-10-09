@@ -3,7 +3,7 @@ import { db } from '@/db'
 import { schema } from '@/db/schema'
 import type { FastifyRedis } from '@fastify/redis'
 import { isFuture, isPast, isSameDay, isValid, parseISO } from 'date-fns'
-import { and, count, eq } from 'drizzle-orm'
+import { and, asc, count, desc, eq } from 'drizzle-orm'
 import { InvalidDateError } from '../errors/invalid-date'
 import { InvalidFutureDateError } from '../errors/invalid-future-date'
 import { ServerError } from '../errors/server-error'
@@ -42,7 +42,7 @@ export async function getEventRanking({
       return makeLeft(new InvalidFutureDateError())
     }
 
-    const referralLinks = await db
+    const ranking = await db
       .select({
         id: schema.referral.id,
         token: schema.referral.token,
@@ -58,22 +58,19 @@ export async function getEventRanking({
       )
       .where(and(eq(schema.referral.eventId, eventId)))
       .groupBy(schema.referral.id)
-
-    const formatted = referralLinks.filter(referral =>
-      isSameDay(referral.created_at, new Date(selectedDate))
-    )
+      .orderBy(ranking => desc(ranking.subscription_count))
 
     const isDatePast = selectedDate ? isPast(parseISO(selectedDate)) : false
 
     await redis?.set(
       cacheKey,
-      JSON.stringify(formatted),
+      JSON.stringify(ranking),
       'EX',
       isDatePast ? TWO_MONTHS : FIFTEEN_MINUTES
     )
 
     return makeRight({
-      ranking: formatted,
+      ranking,
     })
   } catch {
     return makeLeft(new ServerError())

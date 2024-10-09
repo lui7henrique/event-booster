@@ -10,11 +10,10 @@ import { beforeAll, describe, expect, it, vi } from 'vitest'
 import { InvalidDateError } from '../errors/invalid-date'
 import { InvalidFutureDateError } from '../errors/invalid-future-date'
 import { getEventRanking } from './get-event-ranking'
+import { faker } from '@faker-js/faker'
 
 let host: InferSelectModel<typeof schema.hosts>
 let event: InferSelectModel<typeof schema.events>
-let firstSubscription: InferSelectModel<typeof schema.subscriptions>
-let firstReferral: InferSelectModel<typeof schema.referral>
 
 const VALID_DATE = format(new Date(), 'MM/dd/yyyy')
 
@@ -22,18 +21,32 @@ describe('get event ranking', () => {
   beforeAll(async () => {
     host = await makeHost()
     event = await makeActiveEvent({ hostId: host.id })
-    firstSubscription = await makeSubscription()
-    firstReferral = await makeReferralLink({
-      email: firstSubscription.email,
-      eventId: event.id,
-      token: '',
-      clickCount: 10,
-    })
 
     await Promise.all(
-      Array.from({ length: 5 }).map(
-        async () => await makeSubscription({ referralId: firstReferral.id })
-      )
+      Array.from({ length: 5 }).map(async (_, index) => {
+        const subscription = await makeSubscription()
+        const clickCount = faker.number.int({ min: 1, max: 10 })
+
+        const referral = await makeReferralLink({
+          email: subscription.email,
+          eventId: event.id,
+          token: `${index}`,
+          clickCount: clickCount,
+        })
+
+        const referredSubscriptions = faker.number.int({
+          min: 1,
+          max: clickCount,
+        })
+
+        await Promise.all(
+          Array.from({
+            length: referredSubscriptions,
+          }).map(
+            async () => await makeSubscription({ referralId: referral.id })
+          )
+        )
+      })
     )
   })
 
@@ -44,6 +57,27 @@ describe('get event ranking', () => {
     })
 
     expect(isRight(sut)).toBe(true)
+  })
+
+  it('should be able to return ranking ordered by subscription count', async () => {
+    const sut = await getEventRanking({
+      eventId: event.id,
+      selectedDate: VALID_DATE,
+    })
+
+    expect(isRight(sut)).toBe(true)
+
+    const subscriptionCounts = sut.right?.ranking.map(
+      (item: { subscription_count: number }) => item.subscription_count
+    )
+
+    const isOrdered = subscriptionCounts.every(
+      (value: number, index: number, array: number[]) => {
+        return index === 0 || array[index - 1] >= value
+      }
+    )
+
+    expect(isOrdered).toBe(true)
   })
 
   it('should not be able to return ranking when selected_date is missing', async () => {
