@@ -7,11 +7,9 @@ export const events = pgTable('events', {
   id: text('id')
     .primaryKey()
     .$defaultFn(() => generateUniqueId('event')),
-
   title: text('title').notNull(),
   startDate: timestamp('start_date').notNull(),
   endDate: timestamp('end_date').notNull(),
-
   hostId: text('host_id')
     .notNull()
     .references(() => hosts.id, {
