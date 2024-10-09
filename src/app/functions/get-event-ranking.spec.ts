@@ -45,7 +45,7 @@ describe('get event ranking', () => {
             async () =>
               await makeSubscription({
                 referralId: referral.id,
-                created_at: faker.date.between({
+                createdAt: faker.date.between({
                   from: event.startDate,
                   to: event.endDate,
                 }),

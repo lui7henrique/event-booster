@@ -57,7 +57,7 @@ export async function getEventRanking({
         and(
           eq(schema.referral.eventId, eventId),
           eq(
-            sql`DATE(${schema.subscriptions.created_at})`,
+            sql`DATE(${schema.subscriptions.createdAt})`,
             sql`DATE(${selectedDate.toISOString()})`
           )
         )
