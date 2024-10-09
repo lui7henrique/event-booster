@@ -17,7 +17,7 @@ export async function incrementReferralClickCount({
   try {
     const [updatedReferralLink] = await db
       .update(schema.referral)
-      .set({ clickCount: sql`COALESCE(click_count, 0) + 1` })
+      .set({ clickCount: sql`click_count + 1` })
       .where(
         and(
           eq(schema.referral.token, token),

@@ -20,7 +20,6 @@ describe('increment referral click count', () => {
   it('should be able to increment click count', async () => {
     const host = await makeHost()
     const event = await makeActiveEvent({ hostId: host.id })
-
     const { token } = await makeReferralLink({
       eventId: event.id,
       token: '',
