@@ -5,7 +5,7 @@ import { and, eq, sql } from 'drizzle-orm'
 import { ReferralLinkNotFound } from '../errors/referral-link-not-found'
 import { ServerError } from '../errors/server-error'
 
-type GetReferralLinkInput = {
+type GetReferralInput = {
   token: string
   eventId: string
 }
@@ -15,10 +15,7 @@ type TotalSubscriptions = {
   subscription_count: string
 }
 
-export async function getReferralLinkStats({
-  eventId,
-  token,
-}: GetReferralLinkInput) {
+export async function getReferralStats({ eventId, token }: GetReferralInput) {
   try {
     const [referral] = await db
       .select()

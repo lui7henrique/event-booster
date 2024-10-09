@@ -1,18 +1,18 @@
 import { beforeAll, describe, expect, it } from 'vitest'
 
 import { isLeft, isRight, unwrapEither } from '@/core/either'
-import { makeActiveEvent } from '@/test/factories/make-event'
-import { makeReferralLink } from '@/test/factories/make-referral-link'
-import { ReferralLinkNotFound } from '../errors/referral-link-not-found'
-import { getReferralLinkStats } from './get-referral-link-stats'
-import { makeHost } from '@/test/factories/make-host'
-import type { InferSelectModel } from 'drizzle-orm'
 import type { schema } from '@/db/schema'
+import { makeActiveEvent } from '@/test/factories/make-event'
+import { makeHost } from '@/test/factories/make-host'
+import { makeReferralLink } from '@/test/factories/make-referral-link'
+import type { InferSelectModel } from 'drizzle-orm'
+import { ReferralLinkNotFound } from '../errors/referral-link-not-found'
+import { getReferralStats } from './get-referral-stats'
 
 let host: InferSelectModel<typeof schema.hosts>
 let event: InferSelectModel<typeof schema.events>
 
-describe('get referral link stats', () => {
+describe('get referral stats', () => {
   beforeAll(async () => {
     host = await makeHost()
     event = await makeActiveEvent({ hostId: host.id })
@@ -20,7 +20,7 @@ describe('get referral link stats', () => {
 
   it('should not be able to return if referral link is not found', async () => {
     const token = 'nonexistent_token'
-    const sut = await getReferralLinkStats({ token, eventId: event.id })
+    const sut = await getReferralStats({ token, eventId: event.id })
 
     expect(isLeft(sut)).toBe(true)
     expect(unwrapEither(sut)).toBeInstanceOf(ReferralLinkNotFound)
@@ -36,7 +36,7 @@ describe('get referral link stats', () => {
       token: 'token',
     })
 
-    const sut = await getReferralLinkStats({ token, eventId: event.id })
+    const sut = await getReferralStats({ token, eventId: event.id })
 
     expect(isRight(sut)).toBe(true)
     expect(unwrapEither(sut)).toHaveProperty('directConversionRate', 20)
@@ -58,7 +58,7 @@ describe('get referral link stats', () => {
       token: 'token-2',
     })
 
-    const sut = await getReferralLinkStats({
+    const sut = await getReferralStats({
       token: childLink.token,
       eventId: event.id,
     })
@@ -75,7 +75,7 @@ describe('get referral link stats', () => {
       token: 'token',
     })
 
-    const sut = await getReferralLinkStats({ token, eventId: event.id })
+    const sut = await getReferralStats({ token, eventId: event.id })
 
     expect(unwrapEither(sut)).toHaveProperty('directConversionRate', 0)
 
