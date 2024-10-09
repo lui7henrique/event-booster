@@ -15,7 +15,7 @@ import {
 import { ZodError } from 'zod'
 import { env } from '../env'
 
-import { generateReferralLinkRoute } from './routes/generate-referral-link'
+import { generateReferralRoute } from './routes/generate-referral'
 import { getEventRankingRoute } from './routes/get-event-ranking'
 import { getEventsRoutes } from './routes/get-events'
 import { getReferralStatsRoute } from './routes/get-referral-stats'
@@ -91,7 +91,7 @@ app.register(registerHostRoute)
 app.register(getEventRankingRoute)
 app.register(getEventsRoutes)
 app.register(getReferralStatsRoute)
-app.register(generateReferralLinkRoute)
+app.register(generateReferralRoute)
 app.register(incrementReferralClickCountRoute)
 app.register(loginRoute)
 

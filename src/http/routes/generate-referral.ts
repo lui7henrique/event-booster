@@ -15,7 +15,7 @@ const generateReferralSchema = z.object({
 export async function generateReferralRoute(app: FastifyInstance) {
   app.withTypeProvider<ZodTypeProvider>().route({
     method: 'POST',
-    url: '/generate-referral-link',
+    url: '/generate-referral',
     schema: {
       description: 'Generate event referral link',
       tags: ['Referral link'],

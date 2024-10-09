@@ -14,18 +14,16 @@ const query = z.object({
   selectedDate: z.string().optional().describe('Date to view ranking'),
 })
 
-const response = z.object({
-  ranking: z.array(
-    z.object({
-      subscription_count: z.number(),
-      id: z.string(),
-      token: z.string(),
-      click_count: z.number(),
-      email: z.string(),
-      created_at: z.date(),
-    })
-  ),
-})
+const ranking = z.array(
+  z.object({
+    id: z.string(),
+    token: z.string(),
+    email: z.string(),
+    click_count: z.number(),
+    subscription_count: z.number(),
+    created_at: z.date(),
+  })
+)
 
 export async function getEventRankingRoute(app: FastifyInstance) {
   app.withTypeProvider<ZodTypeProvider>().route({
@@ -41,12 +39,20 @@ export async function getEventRankingRoute(app: FastifyInstance) {
           bearerAuth: [],
         },
       ],
-      // response: {
-      //   200: response,
-      //   400: z.object({
-      //     message: z.string(),
-      //   }),
-      // },
+      response: {
+        200: z
+          .object({
+            ranking: ranking,
+          })
+          .describe('Successful response with an array of referral rankings.'),
+        400: z
+          .object({
+            message: z.string(),
+          })
+          .describe(
+            'Bad request response indicating that the input parameters were invalid or missing, or an error occurred in processing the request.'
+          ),
+      },
     },
     onRequest: [verifyJwt],
     handler: async (request, reply) => {
