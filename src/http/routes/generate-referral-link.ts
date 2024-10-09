@@ -18,27 +18,27 @@ export async function generateReferralLinkRoute(app: FastifyInstance) {
       description: 'Generate event referral link',
       tags: ['Referral link'],
       body: generateReferralLinkSchema,
-      response: {
-        201: z.object({
-          // referral_link: z.object({
-          //   email: z.string(),
-          //   event_id: z.string().nullable(),
-          //   referral_link: z.string(),
-          //   id: z.string(),
-          //   created_at: z.date(),
-          //   token: z.string(),
-          //   click_count: z.number(),
-          //   subscription_count: z.number(),
-          //   parent_id: z.string().nullable(),
-          // }),
-        }),
-        400: z.object({
-          message: z.string().describe('Error occurred'),
-        }),
-        409: z.object({
-          message: z.string().describe('Referral link already exists'),
-        }),
-      },
+      // response: {
+      //   201: z.object({
+      //     // referral_link: z.object({
+      //     //   email: z.string(),
+      //     //   event_id: z.string().nullable(),
+      //     //   referral_link: z.string(),
+      //     //   id: z.string(),
+      //     //   created_at: z.date(),
+      //     //   token: z.string(),
+      //     //   click_count: z.number(),
+      //     //   subscription_count: z.number(),
+      //     //   parent_id: z.string().nullable(),
+      //     // }),
+      //   }),
+      //   400: z.object({
+      //     message: z.string().describe('Error occurred'),
+      //   }),
+      //   409: z.object({
+      //     message: z.string().describe('Referral link already exists'),
+      //   }),
+      // },
     },
     handler: async (request, reply) => {
       const { email, eventId } = generateReferralLinkSchema.parse(request.body)

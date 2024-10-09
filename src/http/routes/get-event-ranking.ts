@@ -4,6 +4,7 @@ import { getEventRanking } from '@/app/functions/get-event-ranking'
 import { isLeft } from '@/core/either'
 import { z } from 'zod'
 import type { ZodTypeProvider } from 'fastify-type-provider-zod'
+import { parseISO } from 'date-fns'
 
 const params = z.object({
   eventId: z.string().min(1, 'Event ID is required'),
@@ -56,7 +57,7 @@ export async function getEventRankingRoute(app: FastifyInstance) {
 
       const result = await getEventRanking({
         eventId,
-        selectedDate,
+        selectedDate: selectedDate ? parseISO(selectedDate) : new Date(),
         redis,
       })
 

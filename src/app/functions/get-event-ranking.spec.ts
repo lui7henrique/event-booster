@@ -1,13 +1,12 @@
 import { isLeft, isRight, unwrapEither } from '@/core/either'
 import type { schema } from '@/db/schema'
-import { makeActiveEvent, makeEvent } from '@/test/factories/make-event'
+import { makeActiveEvent } from '@/test/factories/make-event'
 import { makeHost } from '@/test/factories/make-host'
 import { makeReferralLink } from '@/test/factories/make-referral-link'
 import { makeSubscription } from '@/test/factories/make-subscription'
-import { addDays, format } from 'date-fns'
+import { addDays } from 'date-fns'
 import type { InferSelectModel } from 'drizzle-orm'
 import { beforeAll, describe, expect, it, vi } from 'vitest'
-import { InvalidDateError } from '../errors/invalid-date'
 import { InvalidFutureDateError } from '../errors/invalid-future-date'
 import { getEventRanking } from './get-event-ranking'
 import { faker } from '@faker-js/faker'
@@ -15,7 +14,7 @@ import { faker } from '@faker-js/faker'
 let host: InferSelectModel<typeof schema.hosts>
 let event: InferSelectModel<typeof schema.events>
 
-const VALID_DATE = format(new Date(), 'MM/dd/yyyy')
+const VALID_DATE = new Date()
 
 describe('get event ranking', () => {
   beforeAll(async () => {
@@ -87,29 +86,10 @@ describe('get event ranking', () => {
     expect(isOrdered).toBe(true)
   })
 
-  it('should not be able to return ranking when selected_date is missing', async () => {
-    const sut = await getEventRanking({
-      eventId: event.id,
-    })
-
-    expect(isLeft(sut)).toBe(true)
-    expect(unwrapEither(sut)).toBeInstanceOf(InvalidDateError)
-  })
-
-  it('should not be able to return ranking when selected_date is invalid', async () => {
-    const sut = await getEventRanking({
-      eventId: event.id,
-      selectedDate: 'invalid',
-    })
-
-    expect(isLeft(sut)).toBe(true)
-    expect(unwrapEither(sut)).toBeInstanceOf(InvalidDateError)
-  })
-
   it('should not be able to return ranking when selected_date is in the future', async () => {
     const sut = await getEventRanking({
       eventId: event.id,
-      selectedDate: format(addDays(new Date(), 1), 'MM/dd/yyyy'),
+      selectedDate: addDays(new Date(), 1),
     })
 
     expect(isLeft(sut)).toBe(true)

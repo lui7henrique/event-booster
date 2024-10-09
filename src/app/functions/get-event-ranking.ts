@@ -14,7 +14,7 @@ const TWO_MONTHS = 60 * 60 * 24 * 30 * 2 // Seconds;Minutes;Hours;Days;Months
 
 type GetEventRankingInput = {
   eventId: string
-  selectedDate?: string
+  selectedDate: Date
   redis?: FastifyRedis
 }
 
@@ -31,15 +31,11 @@ export async function getEventRanking({
   }
 
   try {
-    if (!selectedDate) {
+    if (!isValid(selectedDate)) {
       return makeLeft(new InvalidDateError())
     }
 
-    if (!isValid(new Date(selectedDate))) {
-      return makeLeft(new InvalidDateError())
-    }
-
-    if (isFuture(new Date(selectedDate))) {
+    if (isFuture(selectedDate)) {
       return makeLeft(new InvalidFutureDateError())
     }
 
@@ -62,14 +58,14 @@ export async function getEventRanking({
           eq(schema.referral.eventId, eventId),
           eq(
             sql`DATE(${schema.subscriptions.created_at})`,
-            sql`DATE(${selectedDate})`
+            sql`DATE(${selectedDate.toISOString()})`
           )
         )
       )
       .groupBy(schema.referral.id)
       .orderBy(ranking => desc(ranking.subscription_count))
 
-    const isDatePast = selectedDate ? isPast(parseISO(selectedDate)) : false
+    const isDatePast = selectedDate ? isPast(selectedDate) : false
 
     await redis?.set(
       cacheKey,
@@ -81,7 +77,8 @@ export async function getEventRanking({
     return makeRight({
       ranking,
     })
-  } catch {
+  } catch (e) {
+    console.log({ e })
     return makeLeft(new ServerError())
   }
 }
