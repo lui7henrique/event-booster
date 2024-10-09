@@ -23,26 +23,30 @@ export async function registerSubscription({
   referralToken,
 }: RegisterSubscriptionInput) {
   try {
-    const [existingSubscription] = await db
-      .select()
-      .from(schema.subscriptions)
-      .where(
+    const result = await db
+      .select({
+        event: {
+          startDate: schema.events.startDate,
+          endDate: schema.events.endDate,
+          id: schema.events.id,
+        },
+        existingSubscription: schema.subscriptions.id,
+      })
+      .from(schema.events)
+      .leftJoin(
+        schema.subscriptions,
         and(
+          eq(schema.subscriptions.eventId, schema.events.id),
           eq(schema.subscriptions.email, email),
           eq(schema.subscriptions.eventId, eventId)
         )
       )
+      .where(eq(schema.events.id, eventId))
+
+    const { event, existingSubscription } = result[0]
 
     if (existingSubscription) {
       return makeLeft(new EmailAlreadySubscribedError())
-    }
-
-    const event = await db.query.events.findFirst({
-      where: eq(schema.events.id, eventId),
-    })
-
-    if (!event) {
-      return makeLeft(new EventNotFoundError())
     }
 
     const isValidDate = isWithinInterval(new Date(), {
@@ -85,7 +89,13 @@ export async function registerSubscription({
     }
 
     return makeLeft(new EventDateError())
-  } catch (err) {
+  } catch (error) {
+    if (error instanceof TypeError) {
+      if (error.message === 'Right side of assignment cannot be destructured') {
+        return makeLeft(new EventNotFoundError())
+      }
+    }
+
     return makeLeft(new ServerError())
   }
 }
