@@ -17,29 +17,6 @@ export async function getReferralLinkStatsRoute(app: FastifyInstance) {
       description: 'Retrieve referral link statistics',
       tags: ['Referral link'],
       querystring: querySchema,
-      // response: {
-      //   200: z.object({
-      //     referralLink: z.object({
-      //       token: z.string(),
-      //       event_id: z.string().nullable(),
-      //       id: z.string(),
-      //       email: z.string(),
-      //       created_at: z.date(),
-      //       referral_link: z.string(),
-      //       click_count: z.number(),
-      //       subscription_count: z.number(),
-      //       parent_id: z.string().nullable(),
-      //     }),
-      //     directConversionRate: z.number(),
-      //     indirectConversionRate: z.number(),
-      //   }),
-      //   401: z.object({
-      //     message: z.string().describe('Invalid or non-existent referral link'),
-      //   }),
-      //   400: z.object({
-      //     message: z.string().describe('Invalid request data'),
-      //   }),
-      // },
     },
     handler: async (request, reply) => {
       const { token, eventId } = querySchema.parse(request.query)

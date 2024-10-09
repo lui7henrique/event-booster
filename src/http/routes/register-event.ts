@@ -10,12 +10,10 @@ const eventSchema = z.object({
   title: z.string().min(1, 'Title is required').default('Unnamed Event'),
   startDate: z
     .string()
-    .datetime({ message: 'Start date must be in ISO 8601 format' })
-    .default(subDays(new Date(), 1).toISOString()),
+    .datetime({ message: 'Start date must be in ISO 8601 format' }),
   endDate: z
     .string()
-    .datetime({ message: 'End date must be in ISO 8601 format' })
-    .default(addDays(new Date(), 3).toISOString()),
+    .datetime({ message: 'End date must be in ISO 8601 format' }),
 })
 
 export async function registerEventRoute(app: FastifyInstance) {
@@ -32,22 +30,6 @@ export async function registerEventRoute(app: FastifyInstance) {
           bearerAuth: [],
         },
       ],
-      // response: {
-      //   201: z.object({
-      //     event: z.object({
-      //       id: z.string(),
-      //       title: z.string(),
-      //       startDate: z.date(),
-      //       endDate: z.date(),
-      //     }),
-      //   }),
-      //   400: z.object({
-      //     message: z.string(),
-      //   }),
-      //   409: z.object({
-      //     message: z.string(),
-      //   }),
-      // },
     },
     handler: async (request, reply) => {
       const { hostId } = request.user

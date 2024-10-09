@@ -17,20 +17,6 @@ export async function incrementReferralClickCountRoute(app: FastifyInstance) {
       description: 'Increment referral link click count',
       tags: ['Referral link'],
       querystring: querySchema,
-      // response: {
-      //   200: z.object({
-      //     referral_link: z.object({
-      //       id: z.string(),
-      //       click_count: z.number(),
-      //     }),
-      //   }),
-      //   401: z.object({
-      //     message: z.string(),
-      //   }),
-      //   400: z.object({
-      //     message: z.string(),
-      //   }),
-      // },
     },
     handler: async (request, reply) => {
       const { token, eventId } = querySchema.parse(request.query)

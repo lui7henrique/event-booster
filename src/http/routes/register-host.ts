@@ -19,21 +19,6 @@ export async function registerHostRoute(app: FastifyInstance) {
         description: 'Register event host',
         tags: ['Host'],
         body: hostSchema,
-        // response: {
-        //   201: z.object({
-        //     host: z.object({
-        //       id: z.string(),
-        //       name: z.string(),
-        //       email: z.string(),
-        //     }),
-        //   }),
-        //   400: z.object({
-        //     message: z.string(),
-        //   }),
-        //   409: z.object({
-        //     message: z.string(),
-        //   }),
-        // },
       },
       handler: async (request, reply) => {
         const { name, email, password } = request.body
