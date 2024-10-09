@@ -2,7 +2,7 @@ import { makeLeft, makeRight } from '@/core/either'
 import { db } from '@/db'
 import { schema } from '@/db/schema'
 import { isWithinInterval } from 'date-fns'
-import { and, eq } from 'drizzle-orm'
+import { and, eq, sql } from 'drizzle-orm'
 import { EmailAlreadySubscribedError } from '../errors/email-already-subscribed-error'
 import { EventDateError } from '../errors/event-date-error'
 import { EventNotFoundError } from '../errors/event-not-found-error'
@@ -68,7 +68,10 @@ export async function registerSubscription({
       referralId = referral?.id || null
 
       if (referralId) {
-        await updateSubscriptionCount(referralId)
+        await db
+          .update(schema.referral)
+          .set({ subscriptionCount: sql`${referral.subscriptionCount} + 1` })
+          .where(eq(schema.referral.id, referralId))
       }
     }
 
