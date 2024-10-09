@@ -58,25 +58,18 @@ export async function registerSubscription({
       return makeLeft(new EventDateError())
     }
 
+    let referralId = null
     if (referralToken) {
       const [referral] = await db
         .select()
         .from(schema.referral)
         .where(eq(schema.referral.token, referralToken))
 
-      const [subscription] = await db
-        .insert(schema.subscriptions)
-        .values({
-          email,
-          name,
-          eventId,
-          referralId: referral.id,
-        })
-        .returning()
+      referralId = referral?.id || null
 
-      await updateSubscriptionCount(referral.id)
-
-      return makeRight({ subscription })
+      if (referralId) {
+        await updateSubscriptionCount(referralId)
+      }
     }
 
     const [subscription] = await db
@@ -85,6 +78,7 @@ export async function registerSubscription({
         email,
         name,
         eventId,
+        referralId,
       })
       .returning()
 
