@@ -1,4 +1,4 @@
-import { getReferralLinkStats } from '@/app/functions/get-referral-link-stats'
+import { getReferralStats } from '@/app/functions/get-referral-stats'
 import { isLeft } from '@/core/either'
 import type { FastifyInstance } from 'fastify'
 import type { ZodTypeProvider } from 'fastify-type-provider-zod'
@@ -20,7 +20,7 @@ export async function getReferralLinkStatsRoute(app: FastifyInstance) {
     },
     handler: async (request, reply) => {
       const { token, eventId } = querySchema.parse(request.query)
-      const result = await getReferralLinkStats({ token, eventId })
+      const result = await getReferralStats({ token, eventId })
 
       if (isLeft(result)) {
         const error = result.left
