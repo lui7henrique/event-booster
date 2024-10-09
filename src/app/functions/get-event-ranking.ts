@@ -3,10 +3,11 @@ import { db } from '@/db'
 import { schema } from '@/db/schema'
 import type { FastifyRedis } from '@fastify/redis'
 import { isFuture, isPast, isSameDay, isValid, parseISO } from 'date-fns'
-import { and, asc, count, desc, eq } from 'drizzle-orm'
+import { and, asc, count, desc, eq, sql } from 'drizzle-orm'
 import { InvalidDateError } from '../errors/invalid-date'
 import { InvalidFutureDateError } from '../errors/invalid-future-date'
 import { ServerError } from '../errors/server-error'
+import { date } from 'drizzle-orm/pg-core'
 
 const FIFTEEN_MINUTES = 60 * 15
 const TWO_MONTHS = 60 * 60 * 24 * 30 * 2 // Seconds;Minutes;Hours;Days;Months
@@ -56,7 +57,15 @@ export async function getEventRanking({
         schema.subscriptions,
         eq(schema.referral.id, schema.subscriptions.referralId)
       )
-      .where(and(eq(schema.referral.eventId, eventId)))
+      .where(
+        and(
+          eq(schema.referral.eventId, eventId),
+          eq(
+            sql`DATE(${schema.subscriptions.created_at})`,
+            sql`DATE(${selectedDate})`
+          )
+        )
+      )
       .groupBy(schema.referral.id)
       .orderBy(ranking => desc(ranking.subscription_count))
 
