@@ -1,5 +1,7 @@
 import { getReferralStats } from '@/app/functions/get-referral-stats'
 import { isLeft } from '@/core/either'
+import { schema } from '@/db/schema'
+import { createSelectSchema } from 'drizzle-zod'
 import type { FastifyInstance } from 'fastify'
 import type { ZodTypeProvider } from 'fastify-type-provider-zod'
 import { z } from 'zod'
@@ -9,6 +11,34 @@ const querySchema = z.object({
   eventId: z.string().min(1, 'Event ID is required'),
 })
 
+const referralStatsResponseSchema = z
+  .object({
+    referral: createSelectSchema(schema.referral),
+    directConversionRate: z.number(),
+    indirectConversionRate: z.number(),
+  })
+  .describe(
+    'Details of the referral link along with its direct and indirect conversion rates.'
+  )
+
+const errorResponseSchema = z
+  .object({
+    message: z.string(),
+  })
+  .describe('Error message describing the failure of the request.')
+
+const responseSchema = {
+  200: referralStatsResponseSchema.describe(
+    'Successful response with referral statistics.'
+  ),
+  401: errorResponseSchema.describe(
+    'Unauthorized access or referral link not found.'
+  ),
+  400: errorResponseSchema.describe(
+    'Bad request due to invalid input or server error.'
+  ),
+}
+
 export async function getReferralStatsRoute(app: FastifyInstance) {
   app.withTypeProvider<ZodTypeProvider>().route({
     method: 'GET',
@@ -17,6 +47,7 @@ export async function getReferralStatsRoute(app: FastifyInstance) {
       description: 'Retrieve referral link statistics',
       tags: ['Referral link'],
       querystring: querySchema,
+      response: responseSchema,
     },
     handler: async (request, reply) => {
       const { token, eventId } = querySchema.parse(request.query)
