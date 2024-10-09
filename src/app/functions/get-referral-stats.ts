@@ -2,7 +2,7 @@ import { makeLeft, makeRight } from '@/core/either'
 import { db } from '@/db'
 import { schema } from '@/db/schema'
 import { and, eq, sql } from 'drizzle-orm'
-import { ReferralLinkNotFound } from '../errors/referral-link-not-found'
+import { ReferralNotFound } from '../errors/referral-not-found'
 import { ServerError } from '../errors/server-error'
 
 type GetReferralInput = {
@@ -28,7 +28,7 @@ export async function getReferralStats({ eventId, token }: GetReferralInput) {
       )
 
     if (!referral) {
-      return makeLeft(new ReferralLinkNotFound())
+      return makeLeft(new ReferralNotFound())
     }
 
     const directConversionRate =

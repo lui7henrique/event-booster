@@ -30,7 +30,7 @@ export async function getEventRankingRoute(app: FastifyInstance) {
     method: 'GET',
     url: '/event/ranking/:eventId',
     schema: {
-      description: 'Get referral links ranking of the event',
+      description: 'Get referral ranking of the event',
       tags: ['Event'],
       params: params,
       querystring: query,

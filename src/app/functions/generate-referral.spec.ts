@@ -22,7 +22,7 @@ describe('generate referral', () => {
     })
   })
 
-  it('should be able to generate referral link', async () => {
+  it('should be able to generate referral', async () => {
     const sut = await generateReferral({
       email: subscription.email,
       eventId: event.id,
@@ -36,7 +36,7 @@ describe('generate referral', () => {
     })
   })
 
-  it('should not be able to generate referral link when its already exists', async () => {
+  it('should not be able to generate referral when its already exists', async () => {
     await makeReferralLink({
       eventId: event.id,
       email: subscription.email,

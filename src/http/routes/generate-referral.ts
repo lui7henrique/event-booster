@@ -17,8 +17,8 @@ export async function generateReferralRoute(app: FastifyInstance) {
     method: 'POST',
     url: '/generate-referral',
     schema: {
-      description: 'Generate event referral link',
-      tags: ['Referral link'],
+      description: 'Generate event referral',
+      tags: ['Referral'],
       body: generateReferralSchema,
       response: {
         201: z.object({
@@ -28,7 +28,7 @@ export async function generateReferralRoute(app: FastifyInstance) {
           message: z.string().describe('Error occurred'),
         }),
         409: z.object({
-          message: z.string().describe('Referral link already exists'),
+          message: z.string().describe('Referral already exists'),
         }),
       },
     },

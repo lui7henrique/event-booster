@@ -18,7 +18,7 @@ const referralStatsResponseSchema = z
     indirectConversionRate: z.number(),
   })
   .describe(
-    'Details of the referral link along with its direct and indirect conversion rates.'
+    'Details of the referral along with its direct and indirect conversion rates.'
   )
 
 const errorResponseSchema = z
@@ -32,7 +32,7 @@ const responseSchema = {
     'Successful response with referral statistics.'
   ),
   401: errorResponseSchema.describe(
-    'Unauthorized access or referral link not found.'
+    'Unauthorized access or referral not found.'
   ),
   400: errorResponseSchema.describe(
     'Bad request due to invalid input or server error.'
@@ -44,8 +44,8 @@ export async function getReferralStatsRoute(app: FastifyInstance) {
     method: 'GET',
     url: '/referral/stats',
     schema: {
-      description: 'Retrieve referral link statistics',
-      tags: ['Referral link'],
+      description: 'Retrieve referral statistics',
+      tags: ['Referral'],
       querystring: querySchema,
       response: responseSchema,
     },
