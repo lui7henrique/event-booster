@@ -54,27 +54,15 @@ export async function registerSubscription({
       end: new Date(event.endDate),
     })
 
-    if (isValidDate) {
-      if (referralToken) {
-        const [referral] = await db
-          .select()
-          .from(schema.referral)
-          .where(eq(schema.referral.token, referralToken))
+    if (!isValidDate) {
+      return makeLeft(new EventDateError())
+    }
 
-        const [subscription] = await db
-          .insert(schema.subscriptions)
-          .values({
-            email,
-            name,
-            eventId,
-            referralId: referral.id,
-          })
-          .returning()
-
-        await updateSubscriptionCount(referral.id)
-
-        return makeRight({ subscription })
-      }
+    if (referralToken) {
+      const [referral] = await db
+        .select()
+        .from(schema.referral)
+        .where(eq(schema.referral.token, referralToken))
 
       const [subscription] = await db
         .insert(schema.subscriptions)
@@ -82,13 +70,25 @@ export async function registerSubscription({
           email,
           name,
           eventId,
+          referralId: referral.id,
         })
         .returning()
+
+      await updateSubscriptionCount(referral.id)
 
       return makeRight({ subscription })
     }
 
-    return makeLeft(new EventDateError())
+    const [subscription] = await db
+      .insert(schema.subscriptions)
+      .values({
+        email,
+        name,
+        eventId,
+      })
+      .returning()
+
+    return makeRight({ subscription })
   } catch (error) {
     if (error instanceof TypeError) {
       if (error.message === 'Right side of assignment cannot be destructured') {
