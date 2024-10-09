@@ -39,18 +39,34 @@ export async function getReferralStats({ eventId, token }: GetReferralInput) {
     const [totalSubscriptions] = await db.execute<TotalSubscriptions>(
       sql`
         WITH RECURSIVE referral_chain AS (
-          SELECT id, parent_id, click_count, subscription_count
-          FROM referral_links
-          WHERE id = ${referral.id}
+          SELECT 
+            id, 
+            parent_id, 
+            click_count, 
+            subscription_count
+          FROM 
+            ${schema.referral} r
+          WHERE 
+            r.id = ${referral.id}
     
           UNION ALL
     
-          SELECT rl.id, rl.parent_id, rl.click_count, rl.subscription_count
-          FROM referral_links rl
-          INNER JOIN referral_chain rc ON rl.parent_id = rc.id
+          SELECT 
+            rl.id, 
+            rl.parent_id, 
+            rl.click_count, 
+            rl.subscription_count
+          FROM 
+            ${schema.referral} rl
+          INNER JOIN 
+            referral_chain rc ON rl.parent_id = rc.id
         )
-        SELECT SUM(click_count) AS click_count, SUM(subscription_count) AS subscription_count
-        FROM referral_chain;
+
+        SELECT 
+          SUM(click_count) AS click_count, 
+          SUM(subscription_count) AS subscription_count
+        FROM 
+          referral_chain;
       `
     )
 
