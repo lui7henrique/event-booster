@@ -9,7 +9,7 @@ const querySchema = z.object({
   eventId: z.string().min(1, 'Event ID is required'),
 })
 
-export async function getReferralLinkStatsRoute(app: FastifyInstance) {
+export async function getReferralStatsRoute(app: FastifyInstance) {
   app.withTypeProvider<ZodTypeProvider>().route({
     method: 'GET',
     url: '/referral/stats',

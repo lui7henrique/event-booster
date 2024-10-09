@@ -18,7 +18,7 @@ import { env } from '../env'
 import { generateReferralLinkRoute } from './routes/generate-referral-link'
 import { getEventRankingRoute } from './routes/get-event-ranking'
 import { getEventsRoutes } from './routes/get-events'
-import { getReferralLinkStatsRoute } from './routes/get-referral-link-stats'
+import { getReferralStatsRoute } from './routes/get-referral-stats'
 import { incrementReferralClickCountRoute } from './routes/increment-referral-click-count'
 import { loginRoute } from './routes/login'
 import { registerEventRoute } from './routes/register-event'
@@ -87,12 +87,12 @@ app.register(fastifySwaggerUi, {
 
 app.register(registerSubscriptionRoute)
 app.register(registerEventRoute)
+app.register(registerHostRoute)
 app.register(getEventRankingRoute)
 app.register(getEventsRoutes)
-app.register(registerHostRoute)
+app.register(getReferralStatsRoute)
 app.register(generateReferralLinkRoute)
 app.register(incrementReferralClickCountRoute)
-app.register(getReferralLinkStatsRoute)
 app.register(loginRoute)
 
 app.setErrorHandler((error, _, reply) => {

@@ -20,6 +20,25 @@ export async function loginRoute(app: FastifyInstance) {
       description: 'Host login with email and password',
       tags: ['Auth'],
       body: loginSchema,
+      response: {
+        200: z
+          .object({
+            token: z.string(),
+          })
+          .describe('JWT token for authenticated session.'),
+
+        401: z
+          .object({
+            message: z.string(),
+          })
+          .describe('Authentication failed due to invalid email or password.'),
+
+        400: z
+          .object({
+            message: z.string(),
+          })
+          .describe('Bad request. '),
+      },
     },
     handler: async (request, reply) => {
       const { email, password } = loginSchema.parse(request.body)

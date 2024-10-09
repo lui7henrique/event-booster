@@ -7,15 +7,13 @@ import { makeSubscription } from '@/test/factories/make-subscription'
 import type { InferSelectModel } from 'drizzle-orm'
 import { beforeAll, describe, expect, it, vi } from 'vitest'
 import { ReferralLinkAlreadyExists } from '../errors/referral-link-already-exists'
-import { generateReferralLink } from './generate-referral-link'
-import { db } from '@/db'
-import { ServerError } from '../errors/server-error'
+import { generateReferral } from './generate-referral'
 
 let host: InferSelectModel<typeof schema.hosts>
 let event: InferSelectModel<typeof schema.events>
 let subscription: InferSelectModel<typeof schema.subscriptions>
 
-describe('generate referral link', () => {
+describe('generate referral', () => {
   beforeAll(async () => {
     host = await makeHost()
     event = await makeActiveEvent({ hostId: host.id })
@@ -25,14 +23,14 @@ describe('generate referral link', () => {
   })
 
   it('should be able to generate referral link', async () => {
-    const sut = await generateReferralLink({
+    const sut = await generateReferral({
       email: subscription.email,
       eventId: event.id,
     })
 
     expect(isRight(sut)).toBe(true)
     expect(unwrapEither(sut)).toEqual({
-      referralLink: expect.objectContaining({
+      referral: expect.objectContaining({
         email: subscription.email,
       }),
     })
@@ -45,7 +43,7 @@ describe('generate referral link', () => {
       token: '',
     })
 
-    const sut = await generateReferralLink({
+    const sut = await generateReferral({
       email: subscription.email,
       eventId: event.id,
     })

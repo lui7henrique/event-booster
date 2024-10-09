@@ -6,15 +6,15 @@ import { ReferralLinkAlreadyExists } from '../errors/referral-link-already-exist
 import { randomBytes } from 'node:crypto'
 import { ServerError } from '../errors/server-error'
 
-type GenerateReferralLinkInput = {
+type GenerateReferralInput = {
   email: string
   eventId: string
 }
 
-export async function generateReferralLink({
+export async function generateReferral({
   email,
   eventId,
-}: GenerateReferralLinkInput) {
+}: GenerateReferralInput) {
   try {
     const [existingReferralLink] = await db
       .select()
@@ -43,7 +43,7 @@ export async function generateReferralLink({
         )
       )
 
-    const [referralLink] = await db
+    const [referral] = await db
       .insert(schema.referral)
       .values({
         email,
@@ -54,7 +54,7 @@ export async function generateReferralLink({
       })
       .returning()
 
-    return makeRight({ referralLink })
+    return makeRight({ referral })
   } catch (err) {
     return makeLeft(new ServerError())
   }
