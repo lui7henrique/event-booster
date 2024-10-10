@@ -1,4 +1,4 @@
-name: Node.js CI
+name: Coverage
 
 on:
   push:
@@ -36,14 +36,11 @@ jobs:
           curl -fsSL https://bun.sh/install | bash
           echo "$HOME/.bun/bin" >> $GITHUB_PATH
 
-      - name: Install dependencies with Bun
+      - name: Install dependencies
         run: bun install
 
-      - name: Run migrations with Bun
+      - name: Run migrations
         run: bun run pretest
 
-      - name: Execute tests with Bun
-        run: bun run test
-
-      - name: Execute test coverage with Bun
+      - name: Execute test coverage
         run: bun run test:coverage
