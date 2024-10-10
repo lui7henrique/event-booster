@@ -11,7 +11,6 @@ describe('increment referral click count', () => {
   it('should be able to return an error if the referral link is not found', async () => {
     const sut = await incrementReferralClickCount({
       token: faker.string.uuid(),
-      eventId: 'event123',
     })
 
     expect(isLeft(sut)).toBe(true)
@@ -28,7 +27,6 @@ describe('increment referral click count', () => {
 
     const sut = await incrementReferralClickCount({
       token: token,
-      eventId: event.id,
     })
 
     expect(isRight(sut)).toBe(true)
