@@ -5,11 +5,12 @@ import { makeReferralLink } from '@/test/factories/make-referral-link'
 import { describe, expect, it } from 'vitest'
 import { incrementReferralClickCount } from './increment-referral-click-count'
 import { ReferralNotFound } from '../errors/referral-not-found'
+import { faker } from '@faker-js/faker'
 
 describe('increment referral click count', () => {
   it('should be able to return an error if the referral link is not found', async () => {
     const sut = await incrementReferralClickCount({
-      token: 'nonexistent_token',
+      token: faker.string.uuid(),
       eventId: 'event123',
     })
 
@@ -22,7 +23,7 @@ describe('increment referral click count', () => {
     const event = await makeActiveEvent({ hostId: host.id })
     const { token } = await makeReferralLink({
       eventId: event.id,
-      token: '',
+      token: faker.string.uuid(),
     })
 
     const sut = await incrementReferralClickCount({
@@ -31,9 +32,6 @@ describe('increment referral click count', () => {
     })
 
     expect(isRight(sut)).toBe(true)
-    expect(unwrapEither(sut)).toHaveProperty(
-      'updatedReferralLink.clickCount',
-      1
-    )
+    expect(unwrapEither(sut)).toHaveProperty('referral.clickCount', 1)
   })
 })

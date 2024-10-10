@@ -8,6 +8,7 @@ import type { InferSelectModel } from 'drizzle-orm'
 import { beforeAll, describe, expect, it } from 'vitest'
 import { ReferralLinkAlreadyExists } from '../errors/referral-link-already-exists'
 import { generateReferral } from './generate-referral'
+import { faker } from '@faker-js/faker'
 
 let host: InferSelectModel<typeof schema.hosts>
 let event: InferSelectModel<typeof schema.events>
@@ -40,7 +41,7 @@ describe('generate referral', () => {
     await makeReferralLink({
       eventId: event.id,
       email: subscription.email,
-      token: '',
+      token: faker.string.uuid(),
     })
 
     const sut = await generateReferral({

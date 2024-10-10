@@ -29,7 +29,7 @@ describe('get event ranking', () => {
         const referral = await makeReferralLink({
           email: subscription.email,
           eventId: event.id,
-          token: `${index}`,
+          token: faker.string.uuid(),
           clickCount: clickCount,
         })
 

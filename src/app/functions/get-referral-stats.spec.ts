@@ -8,6 +8,7 @@ import { makeReferralLink } from '@/test/factories/make-referral-link'
 import type { InferSelectModel } from 'drizzle-orm'
 import { getReferralStats } from './get-referral-stats'
 import { ReferralNotFound } from '../errors/referral-not-found'
+import { faker } from '@faker-js/faker'
 
 let host: InferSelectModel<typeof schema.hosts>
 let event: InferSelectModel<typeof schema.events>
@@ -19,8 +20,10 @@ describe('get referral stats', () => {
   })
 
   it('should not be able to return if referral link is not found', async () => {
-    const token = 'nonexistent_token'
-    const sut = await getReferralStats({ token, eventId: event.id })
+    const sut = await getReferralStats({
+      token: faker.string.uuid(),
+      eventId: event.id,
+    })
 
     expect(isLeft(sut)).toBe(true)
     expect(unwrapEither(sut)).toBeInstanceOf(ReferralNotFound)
@@ -33,7 +36,7 @@ describe('get referral stats', () => {
       eventId: event.id,
       clickCount: 100,
       subscriptionCount: 20,
-      token: 'token',
+      token: faker.string.uuid(),
     })
 
     const sut = await getReferralStats({ token, eventId: event.id })
@@ -47,7 +50,7 @@ describe('get referral stats', () => {
       eventId: event.id,
       clickCount: 50,
       subscriptionCount: 10,
-      token: 'token-1',
+      token: faker.string.uuid(),
     })
 
     const childLink = await makeReferralLink({
@@ -55,7 +58,7 @@ describe('get referral stats', () => {
       parentId: parentLink.id,
       clickCount: 150,
       subscriptionCount: 30,
-      token: 'token-2',
+      token: faker.string.uuid(),
     })
 
     const sut = await getReferralStats({
@@ -72,7 +75,7 @@ describe('get referral stats', () => {
       eventId: event.id,
       clickCount: 0,
       subscriptionCount: 0,
-      token: 'token',
+      token: faker.string.uuid(),
     })
 
     const sut = await getReferralStats({ token, eventId: event.id })
