@@ -5,12 +5,10 @@ import { eq, sql } from 'drizzle-orm'
 import { ReferralNotFound } from '../errors/referral-not-found'
 
 type IncrementReferralClickCountInput = {
-  eventId: string
   token: string
 }
 
 export async function incrementReferralClickCount({
-  eventId,
   token,
 }: IncrementReferralClickCountInput) {
   try {

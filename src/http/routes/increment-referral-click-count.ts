@@ -8,7 +8,6 @@ import { z } from 'zod'
 
 const querySchema = z.object({
   token: z.string().min(1, 'Token is required'),
-  eventId: z.string().min(1, 'Event ID is required'),
 })
 
 const successResponseSchema = z.object({
@@ -42,8 +41,8 @@ export async function incrementReferralClickCountRoute(app: FastifyInstance) {
       response: responseSchema,
     },
     handler: async (request, reply) => {
-      const { token, eventId } = querySchema.parse(request.query)
-      const result = await incrementReferralClickCount({ token, eventId })
+      const { token } = querySchema.parse(request.query)
+      const result = await incrementReferralClickCount({ token })
 
       if (isLeft(result)) {
         const error = result.left
