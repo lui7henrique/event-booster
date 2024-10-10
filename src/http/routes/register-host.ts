@@ -1,14 +1,32 @@
 import { registerHost } from '@/app/functions/register-host'
 import { isLeft } from '@/core/either'
+import { schema } from '@/db/schema'
+import { createInsertSchema } from 'drizzle-zod'
 import type { FastifyInstance } from 'fastify'
 import type { ZodTypeProvider } from 'fastify-type-provider-zod'
 import { z } from 'zod'
 
-const hostSchema = z.object({
+const bodySchema = z.object({
   name: z.string().min(1, 'Name is required'),
   email: z.string().email('Invalid email format'),
   password: z.string().min(6, 'Password must be at least 6 characters long'),
 })
+
+const successResponseSchema = z.object({
+  host: createInsertSchema(schema.hosts),
+})
+
+const errorResponseSchema = z.object({
+  message: z.string(),
+})
+
+const responseSchema = {
+  201: successResponseSchema.describe('Host successfully registered.'),
+  409: errorResponseSchema.describe(
+    'Conflict: The email is already registered.'
+  ),
+  400: errorResponseSchema.describe('Bad request: Input validation errors.'),
+}
 
 export async function registerHostRoute(app: FastifyInstance) {
   app.after(() => {
@@ -18,7 +36,7 @@ export async function registerHostRoute(app: FastifyInstance) {
       schema: {
         description: 'Register event host',
         tags: ['Host'],
-        body: hostSchema,
+        body: bodySchema,
       },
       handler: async (request, reply) => {
         const { name, email, password } = request.body

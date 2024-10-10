@@ -11,20 +11,18 @@ const querySchema = z.object({
   eventId: z.string().min(1, 'Event ID is required'),
 })
 
-const successResponseSchema = z
-  .object({
-    referral: createSelectSchema(schema.referral),
-  })
-  .describe('Successful response after incrementing the click count.')
+const successResponseSchema = z.object({
+  referral: createSelectSchema(schema.referral),
+})
 
-const errorResponseSchema = z
-  .object({
-    message: z.string(),
-  })
-  .describe('Error message describing why the request failed.')
+const errorResponseSchema = z.object({
+  message: z.string(),
+})
 
 const responseSchema = {
-  200: successResponseSchema,
+  200: successResponseSchema.describe(
+    'Successful response after incrementing the click count.'
+  ),
   401: errorResponseSchema.describe(
     'Unauthorized access or referral not found.'
   ),

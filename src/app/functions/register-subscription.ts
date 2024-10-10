@@ -7,7 +7,6 @@ import { EmailAlreadySubscribedError } from '../errors/email-already-subscribed-
 import { EventDateError } from '../errors/event-date-error'
 import { EventNotFoundError } from '../errors/event-not-found-error'
 import { ServerError } from '../errors/server-error'
-import { updateSubscriptionCount } from './update-subscription-count'
 
 type RegisterSubscriptionInput = {
   name: string

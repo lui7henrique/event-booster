@@ -6,10 +6,22 @@ import type { FastifyInstance } from 'fastify'
 import type { ZodTypeProvider } from 'fastify-type-provider-zod'
 import { z } from 'zod'
 
-const generateReferralSchema = z.object({
+const bodySchema = z.object({
   email: z.string().email('Invalid email format').default('john-doe@gmail.com'),
 
   eventId: z.string().min(1, 'Event ID is required').default(''),
+})
+
+const responseSchema = z.object({
+  201: z.object({
+    referral: createInsertSchema(schema.referral),
+  }),
+  400: z.object({
+    message: z.string().describe('Error occurred'),
+  }),
+  409: z.object({
+    message: z.string().describe('Referral already exists'),
+  }),
 })
 
 export async function generateReferralRoute(app: FastifyInstance) {
@@ -19,22 +31,11 @@ export async function generateReferralRoute(app: FastifyInstance) {
     schema: {
       description: 'Generate event referral',
       tags: ['Referral'],
-      body: generateReferralSchema,
-      response: {
-        201: z.object({
-          referral: createInsertSchema(schema.referral),
-        }),
-        400: z.object({
-          message: z.string().describe('Error occurred'),
-        }),
-        409: z.object({
-          message: z.string().describe('Referral already exists'),
-        }),
-      },
+      body: bodySchema,
+      response: responseSchema,
     },
     handler: async (request, reply) => {
-      const { email, eventId } = generateReferralSchema.parse(request.body)
-
+      const { email, eventId } = bodySchema.parse(request.body)
       const result = await generateReferral({ email, eventId })
 
       if (isLeft(result)) {

@@ -6,15 +6,15 @@ import { z } from 'zod'
 import type { ZodTypeProvider } from 'fastify-type-provider-zod'
 import { parseISO } from 'date-fns'
 
-const params = z.object({
+const paramsSchema = z.object({
   eventId: z.string().min(1, 'Event ID is required'),
 })
 
-const query = z.object({
+const querySchema = z.object({
   selectedDate: z.string().optional().describe('Date to view ranking'),
 })
 
-const ranking = z.array(
+const rankingSchema = z.array(
   z.object({
     id: z.string(),
     token: z.string(),
@@ -25,6 +25,21 @@ const ranking = z.array(
   })
 )
 
+const responseSchema = z.object({
+  200: z
+    .object({
+      ranking: rankingSchema,
+    })
+    .describe('Successful response with an array of referral rankings.'),
+  400: z
+    .object({
+      message: z.string(),
+    })
+    .describe(
+      'Bad request response indicating that the input parameters were invalid or missing, or an error occurred in processing the request.'
+    ),
+})
+
 export async function getEventRankingRoute(app: FastifyInstance) {
   app.withTypeProvider<ZodTypeProvider>().route({
     method: 'GET',
@@ -32,32 +47,19 @@ export async function getEventRankingRoute(app: FastifyInstance) {
     schema: {
       description: 'Get referral ranking of the event',
       tags: ['Event'],
-      params: params,
-      querystring: query,
+      params: paramsSchema,
+      querystring: querySchema,
       security: [
         {
           bearerAuth: [],
         },
       ],
-      response: {
-        200: z
-          .object({
-            ranking: ranking,
-          })
-          .describe('Successful response with an array of referral rankings.'),
-        400: z
-          .object({
-            message: z.string(),
-          })
-          .describe(
-            'Bad request response indicating that the input parameters were invalid or missing, or an error occurred in processing the request.'
-          ),
-      },
+      response: responseSchema,
     },
     onRequest: [verifyJwt],
     handler: async (request, reply) => {
-      const { eventId } = params.parse(request.params)
-      const { selectedDate } = query.parse(request.query)
+      const { eventId } = paramsSchema.parse(request.params)
+      const { selectedDate } = querySchema.parse(request.query)
 
       const { redis } = app
 

@@ -5,8 +5,10 @@ import type { FastifyInstance } from 'fastify'
 import type { ZodTypeProvider } from 'fastify-type-provider-zod'
 import { z } from 'zod'
 import { verifyJwt } from '../hooks/verify-jwt'
+import { createSelectSchema } from 'drizzle-zod'
+import { schema } from '@/db/schema'
 
-const eventSchema = z.object({
+const bodySchema = z.object({
   title: z.string().min(1, 'Title is required').default('Unnamed Event'),
   startDate: z
     .string()
@@ -16,6 +18,20 @@ const eventSchema = z.object({
     .datetime({ message: 'End date must be in ISO 8601 format' }),
 })
 
+const successResponseSchema = z.object({
+  event: createSelectSchema(schema.events),
+})
+
+const errorResponseSchema = z.object({
+  message: z.string(),
+})
+
+const responseSchema = {
+  201: successResponseSchema.describe('Event successfully registered.'),
+  409: errorResponseSchema.describe('Conflict with the provided event dates.'),
+  400: errorResponseSchema.describe('Bad request.'),
+}
+
 export async function registerEventRoute(app: FastifyInstance) {
   app.withTypeProvider<ZodTypeProvider>().route({
     method: 'POST',
@@ -24,7 +40,8 @@ export async function registerEventRoute(app: FastifyInstance) {
     schema: {
       description: 'Register event with date-time format',
       tags: ['Event'],
-      body: eventSchema,
+      body: bodySchema,
+      response: responseSchema,
       security: [
         {
           bearerAuth: [],
@@ -33,7 +50,7 @@ export async function registerEventRoute(app: FastifyInstance) {
     },
     handler: async (request, reply) => {
       const { hostId } = request.user
-      const { title, endDate, startDate } = eventSchema.parse(request.body)
+      const { title, endDate, startDate } = bodySchema.parse(request.body)
 
       const result = await registerEvent({
         title,

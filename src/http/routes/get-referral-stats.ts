@@ -11,24 +11,18 @@ const querySchema = z.object({
   eventId: z.string().min(1, 'Event ID is required'),
 })
 
-const referralStatsResponseSchema = z
-  .object({
-    referral: createSelectSchema(schema.referral),
-    directConversionRate: z.number(),
-    indirectConversionRate: z.number(),
-  })
-  .describe(
-    'Details of the referral along with its direct and indirect conversion rates.'
-  )
+const successResponseSchema = z.object({
+  referral: createSelectSchema(schema.referral),
+  directConversionRate: z.number(),
+  indirectConversionRate: z.number(),
+})
 
-const errorResponseSchema = z
-  .object({
-    message: z.string(),
-  })
-  .describe('Error message describing the failure of the request.')
+const errorResponseSchema = z.object({
+  message: z.string(),
+})
 
 const responseSchema = {
-  200: referralStatsResponseSchema.describe(
+  200: successResponseSchema.describe(
     'Successful response with referral statistics.'
   ),
   401: errorResponseSchema.describe(
