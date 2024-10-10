@@ -89,6 +89,13 @@ export async function registerSubscription({
       if (error.message === 'Right side of assignment cannot be destructured') {
         return makeLeft(new EventNotFoundError())
       }
+
+      if (
+        error.message ===
+        "Cannot destructure property 'event' of 'result[0]' as it is undefined."
+      ) {
+        return makeLeft(new EventNotFoundError())
+      }
     }
 
     throw error

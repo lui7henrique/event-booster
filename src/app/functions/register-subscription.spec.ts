@@ -14,6 +14,7 @@ import { makeReferralLink } from '@/test/factories/make-referral-link'
 import { makeHost } from '@/test/factories/make-host'
 import type { InferSelectModel } from 'drizzle-orm'
 import type { schema } from '@/db/schema'
+import { faker } from '@faker-js/faker'
 
 let host: InferSelectModel<typeof schema.hosts>
 let activeEvent: InferSelectModel<typeof schema.events>
@@ -83,7 +84,7 @@ describe('register subscription', () => {
   it('should be able to register subscription with a valid referral link token', async () => {
     const { name, email } = makeRawSubscription()
     const referralLink = await makeReferralLink({
-      token: 'valid-token',
+      token: faker.string.uuid(),
       eventId: activeEvent.id,
     })
 
