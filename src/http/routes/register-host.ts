@@ -13,7 +13,7 @@ const bodySchema = z.object({
 })
 
 const successResponseSchema = z.object({
-  host: createInsertSchema(schema.hosts),
+  host: createInsertSchema(schema.hosts).omit({ password: true }),
 })
 
 const errorResponseSchema = z.object({
@@ -37,6 +37,7 @@ export async function registerHostRoute(app: FastifyInstance) {
         description: 'Register event host',
         tags: ['Host'],
         body: bodySchema,
+        response: responseSchema,
       },
       handler: async (request, reply) => {
         const { name, email, password } = request.body

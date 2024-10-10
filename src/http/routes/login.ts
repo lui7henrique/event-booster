@@ -12,7 +12,7 @@ const bodySchema = z.object({
     .default('vercel-password'),
 })
 
-const responseSchema = z.object({
+const responseSchema = {
   200: z
     .object({
       token: z.string(),
@@ -30,7 +30,7 @@ const responseSchema = z.object({
       message: z.string(),
     })
     .describe('Bad request. '),
-})
+}
 
 export async function loginRoute(app: FastifyInstance) {
   app.withTypeProvider<ZodTypeProvider>().route({

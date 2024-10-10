@@ -25,7 +25,7 @@ const rankingSchema = z.array(
   })
 )
 
-const responseSchema = z.object({
+const responseSchema = {
   200: z
     .object({
       ranking: rankingSchema,
@@ -38,7 +38,7 @@ const responseSchema = z.object({
     .describe(
       'Bad request response indicating that the input parameters were invalid or missing, or an error occurred in processing the request.'
     ),
-})
+}
 
 export async function getEventRankingRoute(app: FastifyInstance) {
   app.withTypeProvider<ZodTypeProvider>().route({

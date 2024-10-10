@@ -25,7 +25,7 @@ const responseSchema = {
     .describe('Unauthorized response if the JWT token is missing or invalid.'),
 }
 
-export async function getEventsRoutes(app: FastifyInstance) {
+export async function getEventsRoute(app: FastifyInstance) {
   app.withTypeProvider<ZodTypeProvider>().route({
     method: 'GET',
     url: '/events',

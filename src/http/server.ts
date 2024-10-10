@@ -17,7 +17,7 @@ import { env } from '../env'
 
 import { generateReferralRoute } from './routes/generate-referral'
 import { getEventRankingRoute } from './routes/get-event-ranking'
-import { getEventsRoutes } from './routes/get-events'
+import { getEventsRoute } from './routes/get-events'
 import { getReferralStatsRoute } from './routes/get-referral-stats'
 import { incrementReferralClickCountRoute } from './routes/increment-referral-click-count'
 import { loginRoute } from './routes/login'
@@ -89,7 +89,7 @@ app.register(registerSubscriptionRoute)
 app.register(registerEventRoute)
 app.register(registerHostRoute)
 app.register(getEventRankingRoute)
-app.register(getEventsRoutes)
+app.register(getEventsRoute)
 app.register(getReferralStatsRoute)
 app.register(generateReferralRoute)
 app.register(incrementReferralClickCountRoute)

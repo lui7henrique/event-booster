@@ -12,7 +12,7 @@ const bodySchema = z.object({
   eventId: z.string().min(1, 'Event ID is required').default(''),
 })
 
-const responseSchema = z.object({
+const responseSchema = {
   201: z.object({
     referral: createInsertSchema(schema.referral),
   }),
@@ -22,7 +22,7 @@ const responseSchema = z.object({
   409: z.object({
     message: z.string().describe('Referral already exists'),
   }),
-})
+}
 
 export async function generateReferralRoute(app: FastifyInstance) {
   app.withTypeProvider<ZodTypeProvider>().route({
