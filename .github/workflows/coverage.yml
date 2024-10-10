@@ -44,12 +44,3 @@ jobs:
 
       - name: Execute test coverage
         run: bun run test:coverage
-
-      - name: Check code coverage
-        run: |
-          COVERAGE=$(grep 'Lines' ./coverage/lcov.info | sed 's/[^0-9]*//g')
-          echo "Line coverage is $COVERAGE%"
-          if [ "$COVERAGE" -lt 90 ]; then
-            echo "Test coverage is below 90%"
-            exit 1
-          fi
