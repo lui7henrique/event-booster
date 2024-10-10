@@ -31,20 +31,19 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
-      - name: Set up Node.js
-        uses: actions/setup-node@v2
-        with:
-          node-version: "16" # ou qualquer versão que você deseja testar
-          cache: "npm"
+      - name: Install Bun
+        run: |
+          curl -fsSL https://bun.sh/install | bash
+          echo "$HOME/.bun/bin" >> $GITHUB_PATH
 
-      - name: Install dependencies
-        run: npm install
+      - name: Install dependencies with Bun
+        run: bun install
 
-      - name: Run migrations
-        run: npm run db:migrate:test
+      - name: Run migrations with Bun
+        run: bun run pretest
 
-      - name: Execute tests
-        run: npm run test
+      - name: Execute tests with Bun
+        run: bun run test
 
-      - name: Execute test coverage
-        run: npm run test:coverage
+      - name: Execute test coverage with Bun
+        run: bun run test:coverage
