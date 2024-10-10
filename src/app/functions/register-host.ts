@@ -6,7 +6,6 @@ import { hashPassword } from '@/http/utils/password'
 import postgres from 'postgres'
 import { HashPasswordError } from '../errors/hash-password-error'
 import { HostEmailAlreadyRegisteredError } from '../errors/host-email-already-registered'
-import { InternalServerError } from '../errors/internal-server-error'
 
 type RegisterHostInput = {
   name: string
@@ -48,6 +47,6 @@ export async function registerHost({
       return makeLeft(new HostEmailAlreadyRegisteredError())
     }
 
-    return makeLeft(new InternalServerError())
+    throw error
   }
 }

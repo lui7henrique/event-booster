@@ -3,7 +3,6 @@ import { db } from '@/db'
 import { schema } from '@/db/schema'
 import { comparePassword } from '@/http/utils/password'
 import { eq } from 'drizzle-orm'
-import { ServerError } from '../errors/server-error'
 
 import { InvalidPasswordError } from '../errors/invalid-password-error'
 import { InvalidEmailError } from '../errors/invalid-email-error'
@@ -31,7 +30,7 @@ export async function login({ email, password }: LoginInput) {
     }
 
     return makeRight({ host })
-  } catch {
-    return makeLeft(new ServerError())
+  } catch (error) {
+    throw error
   }
 }

@@ -6,8 +6,6 @@ import { isFuture, isPast, isSameDay, isValid, parseISO } from 'date-fns'
 import { and, asc, count, desc, eq, sql } from 'drizzle-orm'
 import { InvalidDateError } from '../errors/invalid-date'
 import { InvalidFutureDateError } from '../errors/invalid-future-date'
-import { ServerError } from '../errors/server-error'
-import { date } from 'drizzle-orm/pg-core'
 
 const FIFTEEN_MINUTES = 60 * 15
 const TWO_MONTHS = 60 * 60 * 24 * 30 * 2 // Seconds;Minutes;Hours;Days;Months
@@ -77,8 +75,7 @@ export async function getEventRanking({
     return makeRight({
       ranking,
     })
-  } catch (e) {
-    console.log({ e })
-    return makeLeft(new ServerError())
+  } catch (error) {
+    throw error
   }
 }

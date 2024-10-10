@@ -1,12 +1,12 @@
-import { describe, expect, it } from 'vitest'
 import { isLeft, isRight, unwrapEither } from '@/core/either'
 import { makeHost, makeRawHost } from '@/test/factories/make-host'
+import { describe, expect, it } from 'vitest'
 
-import { login } from './login'
 import { hashPassword } from '@/http/utils/password'
 import { faker } from '@faker-js/faker'
 import { InvalidEmailError } from '../errors/invalid-email-error'
 import { InvalidPasswordError } from '../errors/invalid-password-error'
+import { login } from './login'
 
 describe('login', () => {
   it('should be able to login', async () => {

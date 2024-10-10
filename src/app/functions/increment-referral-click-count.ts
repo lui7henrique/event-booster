@@ -3,7 +3,6 @@ import { db } from '@/db'
 import { schema } from '@/db/schema'
 import { eq, sql } from 'drizzle-orm'
 import { ReferralNotFound } from '../errors/referral-not-found'
-import { ServerError } from '../errors/server-error'
 
 type IncrementReferralClickCountInput = {
   eventId: string
@@ -26,7 +25,7 @@ export async function incrementReferralClickCount({
     }
 
     return makeRight({ referral })
-  } catch {
-    return makeLeft(new ServerError())
+  } catch (error) {
+    throw error
   }
 }

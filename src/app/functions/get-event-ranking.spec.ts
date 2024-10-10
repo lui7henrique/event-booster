@@ -4,12 +4,12 @@ import { makeActiveEvent } from '@/test/factories/make-event'
 import { makeHost } from '@/test/factories/make-host'
 import { makeReferralLink } from '@/test/factories/make-referral-link'
 import { makeSubscription } from '@/test/factories/make-subscription'
+import { faker } from '@faker-js/faker'
 import { addDays } from 'date-fns'
 import type { InferSelectModel } from 'drizzle-orm'
 import { beforeAll, describe, expect, it, vi } from 'vitest'
 import { InvalidFutureDateError } from '../errors/invalid-future-date'
 import { getEventRanking } from './get-event-ranking'
-import { faker } from '@faker-js/faker'
 
 let host: InferSelectModel<typeof schema.hosts>
 let event: InferSelectModel<typeof schema.events>

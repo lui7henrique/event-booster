@@ -3,8 +3,8 @@ import { makeActiveEvent, makeEvent } from '@/test/factories/make-event'
 import { makeHost } from '@/test/factories/make-host'
 import { makeReferralLink } from '@/test/factories/make-referral-link'
 import { describe, expect, it } from 'vitest'
-import { ReferralLinkNotFound } from '../errors/referral-link-not-found'
 import { incrementReferralClickCount } from './increment-referral-click-count'
+import { ReferralNotFound } from '../errors/referral-not-found'
 
 describe('increment referral click count', () => {
   it('should be able to return an error if the referral link is not found', async () => {
@@ -14,7 +14,7 @@ describe('increment referral click count', () => {
     })
 
     expect(isLeft(sut)).toBe(true)
-    expect(unwrapEither(sut)).toBeInstanceOf(ReferralLinkNotFound)
+    expect(unwrapEither(sut)).toBeInstanceOf(ReferralNotFound)
   })
 
   it('should be able to increment click count', async () => {

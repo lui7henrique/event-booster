@@ -6,8 +6,8 @@ import { makeActiveEvent } from '@/test/factories/make-event'
 import { makeHost } from '@/test/factories/make-host'
 import { makeReferralLink } from '@/test/factories/make-referral-link'
 import type { InferSelectModel } from 'drizzle-orm'
-import { ReferralLinkNotFound } from '../errors/referral-link-not-found'
 import { getReferralStats } from './get-referral-stats'
+import { ReferralNotFound } from '../errors/referral-not-found'
 
 let host: InferSelectModel<typeof schema.hosts>
 let event: InferSelectModel<typeof schema.events>
@@ -23,7 +23,7 @@ describe('get referral stats', () => {
     const sut = await getReferralStats({ token, eventId: event.id })
 
     expect(isLeft(sut)).toBe(true)
-    expect(unwrapEither(sut)).toBeInstanceOf(ReferralLinkNotFound)
+    expect(unwrapEither(sut)).toBeInstanceOf(ReferralNotFound)
   })
 
   it('should be able to calculates direct conversion rate correctly', async () => {

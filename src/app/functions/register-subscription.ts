@@ -6,7 +6,6 @@ import { and, eq, sql } from 'drizzle-orm'
 import { EmailAlreadySubscribedError } from '../errors/email-already-subscribed-error'
 import { EventDateError } from '../errors/event-date-error'
 import { EventNotFoundError } from '../errors/event-not-found-error'
-import { ServerError } from '../errors/server-error'
 
 type RegisterSubscriptionInput = {
   name: string
@@ -92,6 +91,6 @@ export async function registerSubscription({
       }
     }
 
-    return makeLeft(new ServerError())
+    throw error
   }
 }

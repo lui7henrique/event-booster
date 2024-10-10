@@ -5,7 +5,7 @@ import { makeHost } from '@/test/factories/make-host'
 import { makeReferralLink } from '@/test/factories/make-referral-link'
 import { makeSubscription } from '@/test/factories/make-subscription'
 import type { InferSelectModel } from 'drizzle-orm'
-import { beforeAll, describe, expect, it, vi } from 'vitest'
+import { beforeAll, describe, expect, it } from 'vitest'
 import { ReferralLinkAlreadyExists } from '../errors/referral-link-already-exists'
 import { generateReferral } from './generate-referral'
 

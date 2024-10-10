@@ -2,7 +2,6 @@ import { makeLeft, makeRight } from '@/core/either'
 import { db } from '@/db'
 import { schema } from '@/db/schema'
 import { EventInvalidDateError } from '../errors/event-invalid-date-error'
-import { ServerError } from '../errors/server-error'
 import { EventPastDateError } from '../errors/event-past-date-error'
 
 type RegisterEventInput = {
@@ -24,17 +23,12 @@ export async function registerEvent({
     const startDateIsAfterEndDate = startDate.getTime() > endDate.getTime()
 
     if (startDateIsAfterEndDate) {
-      return makeLeft(
-        new EventInvalidDateError('Start date cannot be after end date.')
-      )
+      throw new EventInvalidDateError()
     }
 
     const isEventInPast = startDate.getTime() < today.getTime()
-
     if (isEventInPast) {
-      return makeLeft(
-        new EventPastDateError('Event start date is in the past.')
-      )
+      throw new EventPastDateError()
     }
 
     const [event] = await db
@@ -48,9 +42,15 @@ export async function registerEvent({
       .returning()
 
     return makeRight({ event })
-  } catch (e) {
-    return makeLeft(
-      new ServerError('Failed to register the event due to a server error.')
-    )
+  } catch (error) {
+    if (error instanceof EventInvalidDateError) {
+      return makeLeft(new EventInvalidDateError())
+    }
+
+    if (error instanceof EventPastDateError) {
+      return makeLeft(new EventPastDateError())
+    }
+
+    throw error
   }
 }
