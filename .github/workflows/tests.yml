@@ -1,4 +1,4 @@
-name: Coverage
+name: Tests
 
 on:
   push:
@@ -39,8 +39,13 @@ jobs:
       - name: Install dependencies
         run: bun install
 
+        run: bun install
+
       - name: Run migrations
         run: bun run pretest
 
+      - name: Execute tests
+        run: bun run test
+        
       - name: Execute test coverage
         run: bun run test:coverage
