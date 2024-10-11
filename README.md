@@ -25,7 +25,7 @@
 4. **Testing**
 
    - [x] Write tests with at least 90% coverage.
-   - [ ] Set up continuous integration to run tests and check coverage.
+   - [x] Set up continuous integration to run tests and check coverage.
 
 5. **Monitoring and Optimization**
 
