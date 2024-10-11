@@ -1,50 +1,42 @@
-name: Node.js CI
+name: event-booster-server
 
-on:
-  push:
-    branches:
-      - main
-  pull_request:
-    branches:
-      - main
+services:
+  pg:
+    image: bitnami/postgresql:13.16.0
+    ports:
+      - '5432:5432'
+    environment:
+      - POSTGRES_USER=docker
+      - POSTGRES_PASSWORD=docker
+      - POSTGRES_DB=event-booster
 
-jobs:
-  build-and-test:
-    runs-on: ubuntu-latest
+  pg-test:
+    image: bitnami/postgresql:13.16.0
+    ports:
+      - '5433:5432'
+    environment:
+      - POSTGRES_USER=docker
+      - POSTGRES_PASSWORD=docker
+      - POSTGRES_DB=event-booster-test
+      
+  redis:
+    image: bitnami/redis:latest
+    ports:
+      - '6379:6379'
+    environment:
+      - REDIS_PASSWORD=redis   
+    volumes:
+      - redis-data:/data
 
-    services:
-      postgres:
-        image: bitnami/postgresql:13.16.0
-        env:
-          POSTGRES_USER: docker
-          POSTGRES_PASSWORD: docker
-          POSTGRES_DB: event-booster-test
-        ports:
-          - 5433:5432
-      redis:
-        image: bitnami/redis:latest
-        env:
-          REDIS_PASSWORD: redis
-        ports:
-          - 6379:6379
+  jaeger:
+    image: jaegertracing/all-in-one:1.28
+    ports:
+      - '16686:16686' # UI
+      - '14250:14250' # GRPC
+      - '14268:14268' # HTTP
+    environment:
+      - COLLECTOR_ZIPKIN_HOST_PORT=:9411
 
-    steps:
-    - uses: actions/checkout@v2
+volumes:
+  redis-data:
 
-    - name: Set up Node.js
-      uses: actions/setup-node@v2
-      with:
-        node-version: '18'  
-        cache: 'npm'
-
-    - name: Install dependencies
-      run: npm install
-
-    - name: Run migrations
-      run: npm run pretest
-
-    - name: Execute tests
-      run: npm run test
-
-    - name: Execute test coverage
-      run: npm run test:coverage

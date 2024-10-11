@@ -17,7 +17,8 @@
     "format": "biome check src --write",
     "mail:dev": "email dev --dir src/mail/templates",
     "build": "dotenv -e .env -- tsup src/http/server.ts --out-dir dist --format esm,cjs --dts",
-    "start": "dotenv -e .env -- node dist/server.js"
+    "start": "dotenv -e .env -- node dist/server.js",
+    "teste": "npx ts-node --require ./instrumentation.ts"
   },
   "keywords": [],
   "author": "",
@@ -30,6 +31,12 @@
     "@fastify/redis": "^7.0.1",
     "@fastify/swagger": "^9.0.0",
     "@fastify/swagger-ui": "^5.0.1",
+    "@opentelemetry/api": "^1.9.0",
+    "@opentelemetry/auto-instrumentations-node": "^0.50.2",
+    "@opentelemetry/exporter-trace-otlp-http": "^0.53.0",
+    "@opentelemetry/sdk-metrics": "^1.26.0",
+    "@opentelemetry/sdk-node": "^0.53.0",
+    "@opentelemetry/sdk-trace-node": "^1.26.0",
     "bcrypt": "^5.1.1",
     "date-fns": "^4.1.0",
     "drizzle-orm": "0.33.0",
