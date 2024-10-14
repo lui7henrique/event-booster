@@ -2,7 +2,7 @@ import opentelemetry from '@opentelemetry/sdk-node'
 import { OTLPTraceExporter } from '@opentelemetry/exporter-trace-otlp-http'
 import { getNodeAutoInstrumentations } from '@opentelemetry/auto-instrumentations-node'
 
-const sdk = new opentelemetry.NodeSDK({
+export const sdk = new opentelemetry.NodeSDK({
   traceExporter: new OTLPTraceExporter(),
   instrumentations: [
     getNodeAutoInstrumentations({
@@ -14,5 +14,3 @@ const sdk = new opentelemetry.NodeSDK({
     }),
   ],
 })
-
-sdk.start()
