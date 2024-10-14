@@ -1,3 +1,5 @@
+import '@/config/instrumentation'
+
 import fastifyCors from '@fastify/cors'
 import fastifyJwt from '@fastify/jwt'
 import fastifyRateLimit from '@fastify/rate-limit'
@@ -24,7 +26,6 @@ import { loginRoute } from './routes/login'
 import { registerEventRoute } from './routes/register-event'
 import { registerHostRoute } from './routes/register-host'
 import { registerSubscriptionRoute } from './routes/register-subscription'
-import { sdk } from '@/config/instrumentation'
 
 const app = fastify()
 
@@ -118,9 +119,6 @@ app.setErrorHandler((error, _, reply) => {
   return reply.status(500).send({ message: 'Internal server error.' })
 })
 
-sdk.start()
-
-app.ready()
 app
   .listen({
     port: env.PORT,
