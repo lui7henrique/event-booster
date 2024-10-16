@@ -37,6 +37,8 @@
     "@opentelemetry/sdk-metrics": "^1.26.0",
     "@opentelemetry/sdk-node": "^0.53.0",
     "@opentelemetry/sdk-trace-node": "^1.26.0",
+    "@sentry/node": "^8.34.0",
+    "@sentry/profiling-node": "^8.34.0",
     "bcrypt": "^5.1.1",
     "date-fns": "^4.1.0",
     "drizzle-orm": "0.33.0",

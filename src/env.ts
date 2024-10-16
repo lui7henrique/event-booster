@@ -7,6 +7,7 @@ export const envSchema = z.object({
   REDIS_URL: z.string(),
   JWT_SECRET: z.string(),
   BASE_URL: z.string(),
+  SENTRY_DSN: z.string().optional(),
 })
 
 export const env = envSchema.parse(process.env)

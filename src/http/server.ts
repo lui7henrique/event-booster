@@ -7,6 +7,7 @@ import fastifyRedis from '@fastify/redis'
 import fastifySwagger from '@fastify/swagger'
 import fastifySwaggerUi from '@fastify/swagger-ui'
 import fastify from 'fastify'
+import Sentry from '@sentry/node'
 
 import {
   jsonSchemaTransform,
@@ -26,7 +27,6 @@ import { loginRoute } from './routes/login'
 import { registerEventRoute } from './routes/register-event'
 import { registerHostRoute } from './routes/register-host'
 import { registerSubscriptionRoute } from './routes/register-subscription'
-import { sdk } from '@/config/instrumentation'
 
 const app = fastify()
 
@@ -120,7 +120,8 @@ app.setErrorHandler((error, _, reply) => {
   return reply.status(500).send({ message: 'Internal server error.' })
 })
 
-sdk.start()
+Sentry.setupFastifyErrorHandler(app)
+
 app
   .listen({
     port: env.PORT,

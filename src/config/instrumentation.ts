@@ -1,16 +1,14 @@
-import opentelemetry from '@opentelemetry/sdk-node'
-import { OTLPTraceExporter } from '@opentelemetry/exporter-trace-otlp-http'
-import { getNodeAutoInstrumentations } from '@opentelemetry/auto-instrumentations-node'
+import { env } from '@/env'
+import Sentry from '@sentry/node'
+import { nodeProfilingIntegration } from '@sentry/profiling-node'
 
-export const sdk = new opentelemetry.NodeSDK({
-  traceExporter: new OTLPTraceExporter(),
-  instrumentations: [
-    getNodeAutoInstrumentations({
-      // we recommend disabling fs autoinstrumentation since it can be noisy
-      // and expensive during startup
-      '@opentelemetry/instrumentation-fs': {
-        enabled: false,
-      },
-    }),
-  ],
+Sentry.init({
+  dsn: env.SENTRY_DSN,
+  integrations: [nodeProfilingIntegration()],
+
+  // Tracing
+  tracesSampleRate: 1.0, //  Capture 100% of the transactions
+
+  // Set sampling rate for profiling - this is relative to tracesSampleRate
+  profilesSampleRate: 1.0,
 })
