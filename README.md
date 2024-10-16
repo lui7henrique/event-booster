@@ -36,4 +36,4 @@
 6. **Documentation and Deployment**
    - [x] Document API endpoints using Swagger/OpenAPI.
    - [x] Set up deployment using Docker.
-   - [ ] Ensure proper security and performance settings in production.
+   - [x] Ensure proper security and performance settings in production.
