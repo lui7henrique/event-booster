@@ -9,6 +9,7 @@ import { beforeAll, describe, expect, it } from 'vitest'
 import { ReferralLinkAlreadyExists } from '../errors/referral-link-already-exists'
 import { generateReferral } from './generate-referral'
 import { faker } from '@faker-js/faker'
+import { SubscriptionNotFound } from '../errors/subscription-not-found-error'
 
 let host: InferSelectModel<typeof schema.hosts>
 let event: InferSelectModel<typeof schema.events>
@@ -35,6 +36,16 @@ describe('generate referral', () => {
         email: subscription.email,
       }),
     })
+  })
+
+  it('should not be able to generate referral when email is not subscribed', async () => {
+    const sut = await generateReferral({
+      email: 'unsubscribed@email.com',
+      eventId: event.id,
+    })
+
+    expect(isLeft(sut)).toBe(true)
+    expect(unwrapEither(sut)).toBeInstanceOf(SubscriptionNotFound)
   })
 
   it('should not be able to generate referral when its already exists', async () => {
