@@ -33,7 +33,7 @@ const responseSchema = {
 export async function incrementReferralClickCountRoute(app: FastifyInstance) {
   app.withTypeProvider<ZodTypeProvider>().route({
     method: 'GET',
-    url: '/increment-referral-click-count',
+    url: '/referral',
     schema: {
       description: 'Increment referral click count',
       tags: ['Referral'],
@@ -55,7 +55,9 @@ export async function incrementReferralClickCountRoute(app: FastifyInstance) {
         }
       }
 
-      return reply.status(200).send({ referral: result.right.referral })
+      return reply
+        .status(302)
+        .redirect('https://www.youtube.com/watch?v=dQw4w9WgXcQ')
     },
   })
 }

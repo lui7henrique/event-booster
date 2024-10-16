@@ -30,7 +30,7 @@ export async function generateReferral({
     }
 
     const token = randomBytes(16).toString('hex')
-    const url = `${process.env.BASE_URL}/referral?token=${token}&eventId=${eventId}`
+    const url = `${process.env.BASE_URL}/referral?token=${token}`
 
     const [subscription] = await db
       .select()
