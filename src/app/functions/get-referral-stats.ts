@@ -14,23 +14,22 @@ type TotalSubscriptions = {
 }
 
 export async function getReferralStats({ token }: GetReferralInput) {
-  try {
-    const [referral] = await db
-      .select()
-      .from(schema.referral)
-      .where(eq(schema.referral.token, token))
+  const [referral] = await db
+    .select()
+    .from(schema.referral)
+    .where(eq(schema.referral.token, token))
 
-    if (!referral) {
-      return makeLeft(new ReferralNotFound())
-    }
+  if (!referral) {
+    return makeLeft(new ReferralNotFound())
+  }
 
-    const directConversionRate =
-      referral.clickCount === 0
-        ? 0
-        : (referral.subscriptionCount / referral.clickCount) * 100
+  const directConversionRate =
+    referral.clickCount === 0
+      ? 0
+      : (referral.subscriptionCount / referral.clickCount) * 100
 
-    const [totalSubscriptions] = await db.execute<TotalSubscriptions>(
-      sql`
+  const [totalSubscriptions] = await db.execute<TotalSubscriptions>(
+    sql`
         WITH RECURSIVE referral_chain AS (
           SELECT 
             id, 
@@ -61,21 +60,18 @@ export async function getReferralStats({ token }: GetReferralInput) {
         FROM 
           referral_chain;
       `
-    )
+  )
 
-    const indirectConversionRate =
-      Number(totalSubscriptions.click_count) === 0
-        ? 0
-        : (Number(totalSubscriptions.subscription_count) /
-            Number(totalSubscriptions.click_count)) *
-          100
+  const indirectConversionRate =
+    Number(totalSubscriptions.click_count) === 0
+      ? 0
+      : (Number(totalSubscriptions.subscription_count) /
+          Number(totalSubscriptions.click_count)) *
+        100
 
-    return makeRight({
-      referral,
-      directConversionRate,
-      indirectConversionRate,
-    })
-  } catch (error) {
-    throw error
-  }
+  return makeRight({
+    referral,
+    directConversionRate,
+    indirectConversionRate,
+  })
 }

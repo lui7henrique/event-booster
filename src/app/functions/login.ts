@@ -13,24 +13,20 @@ type LoginInput = {
 }
 
 export async function login({ email, password }: LoginInput) {
-  try {
-    const [host] = await db
-      .select()
-      .from(schema.hosts)
-      .where(eq(schema.hosts.email, email))
+  const [host] = await db
+    .select()
+    .from(schema.hosts)
+    .where(eq(schema.hosts.email, email))
 
-    if (!host) {
-      return makeLeft(new InvalidEmailError())
-    }
-
-    const isPasswordValid = await comparePassword(password, host.password)
-
-    if (!isPasswordValid) {
-      return makeLeft(new InvalidPasswordError())
-    }
-
-    return makeRight({ host })
-  } catch (error) {
-    throw error
+  if (!host) {
+    return makeLeft(new InvalidEmailError())
   }
+
+  const isPasswordValid = await comparePassword(password, host.password)
+
+  if (!isPasswordValid) {
+    return makeLeft(new InvalidPasswordError())
+  }
+
+  return makeRight({ host })
 }

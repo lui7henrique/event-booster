@@ -19,38 +19,25 @@ export async function registerEvent({
 }: RegisterEventInput) {
   const today = new Date()
 
-  try {
-    const startDateIsAfterEndDate = startDate.getTime() > endDate.getTime()
-
-    if (startDateIsAfterEndDate) {
-      throw new EventInvalidDateError()
-    }
-
-    const isEventInPast = startDate.getTime() < today.getTime()
-    if (isEventInPast) {
-      throw new EventPastDateError()
-    }
-
-    const [event] = await db
-      .insert(schema.events)
-      .values({
-        title,
-        startDate,
-        endDate,
-        hostId,
-      })
-      .returning()
-
-    return makeRight({ event })
-  } catch (error) {
-    if (error instanceof EventInvalidDateError) {
-      return makeLeft(new EventInvalidDateError())
-    }
-
-    if (error instanceof EventPastDateError) {
-      return makeLeft(new EventPastDateError())
-    }
-
-    throw error
+  const startDateIsAfterEndDate = startDate.getTime() > endDate.getTime()
+  if (startDateIsAfterEndDate) {
+    return makeLeft(new EventInvalidDateError())
   }
+
+  const isEventInPast = startDate.getTime() < today.getTime()
+  if (isEventInPast) {
+    return makeLeft(new EventPastDateError())
+  }
+
+  const [event] = await db
+    .insert(schema.events)
+    .values({
+      title,
+      startDate,
+      endDate,
+      hostId,
+    })
+    .returning()
+
+  return makeRight({ event })
 }

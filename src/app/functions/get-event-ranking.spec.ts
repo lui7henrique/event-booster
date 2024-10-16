@@ -17,6 +17,12 @@ let event: InferSelectModel<typeof schema.events>
 
 const VALID_DATE = new Date()
 
+const redisStore = []
+const redis = {
+  get: () => JSON.stringify([]),
+  set: (result: unknown) => redisStore.push(result),
+} as unknown as FastifyRedis
+
 describe('get event ranking', () => {
   beforeAll(async () => {
     host = await makeHost()
@@ -91,9 +97,20 @@ describe('get event ranking', () => {
     const sut = await getEventRanking({
       eventId: event.id,
       selectedDate: VALID_DATE,
-      redis: {
-        get: () => JSON.stringify([]),
-      } as unknown as FastifyRedis,
+      redis,
+    })
+
+    expect(isRight(sut)).toBe(true)
+    expect(unwrapEither(sut)).toEqual({
+      ranking: expect.objectContaining([]),
+    })
+  })
+
+  it('should be able to cache result in redis result', async () => {
+    const sut = await getEventRanking({
+      eventId: event.id,
+      selectedDate: VALID_DATE,
+      redis,
     })
 
     expect(isRight(sut)).toBe(true)

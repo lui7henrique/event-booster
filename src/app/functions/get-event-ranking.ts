@@ -2,9 +2,8 @@ import { makeLeft, makeRight } from '@/core/either'
 import { db } from '@/db'
 import { schema } from '@/db/schema'
 import type { FastifyRedis } from '@fastify/redis'
-import { isFuture, isPast, isSameDay, isValid, parseISO } from 'date-fns'
-import { and, asc, count, desc, eq, sql } from 'drizzle-orm'
-import { InvalidDateError } from '../errors/invalid-date'
+import { isFuture, isPast } from 'date-fns'
+import { and, count, desc, eq, sql } from 'drizzle-orm'
 import { InvalidFutureDateError } from '../errors/invalid-future-date'
 
 const FIFTEEN_MINUTES = 60 * 15

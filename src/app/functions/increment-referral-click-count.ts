@@ -11,19 +11,15 @@ type IncrementReferralClickCountInput = {
 export async function incrementReferralClickCount({
   token,
 }: IncrementReferralClickCountInput) {
-  try {
-    const [referral] = await db
-      .update(schema.referral)
-      .set({ clickCount: sql`click_count + 1` })
-      .where(eq(schema.referral.token, token))
-      .returning()
+  const [referral] = await db
+    .update(schema.referral)
+    .set({ clickCount: sql`click_count + 1` })
+    .where(eq(schema.referral.token, token))
+    .returning()
 
-    if (!referral) {
-      return makeLeft(new ReferralNotFound())
-    }
-
-    return makeRight({ referral })
-  } catch (error) {
-    throw error
+  if (!referral) {
+    return makeLeft(new ReferralNotFound())
   }
+
+  return makeRight({ referral })
 }
