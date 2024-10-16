@@ -19,6 +19,9 @@ const responseSchema = {
   400: z.object({
     message: z.string().describe('Error occurred'),
   }),
+  401: z.object({
+    message: z.string().describe('Subscription not found'),
+  }),
   409: z.object({
     message: z.string().describe('Referral already exists'),
   }),
