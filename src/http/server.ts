@@ -7,7 +7,7 @@ import fastifyRedis from '@fastify/redis'
 import fastifySwagger from '@fastify/swagger'
 import fastifySwaggerUi from '@fastify/swagger-ui'
 import fastify from 'fastify'
-import Sentry from '@sentry/node'
+import * as Sentry from '@sentry/node'
 
 import {
   jsonSchemaTransform,
