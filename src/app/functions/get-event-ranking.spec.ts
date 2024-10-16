@@ -10,6 +10,7 @@ import type { InferSelectModel } from 'drizzle-orm'
 import { beforeAll, describe, expect, it, vi } from 'vitest'
 import { InvalidFutureDateError } from '../errors/invalid-future-date'
 import { getEventRanking } from './get-event-ranking'
+import type { FastifyRedis } from '@fastify/redis'
 
 let host: InferSelectModel<typeof schema.hosts>
 let event: InferSelectModel<typeof schema.events>
@@ -86,7 +87,22 @@ describe('get event ranking', () => {
     expect(isOrdered).toBe(true)
   })
 
-  it('should not be able to return ranking when selected_date is in the future', async () => {
+  it('should be able to return redis cached result', async () => {
+    const sut = await getEventRanking({
+      eventId: event.id,
+      selectedDate: VALID_DATE,
+      redis: {
+        get: () => JSON.stringify([]),
+      } as unknown as FastifyRedis,
+    })
+
+    expect(isRight(sut)).toBe(true)
+    expect(unwrapEither(sut)).toEqual({
+      ranking: expect.objectContaining([]),
+    })
+  })
+
+  it('should not be able to return ranking when selectedDate is in the future', async () => {
     const sut = await getEventRanking({
       eventId: event.id,
       selectedDate: addDays(new Date(), 1),

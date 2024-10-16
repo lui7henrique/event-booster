@@ -46,6 +46,7 @@
     "fastify": "^5.0.0",
     "fastify-type-provider-zod": "^4.0.1",
     "postgres": "3.4.4",
+    "redis-mock": "^0.56.3",
     "typeid-js": "1.0.0"
   },
   "devDependencies": {
