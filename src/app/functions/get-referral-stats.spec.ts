@@ -22,7 +22,6 @@ describe('get referral stats', () => {
   it('should not be able to return if referral link is not found', async () => {
     const sut = await getReferralStats({
       token: faker.string.uuid(),
-      eventId: event.id,
     })
 
     expect(isLeft(sut)).toBe(true)
@@ -39,7 +38,7 @@ describe('get referral stats', () => {
       token: faker.string.uuid(),
     })
 
-    const sut = await getReferralStats({ token, eventId: event.id })
+    const sut = await getReferralStats({ token })
 
     expect(isRight(sut)).toBe(true)
     expect(unwrapEither(sut)).toHaveProperty('directConversionRate', 20)
@@ -63,7 +62,6 @@ describe('get referral stats', () => {
 
     const sut = await getReferralStats({
       token: childLink.token,
-      eventId: event.id,
     })
 
     expect(isRight(sut)).toBe(true)
@@ -78,7 +76,7 @@ describe('get referral stats', () => {
       token: faker.string.uuid(),
     })
 
-    const sut = await getReferralStats({ token, eventId: event.id })
+    const sut = await getReferralStats({ token })
 
     expect(unwrapEither(sut)).toHaveProperty('directConversionRate', 0)
 
