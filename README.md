@@ -30,7 +30,7 @@
 5. **Monitoring and Optimization**
 
    - [x] Track key metrics (requests per second, system load, response time).
-   - [ ] Send performance data to Sentry/Datadog.
+   - [x] Send performance data to Sentry/Datadog.
    - [ ] Optimize database and cache configurations regularly.
 
 6. **Documentation and Deployment**
