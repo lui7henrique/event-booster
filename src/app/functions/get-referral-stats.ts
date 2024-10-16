@@ -6,7 +6,6 @@ import { ReferralNotFound } from '../errors/referral-not-found'
 
 type GetReferralInput = {
   token: string
-  eventId: string
 }
 
 type TotalSubscriptions = {
@@ -14,17 +13,12 @@ type TotalSubscriptions = {
   subscription_count: string
 }
 
-export async function getReferralStats({ eventId, token }: GetReferralInput) {
+export async function getReferralStats({ token }: GetReferralInput) {
   try {
     const [referral] = await db
       .select()
       .from(schema.referral)
-      .where(
-        and(
-          eq(schema.referral.token, token),
-          eq(schema.referral.eventId, eventId)
-        )
-      )
+      .where(eq(schema.referral.token, token))
 
     if (!referral) {
       return makeLeft(new ReferralNotFound())
