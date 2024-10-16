@@ -45,6 +45,9 @@ export async function generateReferralRoute(app: FastifyInstance) {
           case 'ReferralLinkAlreadyExists':
             return reply.status(409).send({ message: error.message })
 
+          case 'SubscriptionNotFound':
+            return reply.status(404).send({ message: error.message })
+
           default:
             return reply.status(400).send({ message: 'An error occurred' })
         }
